@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/" />
+  <Folder Name="/src/">
+    <Project Path="src/SmartInventory.API/SmartInventory.API.csproj" Id="405517fb-f267-4848-9bf1-6038c2298026" />
+    <Project Path="src/SmartInventory.Application/SmartInventory.Application.csproj" Id="7656c934-945e-44c3-82ab-4a7a54968a0f" />
+    <Project Path="src/SmartInventory.Contracts/SmartInventory.Contracts.csproj" Id="75058cc5-58e9-4ad9-abe3-e29647f0b98b" />
+    <Project Path="src/SmartInventory.Domain/SmartInventory.Domain.csproj" Id="2110e120-321e-41ac-a419-bd8b2aa179ab" />
+    <Project Path="src/SmartInventory.Infrastructure/SmartInventory.Infrastructure.csproj" Id="d03651e5-98c5-488d-95cc-a0e5ccb5043a" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SmartInventory.IntegrationTests/SmartInventory.IntegrationTests.csproj" Id="1d23400f-234b-4ae8-9a14-963b93ab37a3" />
+    <Project Path="tests/SmartInventory.UnitTests/SmartInventory.UnitTests.csproj" Id="0333e145-f40b-49e0-92cd-862af0bb62b2" />
+  </Folder>
+</Solution>
