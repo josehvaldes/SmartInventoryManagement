@@ -1,6 +1,7 @@
-﻿namespace SmartInventory.IntegrationTests
+﻿
+namespace SmartInventory.IntegrationTests
 {
-    public class Class1
+    public class MathTests
     {
 
     }

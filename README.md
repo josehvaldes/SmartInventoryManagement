@@ -21,6 +21,7 @@ The project implements a **hybrid architecture** combining:
 - **Vertical Slice Architecture** for feature-focused development
 - **Domain-Driven Design (DDD)** with rich domain models
 - **CQRS-lite** for separating read and write operations
+- ** Specification Pattern ** for reusable and complex EF queries.
 
 ### Key Benefits
 ✅ Highly maintainable and testable  
@@ -39,7 +40,7 @@ The project implements a **hybrid architecture** combining:
 - **ASP.NET Core Minimal APIs** - Lightweight, high-performance APIs
 
 ### Database & Data Access
-- **SQL Server 2019+** - Primary database
+- **SQL Server 2025** - Primary database
 - **Entity Framework Core 10** - ORM for standard operations
 - **Dapper** - High-performance queries for complex reports
 
@@ -62,7 +63,6 @@ The project implements a **hybrid architecture** combining:
 
 ### API Documentation
 - **Scalar** - Modern OpenAPI documentation UI
-- **Swashbuckle** - OpenAPI/Swagger generation
 
 ### Security
 - **JWT Bearer Authentication** - Token-based auth
@@ -71,7 +71,7 @@ The project implements a **hybrid architecture** combining:
 ### Testing
 - **xUnit** - Testing framework
 - **FluentAssertions** - Readable assertions
-- **Moq** / **NSubstitute** - Mocking
+- **NSubstitute** - Mocking
 - **Testcontainers** (optional) - Integration tests with real databases
 
 ---
@@ -174,15 +174,15 @@ SmartInventory/
 ### Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- [SQL Server 2019+](https://www.microsoft.com/sql-server/sql-server-downloads) or SQL Server Express
+- [SQL Server 2025 Developer](https://www.microsoft.com/sql-server/sql-server-downloads)
 - [Redis](https://redis.io/download) (optional for local development)
-- IDE: Visual Studio 2022, VS Code, or JetBrains Rider
+- IDE: Visual Studio 2026, VS Code
 
 ### Installation
 
 1. **Clone the repository**
    ```powershell
-   git clone <repository-url>
+   git clone https://github.com/josehvaldes/SmartInventoryManagement.git
    cd SmartInventoryManagement
    ```
 
@@ -205,8 +205,9 @@ SmartInventory/
 
 4. **Create database**
    ```powershell
-   cd src/SmartInventory.Infrastructure
-   dotnet ef database update --startup-project ../SmartInventory.API
+   cd \scripts\database
+   sqlcmd -S yourServerName[\instanceName] -i schema.sql 
+
    ```
 
 5. **Run the application**
