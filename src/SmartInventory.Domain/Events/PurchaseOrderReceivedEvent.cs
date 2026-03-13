@@ -17,13 +17,12 @@ namespace SmartInventory.Domain.Events
     public class PurchaseOrderReceivedEvent
     {
         public Guid PurchaseOrderId { get; init; }
-        public string OrderNumber { get; init; }
+        public string OrderNumber { get; init; } = string.Empty;
         public Guid SupplierId { get; init; }
         public Guid WarehouseId { get; init; }
         public int TotalItems { get; init; }
         public decimal TotalValue { get; init; }
         public DateTime ReceivedAt { get; init; }
 
-        public PurchaseOrderReceivedEvent() { }
     }
 }

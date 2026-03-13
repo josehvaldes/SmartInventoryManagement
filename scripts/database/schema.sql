@@ -1,4 +1,46 @@
 
+-- Application schemas for logical grouping
+CREATE SCHEMA [Inventory] AUTHORIZATION dbo;
+CREATE SCHEMA [Purchasing] AUTHORIZATION dbo;
+CREATE SCHEMA [Alerts] AUTHORIZATION dbo;
+CREATE SCHEMA [Audit] AUTHORIZATION dbo;
+CREATE SCHEMA [Auth] AUTHORIZATION dbo;
+
+
+-- Identity catalog
+CREATE TABLE [Auth].[Users](
+    [Id] UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID(),
+    [Email] NVARCHAR(100) NOT NULL,
+    [PasswordHash] NVARCHAR(200) NOT NULL,
+    [Name] NVARCHAR(100) NOT NULL,
+    [Username] NVARCHAR(100) NOT NULL,
+    [IsActive] BIT NOT NULL DEFAULT 1,
+    CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([Id]),
+)
+
+CREATE TABLE [Auth].[Roles](
+    [Id] UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID(),
+    [Name] NVARCHAR(100) NOT NULL,
+    CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED ([Id]),
+)
+
+CREATE TABLE [Auth].[UserRoles](
+    [UserId] UNIQUEIDENTIFIER NOT NULL,
+    [RoleId] UNIQUEIDENTIFIER NOT NULL,
+    [AssignedAt]  DATETIME2(7) NOT NULL DEFAULT SYSUTCDATETIME(),
+    [AssignedBy]  NVARCHAR(100) NOT NULL,
+
+    CONSTRAINT [PK_UserRoles] PRIMARY KEY CLUSTERED ([UserId], [RoleId]),
+    CONSTRAINT [FK_UserRoles_Users] FOREIGN KEY ([UserId]) 
+        REFERENCES [Auth].[Users]([Id]),
+    CONSTRAINT [FK_UserRoles_Roles] FOREIGN KEY ([RoleId]) 
+        REFERENCES [Auth].[Roles]([Id]),
+)
+
+CREATE NONCLUSTERED INDEX [IX_UserRoles_RoleId] 
+    ON [Auth].[UserRoles]([RoleId]) INCLUDE ([UserId]);
+
+
 --Master product catalog
 CREATE TABLE [Inventory].[Products] (
     [Id] UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID(),

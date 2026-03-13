@@ -29,7 +29,7 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
   - EF Core 10, SQL Server provider
   - MediatR
   - FluentValidation
-  - AutoMapper
+  - AutoMapper when necessary
   - Serilog packages
 - [X] Set up `.gitignore` and initial Git repository
 - [X] Configure `appsettings.json` and `appsettings.Development.json`
@@ -94,14 +94,14 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 
 - [X] Create SQL Server database manually or via script
 - [X] Create database schemas (Inventory, Purchasing, Alerts, Audit)
-- [ ] Create `SmartInventoryDbContext` class
-- [ ] Implement EF Core entity configurations (Fluent API):
+- [X] Create `SmartInventoryDbContext` class
+- [X] Implement EF Core entity configurations (Fluent API):
   - `ProductConfiguration`
   - `WarehouseConfiguration`
   - `StockConfiguration`
   - `StockTransactionConfiguration`
-- [ ] Configure value object mapping (Address using `OwnsOne`)
-- [ ] Set up database sequences for auto-generated numbers
+- [X] Configure value object mapping (Address using `OwnsOne`)
+
 
 **Deliverables:**
 - ✅ DbContext created
@@ -113,13 +113,13 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 ### Day 5: Database Schema & EF Core Configuration - Part 2
 **Time:** 5-6 hours
 
-- [ ] Complete remaining entity configurations:
+- [X] Complete remaining entity configurations:
   - `SupplierConfiguration`
   - `PurchaseOrderConfiguration`
   - `PurchaseOrderItemConfiguration`
   - `StockAlertConfiguration`
 - [ ] Create and run initial EF Core migration
-- [ ] Verify database schema matches design
+- [X] Verify database schema matches design
 - [ ] Create seed data script for development:
   - Sample warehouses
   - Sample products
