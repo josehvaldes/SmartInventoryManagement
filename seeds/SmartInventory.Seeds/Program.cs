@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SmartInventory.Seeds;
+using System;
 
 
 Console.WriteLine("SmartInventory Product Seeder");
@@ -18,20 +19,59 @@ var connectionString = configuration.GetConnectionString("DefaultConnection")
 
 Console.WriteLine("Starting seed...");
 
-
-var command = "WarehouseSeeder"; //"StockSeeder"
-
-if (command == "ProductSeeder")
-{
-    var productsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "products.json");
-    var seeder = new ProductSeeder(connectionString);
-    await seeder.Seed(productsFilePath);
+if (args.Length == 0)
+    {
+    Console.WriteLine("No command provided. Please specify a seeding command (e.g., ProductSeeder, WarehouseSeeder, StockSeeder).");
+    return;
 }
-else if (command == "WarehouseSeeder")
+
+var command = args[0];
+
+switch (command)
 {
-    var stocksFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "warehouses.json");
-    var seeder = new WarehouseSeeder(connectionString);
-    await seeder.Seed(stocksFilePath);
+    case "ProductSeeder":
+        var productsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "products.json");
+        var productSeeder = new ProductSeeder(connectionString);
+        await productSeeder.Seed(productsFilePath);
+        break;
+    case "WarehouseSeeder":
+        var stocksFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "warehouses.json");
+        var warehouseSeeder = new WarehouseSeeder(connectionString);
+        await warehouseSeeder.Seed(stocksFilePath);
+        break;
+    case "StockSeeder":
+        var stockFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "stocks.json");
+        var stockSeeder = new StockSeeder(connectionString);
+        await stockSeeder.Seed(stockFilePath);
+        break;
+    case "UserSeeder":
+        var usersFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "users.json");
+        var userSeeder = new UserSeeder(connectionString);
+        await userSeeder.Seed(usersFilePath);
+        break;
+    case "StockTransactions":
+        var transactionsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "stock_transactions.json");
+        var transactionSeeder = new StockTransactionSeeder(connectionString);
+        await transactionSeeder.Seed(transactionsFilePath);
+        break;
+    case "SupplierSeeder":
+        var suppliersFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "suppliers.json");
+        var supplierSeeder = new SupplierSeeder(connectionString);
+        await supplierSeeder.Seed(suppliersFilePath);
+        break;
+    case "PurchaseOrderSeeder":
+        var purchaseOrdersFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "purchase_orders.json");
+        var purchaseOrderSeeder = new PurchaseOrderSeeder(connectionString);
+        await purchaseOrderSeeder.Seed(purchaseOrdersFilePath);
+        break;
+     case "PurchaseOrderItemsSeeder":
+        var purchaseOrderItemsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "purchase_order_items.json");
+        var purchaseOrderItemsSeeder = new PurchaseOrderItemsSeeder(connectionString);
+        await purchaseOrderItemsSeeder.Seed(purchaseOrderItemsFilePath);
+        break;
+    default:
+        Console.WriteLine($"Unknown command: {command}");
+        break;
 }
 
 Console.WriteLine("Seed completed.");

@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Domain.Identity;
 
 namespace SmartInventory.Infrastructure.Data.Context
 {
-    public class AuthDbContext: DbContext
+    public class AuthDbContext : DbContext, IAuthDbContext
     {
         public interface IAuthConfiguration { }
 

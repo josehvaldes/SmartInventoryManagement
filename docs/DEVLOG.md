@@ -119,11 +119,11 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
   - `PurchaseOrderItemConfiguration`
   - `StockAlertConfiguration`
 - [X] Verify database schema matches design
-- [ ] Create seed data script for development:
+- [X] Create seed data script for development:
   - Sample warehouses
   - Sample products
   - Sample suppliers
-- [ ] Test database connectivity and migrations
+- [X] Test database connectivity and migrations
 
 **Deliverables:**
 - ✅ All entity configurations completed
@@ -132,6 +132,44 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 - ✅ Database fully operational
 
 ---
+
+
+## Week 2: Infrastructure & Application Foundation (Days 6-10)
+
+**Goal:** Build repository layer, set up MediatR, and implement first features
+
+### Day 6: CQRS Pattern Implementation
+**Time:** 5-6 hours
+- [X] Set up MediatR in Application layer
+- [X] Create `IQuery`, `ICommand`, `ICommandHandler`, and `IQueryHandler` generic interfaces
+- [X] Create specific commands and queries
+   - GetProductQuery
+   - GetProductByIdQuery
+   - CreateProductCommand
+- [X] Implement a basic API/Products/ [GET] request
+- [X] Register Data base Contexts interfaces to the API
+
+
+**Deliverables:**
+- ✅ CQRS pattern fully implemented
+- ✅ Concreate DBContext classes registered in DI
+- ✅ Basic GET request running.
+---
+
+### Day 7: MediatR Setup & Products Feature - Part 1
+**Time:** 5-6 hours
+
+- [ ] Create MediatR pipeline behaviors:
+  - `ValidationBehavior` (FluentValidation integration)
+  - `LoggingBehavior` (request/response logging)
+- [ ] Implement Products feature:
+  - `CreateProductCommand` and `CreateProductCommandHandler`
+  - `CreateProductValidator` (FluentValidation)
+  - `ProductDto` and AutoMapper profile
+- [ ] Create contracts:
+  - `CreateProductRequest`
+  - `ProductResponse`
+
 
 ---
 

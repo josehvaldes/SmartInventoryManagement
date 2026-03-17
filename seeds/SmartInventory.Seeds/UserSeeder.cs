@@ -2,9 +2,7 @@
 using Newtonsoft.Json;
 using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using BCrypt.Net;
 
 namespace SmartInventory.Seeds
 {
@@ -41,6 +39,7 @@ namespace SmartInventory.Seeds
                         var existingUser = await context.Users.FindAsync(user.Id);
                         if (existingUser == null)
                         {
+                            user.PasswordHash = HashPassword(user.PasswordHash);
                             context.Users.Add(user);
                         }
                         else
@@ -55,5 +54,9 @@ namespace SmartInventory.Seeds
             }
         }
 
+        private string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12);
+        }
     }
 }

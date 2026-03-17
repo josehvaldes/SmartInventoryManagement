@@ -20,6 +20,10 @@ namespace SmartInventory.Infrastructure.Data.Context
 
         public DbSet<Warehouse> Warehouses => Set<Warehouse>();
 
+        public DbSet<StockTransaction> StockTransactions => Set<StockTransaction>();
+
+        public DbSet<Supplier> Suppliers => Set<Supplier>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

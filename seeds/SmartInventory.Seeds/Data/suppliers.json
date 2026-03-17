@@ -1,0 +1,156 @@
+[
+  {
+    "id": "66666666-0000-0000-0000-000000000001",
+    "code": "SUP-001",
+    "name": "TechLine Electronics Ltd.",
+    "contactPerson": "Martin Schulz",
+    "email": "m.schulz@techlineelectronics.com",
+    "phone": "+1-408-555-0601",
+    "address": {
+      "street": "3200 Innovation Drive",
+      "city": "San Jose",
+      "state": "CA",
+      "postalCode": "95101",
+      "country": "USA"
+    },
+    "paymentTerms": "Net 30",
+    "leadTimeDays": 10,
+    "minimumOrderValue": 500.00,
+    "rating": 4.5,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:00:00Z",
+    "updatedAt": "2025-01-10T08:00:00Z"
+  },
+  {
+    "id": "66666666-0000-0000-0000-000000000002",
+    "code": "SUP-002",
+    "name": "OfficeFirst Supply Co.",
+    "contactPerson": "Karen Mills",
+    "email": "k.mills@officefirst.com",
+    "phone": "+1-614-555-0602",
+    "address": {
+      "street": "78 Commerce Center Blvd",
+      "city": "Columbus",
+      "state": "OH",
+      "postalCode": "43201",
+      "country": "USA"
+    },
+    "paymentTerms": "Net 15",
+    "leadTimeDays": 4,
+    "minimumOrderValue": 150.00,
+    "rating": 4.2,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:05:00Z",
+    "updatedAt": "2025-01-10T08:05:00Z"
+  },
+  {
+    "id": "66666666-0000-0000-0000-000000000003",
+    "code": "SUP-003",
+    "name": "HeavyDuty Machinery Inc.",
+    "contactPerson": "Doug Patel",
+    "email": "d.patel@heavydutymachinery.com",
+    "phone": "+1-313-555-0603",
+    "address": {
+      "street": "500 Industrial Ave",
+      "city": "Detroit",
+      "state": "MI",
+      "postalCode": "48201",
+      "country": "USA"
+    },
+    "paymentTerms": "Net 60",
+    "leadTimeDays": 25,
+    "minimumOrderValue": 2000.00,
+    "rating": 3.8,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:10:00Z",
+    "updatedAt": "2025-01-10T08:10:00Z"
+  },
+  {
+    "id": "66666666-0000-0000-0000-000000000004",
+    "code": "SUP-004",
+    "name": "ProTools International",
+    "contactPerson": "Susan Briggs",
+    "email": "s.briggs@protoolsintl.com",
+    "phone": "+1-412-555-0604",
+    "address": {
+      "street": "1010 Steel Works Road",
+      "city": "Pittsburgh",
+      "state": "PA",
+      "postalCode": "15201",
+      "country": "USA"
+    },
+    "paymentTerms": "2/10 Net 30",
+    "leadTimeDays": 12,
+    "minimumOrderValue": 300.00,
+    "rating": 4.1,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:15:00Z",
+    "updatedAt": "2025-01-10T08:15:00Z"
+  },
+  {
+    "id": "66666666-0000-0000-0000-000000000005",
+    "code": "SUP-005",
+    "name": "SafeGuard Equipment Ltd.",
+    "contactPerson": "Marcus Reid",
+    "email": "m.reid@safeguardequip.com",
+    "phone": "+1-713-555-0605",
+    "address": {
+      "street": "220 Safety Parkway",
+      "city": "Houston",
+      "state": "TX",
+      "postalCode": "77001",
+      "country": "USA"
+    },
+    "paymentTerms": "Net 30",
+    "leadTimeDays": 8,
+    "minimumOrderValue": 250.00,
+    "rating": 4.7,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:20:00Z",
+    "updatedAt": "2025-01-10T08:20:00Z"
+  },
+  {
+    "id": "66666666-0000-0000-0000-000000000006",
+    "code": "SUP-006",
+    "name": "Metals Direct Corp.",
+    "contactPerson": "Irene Novak",
+    "email": "i.novak@metalsdirect.com",
+    "phone": "+1-216-555-0606",
+    "address": {
+      "street": "900 Foundry Lane",
+      "city": "Cleveland",
+      "state": "OH",
+      "postalCode": "44101",
+      "country": "USA"
+    },
+    "paymentTerms": "Net 45",
+    "leadTimeDays": 18,
+    "minimumOrderValue": 1000.00,
+    "rating": 3.5,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:25:00Z",
+    "updatedAt": "2025-01-10T08:25:00Z"
+  },
+  {
+    "id": "66666666-0000-0000-0000-000000000007",
+    "code": "SUP-007",
+    "name": "CircuitCraft Solutions",
+    "contactPerson": "Olivia Chen",
+    "email": "o.chen@circuitcraft.com",
+    "phone": "+1-512-555-0607",
+    "address": {
+      "street": "4400 Silicon Hills Blvd",
+      "city": "Austin",
+      "state": "TX",
+      "postalCode": "73301",
+      "country": "USA"
+    },
+    "paymentTerms": "Net 45",
+    "leadTimeDays": 14,
+    "minimumOrderValue": 750.00,
+    "rating": 4.3,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:30:00Z",
+    "updatedAt": "2025-01-10T08:30:00Z"
+  }
+]

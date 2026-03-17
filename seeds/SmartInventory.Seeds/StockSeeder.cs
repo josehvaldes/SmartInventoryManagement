@@ -8,59 +8,35 @@ using System.Text;
 
 namespace SmartInventory.Seeds
 {
-    public class StockSeeder
+    public class StockSeeder : BaseSeeder<Stock>
     {
-        private readonly string _filePath = string.Empty;
-        private readonly string _connectionString = string.Empty;
+        public StockSeeder(string connectionString) : base(connectionString) { }
 
-        public StockSeeder(string connectionString)
+        protected override void ProcessSeed(SmartInventoryDbContext context, List<Stock> seeds)
         {
-            _connectionString = connectionString;
-        }
 
-        public async Task Seed(string filePath)
-        {
-            if (string.IsNullOrWhiteSpace(filePath))
+            foreach (var stock in seeds)
             {
-                Console.WriteLine("File path is not provided. Skipping product seeding.");
-                return;
-            }
-            using (var reader = new StreamReader(filePath))
-            {
-                var json = await reader.ReadToEndAsync();
-                var stocks = JsonConvert.DeserializeObject<List<Stock>>(json) ?? new List<Stock>();
-
-                var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                                .UseSqlServer(_connectionString)
-                                .Options;
-
-                using (var context = new SmartInventoryDbContext(options))
-                { 
-                    foreach(var stock in stocks)
-                    {
-                        var existingStock = await context.Stocks.FindAsync(stock.Id);
-                        if (existingStock == null)
-                        {
-                            context.Stocks.Add(stock);
-                        }
-                        else
-                        {
-                            existingStock.ProductId = stock.ProductId;
-                            existingStock.WarehouseId = stock.WarehouseId;
-                            existingStock.QuantityOnHand = stock.QuantityOnHand;
-                            existingStock.QuantityReserved = stock.QuantityReserved;
-                            existingStock.QuantityAvailable = stock.QuantityAvailable;
-                            existingStock.LastStockTakeDate = stock.LastStockTakeDate;
-                            existingStock.LastTransactionId = stock.LastTransactionId;
-
-                            existingStock.LastUpdatedAt = DateTime.UtcNow;
-                        }
-                    }
-                    await context.SaveChangesAsync();
+                var existingStock = context.Stocks.Find(stock.Id);
+                if (existingStock == null)
+                {
+                    context.Stocks.Add(stock);
                 }
+                else
+                {
+                    existingStock.ProductId = stock.ProductId;
+                    existingStock.WarehouseId = stock.WarehouseId;
+                    existingStock.QuantityOnHand = stock.QuantityOnHand;
+                    existingStock.QuantityReserved = stock.QuantityReserved;
+                    existingStock.QuantityAvailable = stock.QuantityAvailable;
+                    existingStock.LastStockTakeDate = stock.LastStockTakeDate;
+                    existingStock.LastTransactionId = stock.LastTransactionId;
 
+                    existingStock.LastUpdatedAt = DateTime.UtcNow;
+                }
             }
-        }
 
+            context.SaveChanges();
+        }
     }
 }

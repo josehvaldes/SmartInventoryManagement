@@ -1,0 +1,262 @@
+[
+  {
+    "id": "88888888-0000-0000-0000-000000000001",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000001",
+    "productId": "11111111-0000-0000-0000-000000000001",
+    "quantity": 200.0,
+    "unitCost": 4.50,
+    "totalCost": 900.00,
+    "receivedQuantity": 200.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000002",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000001",
+    "productId": "11111111-0000-0000-0000-000000000010",
+    "quantity": 30.0,
+    "unitCost": 87.50,
+    "totalCost": 2625.00,
+    "receivedQuantity": 30.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000003",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000002",
+    "productId": "11111111-0000-0000-0000-000000000002",
+    "quantity": 100.0,
+    "unitCost": 8.20,
+    "totalCost": 820.00,
+    "receivedQuantity": 100.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000004",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000002",
+    "productId": "11111111-0000-0000-0000-000000000009",
+    "quantity": 50.0,
+    "unitCost": 6.40,
+    "totalCost": 320.00,
+    "receivedQuantity": 50.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000005",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000003",
+    "productId": "11111111-0000-0000-0000-000000000003",
+    "quantity": 10.0,
+    "unitCost": 349.99,
+    "totalCost": 3499.90,
+    "receivedQuantity": 10.0,
+    "notes": "Inspect for damage on arrival."
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000006",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000004",
+    "productId": "11111111-0000-0000-0000-000000000004",
+    "quantity": 50.0,
+    "unitCost": 24.95,
+    "totalCost": 1247.50,
+    "receivedQuantity": 50.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000007",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000005",
+    "productId": "11111111-0000-0000-0000-000000000005",
+    "quantity": 60.0,
+    "unitCost": 18.75,
+    "totalCost": 1125.00,
+    "receivedQuantity": 60.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000008",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000006",
+    "productId": "11111111-0000-0000-0000-000000000007",
+    "quantity": 100.0,
+    "unitCost": 72.00,
+    "totalCost": 7200.00,
+    "receivedQuantity": 100.0,
+    "notes": "Firmware v2.4 pre-flashed. QC passed."
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000009",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000007",
+    "productId": "11111111-0000-0000-0000-000000000006",
+    "quantity": 500.0,
+    "unitCost": 3.20,
+    "totalCost": 1600.00,
+    "receivedQuantity": 500.0,
+    "notes": "1050-grade sheets. Certificate of conformity required."
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000010",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000008",
+    "productId": "11111111-0000-0000-0000-000000000001",
+    "quantity": 300.0,
+    "unitCost": 4.50,
+    "totalCost": 1350.00,
+    "receivedQuantity": 200.0,
+    "notes": "100 units backordered. Supplier ETA 2025-02-20."
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000011",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000008",
+    "productId": "11111111-0000-0000-0000-000000000010",
+    "quantity": 20.0,
+    "unitCost": 87.50,
+    "totalCost": 1750.00,
+    "receivedQuantity": 20.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000012",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000009",
+    "productId": "11111111-0000-0000-0000-000000000002",
+    "quantity": 80.0,
+    "unitCost": 8.20,
+    "totalCost": 656.00,
+    "receivedQuantity": 50.0,
+    "notes": "30 boxes delayed due to supplier stock shortage."
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000013",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000009",
+    "productId": "11111111-0000-0000-0000-000000000008",
+    "quantity": 500.0,
+    "unitCost": 0.85,
+    "totalCost": 425.00,
+    "receivedQuantity": 0.0,
+    "notes": "Delivery pending. Supplier to confirm new date."
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000014",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000010",
+    "productId": "11111111-0000-0000-0000-000000000006",
+    "quantity": 300.0,
+    "unitCost": 3.20,
+    "totalCost": 960.00,
+    "receivedQuantity": 150.0,
+    "notes": "Split shipment. Second batch ETA 2025-03-10."
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000015",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000011",
+    "productId": "11111111-0000-0000-0000-000000000003",
+    "quantity": 5.0,
+    "unitCost": 349.99,
+    "totalCost": 1749.95,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000016",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000012",
+    "productId": "11111111-0000-0000-0000-000000000004",
+    "quantity": 30.0,
+    "unitCost": 24.95,
+    "totalCost": 748.50,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000017",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000013",
+    "productId": "11111111-0000-0000-0000-000000000007",
+    "quantity": 50.0,
+    "unitCost": 75.00,
+    "totalCost": 3750.00,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000018",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000014",
+    "productId": "11111111-0000-0000-0000-000000000001",
+    "quantity": 400.0,
+    "unitCost": 4.50,
+    "totalCost": 1800.00,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000019",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000014",
+    "productId": "11111111-0000-0000-0000-000000000010",
+    "quantity": 15.0,
+    "unitCost": 87.50,
+    "totalCost": 1312.50,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000020",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000015",
+    "productId": "11111111-0000-0000-0000-000000000005",
+    "quantity": 40.0,
+    "unitCost": 18.75,
+    "totalCost": 750.00,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000021",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000016",
+    "productId": "11111111-0000-0000-0000-000000000002",
+    "quantity": 50.0,
+    "unitCost": 8.20,
+    "totalCost": 410.00,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000022",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000016",
+    "productId": "11111111-0000-0000-0000-000000000009",
+    "quantity": 30.0,
+    "unitCost": 6.40,
+    "totalCost": 192.00,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000023",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000017",
+    "productId": "11111111-0000-0000-0000-000000000006",
+    "quantity": 200.0,
+    "unitCost": 3.20,
+    "totalCost": 640.00,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000024",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000018",
+    "productId": "11111111-0000-0000-0000-000000000007",
+    "quantity": 75.0,
+    "unitCost": 75.00,
+    "totalCost": 5625.00,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000025",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000019",
+    "productId": "11111111-0000-0000-0000-000000000003",
+    "quantity": 3.0,
+    "unitCost": 349.99,
+    "totalCost": 1049.97,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  },
+  {
+    "id": "88888888-0000-0000-0000-000000000026",
+    "purchaseOrderId": "77777777-0000-0000-0000-000000000020",
+    "productId": "11111111-0000-0000-0000-000000000001",
+    "quantity": 200.0,
+    "unitCost": 4.50,
+    "totalCost": 900.00,
+    "receivedQuantity": 0.0,
+    "notes": ""
+  }
+]
