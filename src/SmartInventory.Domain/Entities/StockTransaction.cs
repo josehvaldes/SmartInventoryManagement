@@ -37,13 +37,7 @@ namespace SmartInventory.Domain.Entities
         public TransactionType TransactionType { get; init; }
         public decimal Quantity { get; init; }
         public decimal? UnitCost { get; init; }
-        public decimal TotalCost
-        {
-            get
-            {
-                return UnitCost.HasValue ? Quantity * UnitCost.Value : 0;
-            }
-        }
+        public decimal TotalCost { get; init; }
         public string ReferenceNumber { get; init; } = string.Empty;
         public Guid? SourceWarehouseId { get; init; }
         public Guid? DestinationWarehouseId { get; init; }

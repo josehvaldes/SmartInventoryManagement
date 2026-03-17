@@ -11,7 +11,7 @@ namespace SmartInventory.Infrastructure.Data.Configurations
         {
             builder.ToTable("Products", "Inventory");
             builder.HasKey(p => p.Id);
-            builder.Property(p => p.Id).HasDefaultValue("NEWSEQUENTIALID()");
+            builder.Property(p => p.Id).HasDefaultValueSql("NEWSEQUENTIALID()");
 
             // ── SKU ───────────────────────────────────────────────────────────
             builder.Property(p => p.SKU)

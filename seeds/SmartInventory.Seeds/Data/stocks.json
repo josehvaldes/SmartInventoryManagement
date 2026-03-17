@@ -1,0 +1,112 @@
+[
+  {
+    "id": "33333333-0000-0000-0000-000000000001",
+    "productId": "11111111-0000-0000-0000-000000000001",
+    "warehouseId": "22222222-0000-0000-0000-000000000001",
+    "quantityOnHand": 350.0,
+    "quantityReserved": 50.0,
+    "quantityAvailable": 300.0,
+    "lastStockTakeDate": "2025-01-08T09:00:00Z",
+    "lastUpdatedAt": "2025-01-10T09:00:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000002",
+    "productId": "11111111-0000-0000-0000-000000000002",
+    "warehouseId": "22222222-0000-0000-0000-000000000002",
+    "quantityOnHand": 80.0,
+    "quantityReserved": 10.0,
+    "quantityAvailable": 70.0,
+    "lastStockTakeDate": "2025-01-07T09:00:00Z",
+    "lastUpdatedAt": "2025-01-10T09:05:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000003",
+    "productId": "11111111-0000-0000-0000-000000000003",
+    "warehouseId": "22222222-0000-0000-0000-000000000001",
+    "quantityOnHand": 8.0,
+    "quantityReserved": 1.0,
+    "quantityAvailable": 7.0,
+    "lastStockTakeDate": null,
+    "lastUpdatedAt": "2025-01-10T09:10:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000004",
+    "productId": "11111111-0000-0000-0000-000000000004",
+    "warehouseId": "22222222-0000-0000-0000-000000000003",
+    "quantityOnHand": 45.0,
+    "quantityReserved": 5.0,
+    "quantityAvailable": 40.0,
+    "lastStockTakeDate": "2025-01-06T09:00:00Z",
+    "lastUpdatedAt": "2025-01-10T09:15:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000005",
+    "productId": "11111111-0000-0000-0000-000000000005",
+    "warehouseId": "22222222-0000-0000-0000-000000000001",
+    "quantityOnHand": 55.0,
+    "quantityReserved": 5.0,
+    "quantityAvailable": 50.0,
+    "lastStockTakeDate": null,
+    "lastUpdatedAt": "2025-01-10T09:20:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000006",
+    "productId": "11111111-0000-0000-0000-000000000006",
+    "warehouseId": "22222222-0000-0000-0000-000000000003",
+    "quantityOnHand": 400.0,
+    "quantityReserved": 50.0,
+    "quantityAvailable": 350.0,
+    "lastStockTakeDate": "2025-01-05T09:00:00Z",
+    "lastUpdatedAt": "2025-01-10T09:25:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000007",
+    "productId": "11111111-0000-0000-0000-000000000007",
+    "warehouseId": "22222222-0000-0000-0000-000000000001",
+    "quantityOnHand": 75.0,
+    "quantityReserved": 10.0,
+    "quantityAvailable": 65.0,
+    "lastStockTakeDate": "2025-01-08T09:00:00Z",
+    "lastUpdatedAt": "2025-01-10T09:30:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000008",
+    "productId": "11111111-0000-0000-0000-000000000008",
+    "warehouseId": "22222222-0000-0000-0000-000000000002",
+    "quantityOnHand": 600.0,
+    "quantityReserved": 100.0,
+    "quantityAvailable": 500.0,
+    "lastStockTakeDate": null,
+    "lastUpdatedAt": "2025-01-10T09:35:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000009",
+    "productId": "11111111-0000-0000-0000-000000000009",
+    "warehouseId": "22222222-0000-0000-0000-000000000002",
+    "quantityOnHand": 40.0,
+    "quantityReserved": 5.0,
+    "quantityAvailable": 35.0,
+    "lastStockTakeDate": "2025-01-07T09:00:00Z",
+    "lastUpdatedAt": "2025-01-10T09:40:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000010",
+    "productId": "11111111-0000-0000-0000-000000000010",
+    "warehouseId": "22222222-0000-0000-0000-000000000001",
+    "quantityOnHand": 25.0,
+    "quantityReserved": 3.0,
+    "quantityAvailable": 22.0,
+    "lastStockTakeDate": null,
+    "lastUpdatedAt": "2025-01-10T09:45:00Z",
+    "lastTransactionId": "00000000-0000-0000-0000-000000000000"
+  }
+]

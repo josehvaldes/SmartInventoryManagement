@@ -1,0 +1,103 @@
+[
+  {
+    "id": "22222222-0000-0000-0000-000000000001",
+    "code": "WH-MAIN",
+    "name": "Main Distribution Warehouse",
+    "address": {
+      "street": "1200 Industrial Parkway",
+      "city": "Chicago",
+      "state": "IL",
+      "postalCode": "60601",
+      "country": "USA"
+    },
+    "warehouseType": 1,
+    "capacity": 50000.00,
+    "managerName": "Robert Hayes",
+    "managerEmail": "r.hayes@smartinventory.com",
+    "managerPhone": "+1-312-555-0101",
+    "isActive": true,
+    "createdAt": "2025-01-10T08:00:00Z",
+    "updatedAt": "2025-01-10T08:00:00Z"
+  },
+  {
+    "id": "22222222-0000-0000-0000-000000000002",
+    "code": "WH-EAST",
+    "name": "East Regional Distribution Center",
+    "address": {
+      "street": "450 Logistics Boulevard",
+      "city": "Atlanta",
+      "state": "GA",
+      "postalCode": "30301",
+      "country": "USA"
+    },
+    "warehouseType": 2,
+    "capacity": 25000.00,
+    "managerName": "Sandra Morrow",
+    "managerEmail": "s.morrow@smartinventory.com",
+    "managerPhone": "+1-404-555-0202",
+    "isActive": true,
+    "createdAt": "2025-01-10T08:05:00Z",
+    "updatedAt": "2025-01-10T08:05:00Z"
+  },
+  {
+    "id": "22222222-0000-0000-0000-000000000003",
+    "code": "WH-WEST",
+    "name": "West Regional Distribution Center",
+    "address": {
+      "street": "8800 Harbor Freight Road",
+      "city": "Los Angeles",
+      "state": "CA",
+      "postalCode": "90011",
+      "country": "USA"
+    },
+    "warehouseType": 2,
+    "capacity": 22000.00,
+    "managerName": "Carlos Vega",
+    "managerEmail": "c.vega@smartinventory.com",
+    "managerPhone": "+1-213-555-0303",
+    "isActive": true,
+    "createdAt": "2025-01-10T08:10:00Z",
+    "updatedAt": "2025-01-10T08:10:00Z"
+  },
+  {
+    "id": "22222222-0000-0000-0000-000000000004",
+    "code": "WH-TRANSIT-01",
+    "name": "Memphis Transit Hub",
+    "address": {
+      "street": "300 Airways Connector",
+      "city": "Memphis",
+      "state": "TN",
+      "postalCode": "38101",
+      "country": "USA"
+    },
+    "warehouseType": 3,
+    "capacity": 5000.00,
+    "managerName": "Diane Foster",
+    "managerEmail": "d.foster@smartinventory.com",
+    "managerPhone": "+1-901-555-0404",
+    "isActive": true,
+    "createdAt": "2025-01-10T08:15:00Z",
+    "updatedAt": "2025-01-10T08:15:00Z"
+  },
+  {
+    "id": "22222222-0000-0000-0000-000000000005",
+    "code": "WH-RETURNS",
+    "name": "Central Returns & Refurbishment Center",
+    "address": {
+      "street": "77 Commerce Loop",
+      "city": "Dallas",
+      "state": "TX",
+      "postalCode": "75201",
+      "country": "USA"
+    },
+    "warehouseType": 4,
+    "capacity": 10000.00,
+    "managerName": "Patricia Nguyen",
+    "managerEmail": "p.nguyen@smartinventory.com",
+    "managerPhone": "+1-214-555-0505",
+    "isActive": true,
+    "createdAt": "2025-01-10T08:20:00Z",
+    "updatedAt": "2025-01-10T08:20:00Z"
+  }
+]
+

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SmartInventory.Seeds": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

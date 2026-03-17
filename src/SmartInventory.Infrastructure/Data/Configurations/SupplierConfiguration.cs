@@ -2,9 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartInventory.Domain.Entities;
 using SmartInventory.Infrastructure.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmartInventory.Infrastructure.Data.Configurations
 {

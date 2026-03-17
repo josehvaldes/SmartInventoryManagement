@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartInventory.Domain.Entities;
+using SmartInventory.Domain.Enums;
 using SmartInventory.Infrastructure.Data.Context;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,8 @@ namespace SmartInventory.Infrastructure.Data.Configurations
             builder.Property(a => a.Status)
                 .IsRequired()
                 .HasConversion<int>()
-                .HasDefaultValue(1); // AlertStatus.New = 1
+                .HasDefaultValue(AlertStatus.New)
+                .HasSentinel(0);
 
             // ── Quantities ────────────────────────────────────────────────────
             builder.Property(a => a.CurrentQuantity)

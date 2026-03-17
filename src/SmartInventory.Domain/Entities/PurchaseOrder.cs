@@ -1,7 +1,4 @@
 ﻿using SmartInventory.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmartInventory.Domain.Entities
 {
@@ -43,13 +40,7 @@ namespace SmartInventory.Domain.Entities
         public decimal SubTotal { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal ShippingCost { get; set; }
-        public decimal TotalAmount
-        {
-            get
-            {
-                return SubTotal + TaxAmount + ShippingCost;
-            }
-        }
+        public decimal TotalAmount {get; set;}
         public string Notes { get; set; } = string.Empty;
         public string ApprovedBy { get; set; } = string.Empty;
         public DateTime? ApprovedAt { get; set; }

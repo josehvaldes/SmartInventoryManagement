@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/seeds/">
+    <Project Path="seeds/SmartInventory.Seeds/SmartInventory.Seeds.csproj" Id="d02b7eca-a098-4678-9720-78ca6d5501e1" />
+  </Folder>
   <Folder Name="/Solution Items/" />
   <Folder Name="/src/">
     <Project Path="src/SmartInventory.API/SmartInventory.API.csproj" Id="405517fb-f267-4848-9bf1-6038c2298026" />

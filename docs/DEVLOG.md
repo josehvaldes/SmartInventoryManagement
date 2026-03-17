@@ -118,7 +118,6 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
   - `PurchaseOrderConfiguration`
   - `PurchaseOrderItemConfiguration`
   - `StockAlertConfiguration`
-- [ ] Create and run initial EF Core migration
 - [X] Verify database schema matches design
 - [ ] Create seed data script for development:
   - Sample warehouses

@@ -26,14 +26,8 @@ namespace SmartInventory.Domain.Entities
         public Guid WarehouseId { get; set; }
         public decimal QuantityOnHand { get; set; }
         public decimal QuantityReserved { get; set; }
-        public decimal QuantityAvailable
-        {
-            get
-            {
-                return QuantityOnHand - QuantityReserved;
-            }
-        }
-        public decimal LastStockTakeDate { get; set; }
+        public decimal QuantityAvailable { get; set; }
+        public DateTime? LastStockTakeDate { get; set; } = null!;
         public DateTime LastUpdatedAt { get; set; }
         public Guid LastTransactionId { get; set; }
     }

@@ -24,13 +24,7 @@ namespace SmartInventory.Domain.Entities
         public Guid ProductId { get; set; }
         public decimal Quantity { get; set; }
         public decimal UnitCost { get; set; }
-        public decimal TotalCost
-        {
-            get
-            {
-                return Quantity * UnitCost;
-            }
-        }
+        public decimal TotalCost { get; set; }
         public decimal ReceivedQuantity { get; set; } = 0;
         public string Notes { get; set; } = string.Empty;
 

@@ -8,7 +8,7 @@ namespace SmartInventory.Infrastructure.Data.Context
     {
         public interface IInventoryConfiguration { }
 
-        public SmartInventoryDbContext(DbContextOptions options) : base(options) { }
+        public SmartInventoryDbContext(DbContextOptions<SmartInventoryDbContext> options) : base(options) { }
 
         public DbSet<Product> Products => Set<Product>();
 
@@ -17,6 +17,8 @@ namespace SmartInventory.Infrastructure.Data.Context
         public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
 
         public DbSet<PurchaseOrderItem> PurchaseOrderItems => Set<PurchaseOrderItem>();
+
+        public DbSet<Warehouse> Warehouses => Set<Warehouse>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
