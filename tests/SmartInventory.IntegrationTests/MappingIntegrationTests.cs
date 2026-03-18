@@ -1,9 +1,9 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using SmartInventory.Application.DTOs;
 using SmartInventory.Infrastructure.Data.Context;
 using Xunit;
 using Mapster;
+using SmartInventory.Application.Features.Products.DTO;
 
 namespace SmartInventory.IntegrationTests
 {

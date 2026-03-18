@@ -1,5 +1,5 @@
 ﻿using Mapster;
-using SmartInventory.Application.DTOs;
+using SmartInventory.Application.Features.Products.DTO;
 using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Enums;
 using Xunit;

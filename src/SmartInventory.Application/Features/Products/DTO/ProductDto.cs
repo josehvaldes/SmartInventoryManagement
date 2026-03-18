@@ -1,7 +1,6 @@
-﻿
-using SmartInventory.Domain.Enums;
+﻿using SmartInventory.Domain.Enums;
 
-namespace SmartInventory.Application.DTOs
+namespace SmartInventory.Application.Features.Products.DTO
 {
     public class ProductDto
     {

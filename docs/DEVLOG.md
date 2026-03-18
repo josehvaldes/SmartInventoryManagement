@@ -158,7 +158,13 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 
 ### Day 7: MediatR Setup & Products Feature - Part 1
 **Time:** 5-6 hours
-
+- [X] Create versioning  (APIExplorer)
+   - add /api/versions endppint
+   - add OpenAPI documentation /openapi/v1.json 
+- [X] Add Logging (Serilog)
+- [X] Add Validation(Fluent Validation)
+- [ ] Add caching strategy
+- [ ] Add authorization 
 - [ ] Create MediatR pipeline behaviors:
   - `ValidationBehavior` (FluentValidation integration)
   - `LoggingBehavior` (request/response logging)

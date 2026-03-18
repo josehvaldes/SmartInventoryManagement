@@ -1,5 +1,5 @@
 ﻿using SmartInventory.Application.Common.Interfaces;
-using SmartInventory.Application.DTOs;
+using SmartInventory.Application.Features.Products.DTO;
 
 namespace SmartInventory.Application.Features.Products.Queries.GetProducts
 {
