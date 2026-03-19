@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SmartInventory.API.Mappings;
 using SmartInventory.API.Middleware;
+using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Application.Common.Validation;
 using SmartInventory.Application.Features.Products.Queries.GetProducts;
+using SmartInventory.Infrastructure.Data.Cache;
 using SmartInventory.Infrastructure.Data.Context;
+using StackExchange.Redis;
 
 MappingConfig.RegisterMappings();
 
@@ -67,6 +70,15 @@ builder.Services.AddMediatR(cfg => {
 });
 
 builder.Services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var connectionString = config["Cache:ConnectionString"]??string.Empty;
+    return ConnectionMultiplexer.Connect(connectionString);
+});
+
+builder.Services.AddSingleton<ICacheService, GarnetCacheService>();
 
 var app = builder.Build();
 

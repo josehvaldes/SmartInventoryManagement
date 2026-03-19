@@ -162,10 +162,10 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
    - add /api/versions endppint
    - add OpenAPI documentation /openapi/v1.json 
 - [X] Add Logging (Serilog)
-- [X] Add Validation(Fluent Validation)
-- [ ] Add caching strategy
-- [ ] Add authorization 
-- [ ] Create MediatR pipeline behaviors:
+- [X] Add Validation(Fluent Validation) to the API
+- [X] Add Caching strategy
+- [ ] Add Authorization 
+- [X] Create MediatR pipeline behaviors:
   - `ValidationBehavior` (FluentValidation integration)
   - `LoggingBehavior` (request/response logging)
 - [ ] Implement Products feature:
