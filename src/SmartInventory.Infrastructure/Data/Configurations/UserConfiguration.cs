@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Data.Context;
+using System.Net.NetworkInformation;
 
 namespace SmartInventory.Infrastructure.Data.Configurations
 {
@@ -53,6 +54,11 @@ namespace SmartInventory.Infrastructure.Data.Configurations
                 .IsUnique()
                 .HasDatabaseName("IX_Users_Username")
                 .HasFilter("[Username] IS NOT NULL");
+
+            builder.HasMany(u => u.UserRoles)
+                .WithOne()
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

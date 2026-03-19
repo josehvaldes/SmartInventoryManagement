@@ -34,15 +34,15 @@ namespace SmartInventory.Infrastructure.Data.Configurations
             // ── Relationships ─────────────────────────────────────────────────
 
             // Many UserRoles → one User
-            builder.HasOne<User>()
-                .WithMany()
+            builder.HasOne(ur => ur.User)
+                .WithMany(u => u.UserRoles)
                 .HasForeignKey(ur => ur.UserId)
                 .HasConstraintName("FK_UserRoles_Users")
                 .OnDelete(DeleteBehavior.Cascade); // deleting a user removes their role assignments
 
             // Many UserRoles → one Role
-            builder.HasOne<Role>()
-                .WithMany()
+            builder.HasOne(ur => ur.Role)
+                .WithMany() //r => r.UserRoles
                 .HasForeignKey(ur => ur.RoleId)
                 .HasConstraintName("FK_UserRoles_Roles")
                 .OnDelete(DeleteBehavior.Restrict); // don't allow deleting a role that's in use

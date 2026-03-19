@@ -17,5 +17,6 @@ namespace SmartInventory.Domain.Identity
 
         public bool IsActive { get; set; }
 
+        public List<UserRole> UserRoles { get; set; } = [];
     }
 }

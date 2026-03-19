@@ -12,5 +12,8 @@ namespace SmartInventory.Domain.Identity
 
         public DateTime AssignedAt { get; set; }
         public string AssignedBy { get; set; } = string.Empty;
+
+        public Role Role { get; set; } = null!;
+        public User User { get; set; } = null!;
     }
 }

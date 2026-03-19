@@ -1,17 +1,13 @@
 using Asp.Versioning;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+
 using Serilog;
 using SmartInventory.API.Mappings;
 using SmartInventory.API.Middleware;
-using SmartInventory.Application.Common.Cache;
-using SmartInventory.Application.Common.Interfaces;
-using SmartInventory.Application.Common.Validation;
-using SmartInventory.Application.Features.Products.Queries.GetProducts;
-using SmartInventory.Infrastructure.Data.Cache;
-using SmartInventory.Infrastructure.Data.Context;
-using StackExchange.Redis;
+using SmartInventory.Infrastructure;
+using SmartInventory.Application;
+using SmartInventory.API;
 
 MappingConfig.RegisterMappings();
 
@@ -47,38 +43,10 @@ builder.Services.AddApiVersioning(options => {
     options.SubstituteApiVersionInUrl = true;
 });
 
-builder.Services.AddDbContext<SmartInventoryDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
-builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Expose SmartInventoryDbContext as IApplicationDbContext so handlers can inject it
-builder.Services.AddScoped<IApplicationDbContext>(
-    provider => provider.GetRequiredService<SmartInventoryDbContext>());
-
-// Expose AuthDbContext as IAuthDbContext so auth handlers can inject it
-builder.Services.AddScoped<IAuthDbContext>(
-    provider => provider.GetRequiredService<AuthDbContext>());
-
-// Scan the Application assembly where all handlers live
-builder.Services.AddMediatR(cfg => {
-    cfg.RegisterServicesFromAssembly(typeof(GetProductsQuery).Assembly);
-    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-    cfg.LicenseKey = builder.Configuration["MediatR:LicenseKey"] ?? "FREE-LIMITED-USE";
-
-});
-
-builder.Services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
-
-builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    var connectionString = config["Cache:ConnectionString"]??string.Empty;
-    return ConnectionMultiplexer.Connect(connectionString);
-});
-
-builder.Services.AddSingleton<ICacheService, GarnetCacheService>();
+builder.Services.AddAPIDependencies(builder.Configuration);
 
 var app = builder.Build();
 
@@ -94,6 +62,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

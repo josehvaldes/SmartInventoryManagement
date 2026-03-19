@@ -29,7 +29,7 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
   - EF Core 10, SQL Server provider
   - MediatR
   - FluentValidation
-  - AutoMapper when necessary
+  - Mapster
   - Serilog packages
 - [X] Set up `.gitignore` and initial Git repository
 - [X] Configure `appsettings.json` and `appsettings.Development.json`
@@ -156,18 +156,20 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 - ✅ Basic GET request running.
 ---
 
-### Day 7: MediatR Setup & Products Feature - Part 1
-**Time:** 5-6 hours
+### Day 7: MediatR Setup & Tools Setup
 - [X] Create versioning  (APIExplorer)
    - add /api/versions endppint
    - add OpenAPI documentation /openapi/v1.json 
 - [X] Add Logging (Serilog)
 - [X] Add Validation(Fluent Validation) to the API
 - [X] Add Caching strategy
-- [ ] Add Authorization 
 - [X] Create MediatR pipeline behaviors:
   - `ValidationBehavior` (FluentValidation integration)
   - `LoggingBehavior` (request/response logging)
+- [X] Add JWT Authentication
+
+### Day 7: Products Feature - Part 1
+**Time:** 5-6 hours
 - [ ] Implement Products feature:
   - `CreateProductCommand` and `CreateProductCommandHandler`
   - `CreateProductValidator` (FluentValidation)
@@ -175,7 +177,6 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 - [ ] Create contracts:
   - `CreateProductRequest`
   - `ProductResponse`
-
 
 ---
 

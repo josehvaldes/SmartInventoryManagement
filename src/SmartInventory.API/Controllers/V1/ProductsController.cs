@@ -2,6 +2,7 @@
 using FluentValidation;
 using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartInventory.Application.Features.Products.Queries.GetProducts;
 using SmartInventory.Contracts.Requests.Products;
@@ -18,6 +19,7 @@ namespace SmartInventory.API.Controllers.V1
     {
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<ProductResponse>> Get()
         {
             logger.LogInformation("Received request to get all products.");
