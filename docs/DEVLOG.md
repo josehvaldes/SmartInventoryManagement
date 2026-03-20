@@ -167,6 +167,7 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
   - `ValidationBehavior` (FluentValidation integration)
   - `LoggingBehavior` (request/response logging)
 - [X] Add JWT Authentication
+- [X] Add basic Unit tests and mocking infrastructure
 
 ### Day 7: Products Feature - Part 1
 **Time:** 5-6 hours

@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Interfaces;
@@ -18,7 +19,7 @@ namespace SmartInventory.Application.Features.Products.Queries.GetProductById
             if (product != null)
                 return product;
 
-            var entity = await db.Products.FindAsync(request.Id, cancellationToken);
+            var entity = await db.Products.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
             if (entity == null)
                 throw EntityNotFoundException.For<Product>(request.Id);
