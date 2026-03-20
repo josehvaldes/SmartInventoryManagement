@@ -12,8 +12,6 @@ namespace SmartInventory.API.Mappings
                 .NewConfig()
                 .Map(dest => dest.Category,      src => src.Category.ToString())
                 .Map(dest => dest.UnitOfMeasure, src => src.UnitOfMeasure.ToString());
-
-
         }
     }
 }

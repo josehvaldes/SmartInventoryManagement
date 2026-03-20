@@ -28,6 +28,7 @@
     <PackageReference Include="Microsoft.SqlServer.Server" Version="1.0.0">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
+    <PackageReference Include="Quartz.AspNetCore" Version="3.16.1" />
   </ItemGroup>
 
   <ItemGroup>

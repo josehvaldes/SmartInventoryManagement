@@ -45,5 +45,21 @@ namespace SmartInventory.UnitTests.Products
             result.Should().NotBeNull();
             result.Count.Should().Be(_products.Count);
         }
+
+        [Fact]
+        public async Task Handle_Returns_Empty_List_When_No_Products_Exist()
+        {
+            // Arrange
+            var emptySet = MockDbSetHelper.CreateMockDbSet(new List<Product>());
+            _db.Products.Returns(emptySet);
+            var query = new GetProductsQuery();
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEmpty();
+        }
     }
 }

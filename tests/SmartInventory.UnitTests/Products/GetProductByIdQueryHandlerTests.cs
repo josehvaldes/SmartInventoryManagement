@@ -2,15 +2,12 @@
 using Newtonsoft.Json;
 using NSubstitute;
 using SmartInventory.Application.Common.Cache;
+using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Application.Features.Products.DTO;
 using SmartInventory.Application.Features.Products.Queries.GetProductById;
-using SmartInventory.Application.Features.Products.Queries.GetProducts;
 using SmartInventory.Domain.Entities;
 using SmartInventory.UnitTests.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace SmartInventory.UnitTests.Products
@@ -50,6 +47,54 @@ namespace SmartInventory.UnitTests.Products
             // Assert
             result.Should().NotBeNull();
             result.Id.Should().Be(product.Id);
+        }
+
+        [Fact]
+        public async Task Handle_Returns_Product_From_Cache_When_Cache_Hit()
+        {
+            // Arrange
+            var product = _products.First();
+            var cachedDto = new ProductDto { Id = product.Id, Name = product.Name };
+            _cache.GetAsync<ProductDto>($"product:{product.Id}").Returns(cachedDto);
+            var query = new GetProductByIdQuery(product.Id);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.Should().BeSameAs(cachedDto);
+            await _db.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
+        }
+
+        [Fact]
+        public async Task Handle_Throws_EntityNotFoundException_When_Product_Not_Found()
+        {
+            // Arrange
+            var query = new GetProductByIdQuery(Guid.NewGuid());
+
+            // Act
+            var act = async () => await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            await act.Should().ThrowAsync<EntityNotFoundException>()
+                .WithMessage("*Product*");
+        }
+
+        [Fact]
+        public async Task Handle_Stores_Product_In_Cache_After_DB_Hit()
+        {
+            // Arrange
+            var product = _products.First();
+            var query = new GetProductByIdQuery(product.Id);
+
+            // Act
+            await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            await _cache.Received(1).SetAsync(
+                $"product:{product.Id}",
+                Arg.Any<ProductDto>(),
+                TimeSpan.FromMinutes(5));
         }
     }
 }

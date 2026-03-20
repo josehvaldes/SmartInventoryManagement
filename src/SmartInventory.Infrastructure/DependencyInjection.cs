@@ -9,6 +9,7 @@ using SmartInventory.Domain.Interfaces;
 using SmartInventory.Infrastructure.Auth;
 using SmartInventory.Infrastructure.Data.Cache;
 using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.Infrastructure.Extensions;
 using SmartInventory.Infrastructure.Settings;
 using StackExchange.Redis;
 
@@ -20,24 +21,14 @@ namespace SmartInventory.Infrastructure
             this IServiceCollection services, 
             IConfiguration config)
         {
+            // Register DbContexts and expose them as interfaces for handlers to inject
+            services.AddInventoryDbContext(config);
 
-            // Expose SmartInventoryDbContext as IApplicationDbContext so handlers can inject it
-            services.AddScoped<IApplicationDbContext>(
-                provider => provider.GetRequiredService<SmartInventoryDbContext>());
-
-            // Expose AuthDbContext as IAuthDbContext so auth handlers can inject it
-            services.AddScoped<IAuthDbContext>(
-                provider => provider.GetRequiredService<AuthDbContext>());
-
-            services.AddDbContext<SmartInventoryDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
-
-            services.AddDbContext<AuthDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+            // Register Quartz jobs
+            services.AddQuartzJobs(config);
 
             services.AddSingleton<ICacheService, GarnetCacheService>();
-
-            
+                        
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
             services.AddSingleton<IConnectionMultiplexer>(sp =>

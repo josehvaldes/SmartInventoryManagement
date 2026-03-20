@@ -168,6 +168,9 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
   - `LoggingBehavior` (request/response logging)
 - [X] Add JWT Authentication
 - [X] Add basic Unit tests and mocking infrastructure
+- [X] Configure Quartz.NET in Infrastructure
+- [X] Schedule job to run hourly
+- [X] Test job execution manually
 
 ### Day 7: Products Feature - Part 1
 **Time:** 5-6 hours
