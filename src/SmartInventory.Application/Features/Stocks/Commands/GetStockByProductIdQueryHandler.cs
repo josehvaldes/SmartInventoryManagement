@@ -13,14 +13,23 @@ namespace SmartInventory.Application.Features.Stocks.Commands
     {
         public async Task<StockDto> Handle(GetStockByProductIdQuery request, CancellationToken cancellationToken)
         {
+            var key = "GetStockByProductIdQueryHandler_" + request.productId;
+
+            var stockDto = await cache.GetAsync<StockDto>(key);
+            if (stockDto != null)
+            {
+                return stockDto;
+            }
+
             var entity = await db.Stocks.FirstOrDefaultAsync(s => s.ProductId == request.productId, cancellationToken);
 
             if (entity == null)
             {
                 throw new KeyNotFoundException($"Stock not found for product ID: {request.productId}");
             }
-
-            return entity.Adapt<StockDto>();
+            stockDto = entity.Adapt<StockDto>();
+            await cache.SetAsync(key, stockDto, TimeSpan.FromMinutes(5));
+            return stockDto;
         }
     }
 }

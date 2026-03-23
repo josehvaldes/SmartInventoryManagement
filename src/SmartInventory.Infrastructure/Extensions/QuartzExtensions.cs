@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Quartz;
 using SmartInventory.Infrastructure.BackgroundJobs;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace SmartInventory.Infrastructure.Extensions
 {

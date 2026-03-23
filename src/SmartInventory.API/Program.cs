@@ -61,6 +61,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi("/openapi/{documentName}.json");
 }
 
+app.MapCustomBehaviors(); // Extension method for any custom middleware or behaviors
+
+app.UseRateLimiter();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

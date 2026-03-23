@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using SmartInventory.Application.Features.Auth.Commands;
 using SmartInventory.Contracts.Requests.Login;
 
@@ -15,6 +16,7 @@ namespace SmartInventory.API.Controllers.V1
 
         [HttpPost("login")]
         [AllowAnonymous]
+        [EnableRateLimiting("AuthEndpoints")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
             logger.LogInformation("Login attempt for user: {Username}", request.Username);

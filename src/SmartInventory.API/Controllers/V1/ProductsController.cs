@@ -4,6 +4,7 @@ using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using SmartInventory.Application.Features.Products.Queries.GetProducts;
 using SmartInventory.Contracts.Requests.Products;
 using SmartInventory.Contracts.Responses.Products;
@@ -29,6 +30,7 @@ namespace SmartInventory.API.Controllers.V1
         }
 
         [HttpPost]
+        [EnableRateLimiting("WriteOperations")]
         public async Task<IActionResult> CreateProduct(CreateProductRequest request)
         {            
             var validationResult = await productValidator.ValidateAsync(request);

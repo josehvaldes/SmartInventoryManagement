@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
+using SmartInventory.API.Settings;
 using SmartInventory.Infrastructure.Settings;
 using System.Text;
+using System.Threading.RateLimiting;
 
 namespace SmartInventory.API
 {
     public static class DependencyInjection
     {
         public static IServiceCollection AddAPIDependencies(
-            this IServiceCollection services,
-            IConfiguration config)
+            this IServiceCollection services, IConfiguration config)
         {
+            services.AddCustomHealthChecks(config);
+            services.AddRateLimiterConfig(config);
+
             var jwt = config.GetSection("JwtSettings").Get<JwtSettings>()!;
 
             services
@@ -30,9 +35,98 @@ namespace SmartInventory.API
                     };
                 });
 
+            services.Configure<APISettings>(config.GetSection("APISettings"));
+
             services.AddAuthorizationBuilder()
                 .AddPolicy("AdminOnly", p => p.RequireRole("Admin"))
                 .AddPolicy("ManagerOnly", p => p.RequireRole("Admin", "Manager"));
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomHealthChecks(
+            this IServiceCollection services, IConfiguration config)
+        {
+            services.AddHealthChecks()
+                .AddSqlServer(config.GetConnectionString("DefaultConnection")??string.Empty, tags: new[] { "ready" })
+                .AddRedis(config["Cache:ConnectionString"] ?? string.Empty, name: "Redis Cache", tags: new[] { "ready" })
+                .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "live" });
+
+            return services;
+        }
+
+        public static IServiceCollection AddRateLimiterConfig(
+            this IServiceCollection services, IConfiguration config)
+        {
+
+            services.AddRateLimiter(options =>
+            {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+                // Global sliding window — general API protection
+                options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+                {
+                    var clientIp = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+                    return RateLimitPartition.GetSlidingWindowLimiter(clientIp, _ => new SlidingWindowRateLimiterOptions
+                    {
+                        PermitLimit = 100,
+                        Window = TimeSpan.FromMinutes(1),
+                        SegmentsPerWindow = 6,   // splits the window into 6 x 10-second segments
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 10
+                    });
+                });
+
+                // Named policy for write operations (POST/PUT/DELETE)
+                options.AddPolicy("WriteOperations", context =>
+                {
+                    var clientIp = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+                    return RateLimitPartition.GetFixedWindowLimiter(clientIp, _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 20,
+                        Window = TimeSpan.FromMinutes(1),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 2
+                    });
+                });
+
+                // Stricter policy for auth endpoints
+                options.AddPolicy("AuthEndpoints", context =>
+                {
+                    var clientIp = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+                    return RateLimitPartition.GetFixedWindowLimiter(clientIp, _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 5,
+                        Window = TimeSpan.FromMinutes(1),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 0   // no queuing — reject immediately
+                    });
+                });
+
+                // Optional: customize the 429 response body
+                options.OnRejected = async (context, cancellationToken) =>
+                {
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+                    context.HttpContext.Response.ContentType = "application/json";
+
+                    var retryAfter = context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfterValue)
+                        ? (int)retryAfterValue.TotalSeconds
+                        : 60;
+
+                    context.HttpContext.Response.Headers.RetryAfter = retryAfter.ToString();
+
+                    await context.HttpContext.Response.WriteAsJsonAsync(new
+                    {
+                        type = "https://tools.ietf.org/html/rfc6585#section-4",
+                        title = "Too Many Requests",
+                        status = 429,
+                        retryAfterSeconds = retryAfter
+                    }, cancellationToken);
+                };
+            });
 
             return services;
         }

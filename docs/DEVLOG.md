@@ -174,6 +174,10 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 
 ### Day 7: Products Feature - Part 1
 **Time:** 5-6 hours
+
+- [X] Implement rate limiter  into the API
+- [X] Implement Infrastructure health checks from the API
+
 - [ ] Implement Products feature:
   - `CreateProductCommand` and `CreateProductCommandHandler`
   - `CreateProductValidator` (FluentValidation)
