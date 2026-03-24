@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
-using SmartInventory.API.Settings;
+using SmartInventory.API.HealthChecks;
 using SmartInventory.Infrastructure.Settings;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -13,8 +14,37 @@ namespace SmartInventory.API
         public static IServiceCollection AddAPIDependencies(
             this IServiceCollection services, IConfiguration config)
         {
+            services.AddVersioningConfig(config);
             services.AddCustomHealthChecks(config);
             services.AddRateLimiterConfig(config);
+            services.AddAuthenticationServices(config);
+
+            services.AddOpenApi("v1");
+
+            return services;
+        }
+
+        public static IServiceCollection AddVersioningConfig(
+            this IServiceCollection services, IConfiguration config)
+        {
+
+            services.AddApiVersioning(options => {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new UrlSegmentApiVersionReader(),   // /api/v1/products
+                    new HeaderApiVersionReader("X-Api-Version")); // optional fallback
+            }).AddApiExplorer(options => {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+            return services;
+        }
+
+        public static IServiceCollection AddAuthenticationServices(
+            this IServiceCollection services, IConfiguration config)
+        {
 
             var jwt = config.GetSection("JwtSettings").Get<JwtSettings>()!;
 
@@ -35,23 +65,25 @@ namespace SmartInventory.API
                     };
                 });
 
-            services.Configure<APISettings>(config.GetSection("APISettings"));
-
             services.AddAuthorizationBuilder()
                 .AddPolicy("AdminOnly", p => p.RequireRole("Admin"))
                 .AddPolicy("ManagerOnly", p => p.RequireRole("Admin", "Manager"));
-
             return services;
         }
 
         public static IServiceCollection AddCustomHealthChecks(
             this IServiceCollection services, IConfiguration config)
         {
+            services.Configure<MemoryCheckOptions>(config.GetSection("MemoryHealthCheck"));
+            services.Configure<DiskCheckOptions>(config.GetSection("DiskHealthCheck"));
+
             services.AddHealthChecks()
                 .AddSqlServer(config.GetConnectionString("DefaultConnection")??string.Empty, tags: new[] { "ready" })
                 .AddRedis(config["Cache:ConnectionString"] ?? string.Empty, name: "Redis Cache", tags: new[] { "ready" })
+                .AddCheck<MemoryHealthCheck>("memory", tags: new[] { "ready" })
+                .AddCheck<DiskHealthCheck>("disk", tags: new[] { "ready" })
                 .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "live" });
-
+                
             return services;
         }
 
