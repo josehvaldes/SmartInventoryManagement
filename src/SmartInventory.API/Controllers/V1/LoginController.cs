@@ -20,21 +20,8 @@ namespace SmartInventory.API.Controllers.V1
         public async Task<IActionResult> Login(LoginRequest request)
         {
             logger.LogInformation("Login attempt for user: {Username}", request.Username);
-            try
-            {
-                var response = await mediator.Send(new LoginCommand(request.Username, request.Password));
-                return Ok(response);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                logger.LogWarning("Unauthorized login attempt for user: {Username}", request.Username);
-                return Unauthorized(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "An error occurred while attempting to login user: {Username}", request.Username);
-                return BadRequest(ex.Message);
-            }
+            var response = await mediator.Send(new LoginCommand(request.Username, request.Password));
+            return Ok(response);
         }
 
         [HttpPost("refresh-token")]

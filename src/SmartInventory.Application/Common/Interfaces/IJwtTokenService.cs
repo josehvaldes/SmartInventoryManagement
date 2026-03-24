@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartInventory.Domain.Interfaces
+namespace SmartInventory.Application.Common.Interfaces
 {
     public interface IJwtTokenService
     {

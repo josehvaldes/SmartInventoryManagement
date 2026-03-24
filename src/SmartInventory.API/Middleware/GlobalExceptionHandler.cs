@@ -14,9 +14,10 @@ namespace SmartInventory.API.Middleware
         {
             var (statusCode, title) = exception switch
             {
-                EntityNotFoundException => (StatusCodes.Status404NotFound,       "Not Found"),
-                ValidationException     => (StatusCodes.Status422UnprocessableEntity, "Validation Error"),
-                _                       => (StatusCodes.Status500InternalServerError, "Server Error")
+                EntityNotFoundException    => (StatusCodes.Status404NotFound,            "Not Found"),
+                ValidationException        => (StatusCodes.Status422UnprocessableEntity, "Validation Error"),
+                UnauthorizedAccessException=> (StatusCodes.Status401Unauthorized,        "Unauthorized"),
+                _                          => (StatusCodes.Status500InternalServerError, "Server Error")
             };
 
             logger.LogError(

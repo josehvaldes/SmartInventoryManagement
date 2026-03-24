@@ -12,24 +12,17 @@ namespace SmartInventory.UnitTests
         public void ProductToProductDto_Mapping_IsValid()
         {
             // Arrange
-            var product = new Product
-            {
-                Id = Guid.NewGuid(),
-                SKU = "TEST123",
-                Name = "Test Product",
-                Description = "This is a test product.",
-                Category = ProductCategory.Electronics,
-                UnitOfMeasure = UnitOfMeasure.Piece,
-                MinimumStockLevel = 10,
-                ReorderPoint = 20,
-                ReorderQuantity = 50,
-                UnitCost = 9.99m,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-                CreatedBy = "testuser",
-                UpdatedBy = "testuser"
-            };
+            var product = Product.Create(
+                sku: "TEST123",
+                name: "Test Product",
+                description: "This is a test product.",
+                category: ProductCategory.Electronics,
+                unitOfMeasure: UnitOfMeasure.Piece,
+                minimumStockLevel: 10,
+                reorderPoint: 20,
+                reorderQuantity: 50,
+                unitCost: 9.99m,
+                createdBy: "testuser");
             // Act
             var productDto = product.Adapt<ProductDto>();
             // Assert
@@ -53,24 +46,17 @@ namespace SmartInventory.UnitTests
             TypeAdapterConfig<Product, ProductDto>.NewConfig()
                 .Map(dest => dest.Name, src => src.Name.ToUpper());
 
-            Product product = new Product
-            {
-                Id = Guid.NewGuid(),
-                SKU = "TEST123",
-                Name = "Test Product",
-                Description = "This is a test product.",
-                Category = ProductCategory.Electronics,
-                UnitOfMeasure = UnitOfMeasure.Piece,
-                MinimumStockLevel = 10,
-                ReorderPoint = 20,
-                ReorderQuantity = 50,
-                UnitCost = 9.99m,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-                CreatedBy = "testuser",
-                UpdatedBy = "testuser"
-            };
+            Product product = Product.Create(
+                sku: "TEST123",
+                name: "Test Product",
+                description: "This is a test product.",
+                category: ProductCategory.Electronics,
+                unitOfMeasure: UnitOfMeasure.Piece,
+                minimumStockLevel: 10,
+                reorderPoint: 20,
+                reorderQuantity: 50,
+                unitCost: 9.99m,
+                createdBy: "testuser");
 
             var productDto = product.Adapt<ProductDto>();
         }

@@ -8,24 +8,17 @@ namespace SmartInventory.Application.Features.Products.Commands.CreateProduct
     {
         public async Task<Guid> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-            var product = new Product
-            {
-                Id          = Guid.NewGuid(),
-                SKU         = command.SKU,
-                Name        = command.Name,
-                Description = command.Description,
-                Category    = command.Category,
-                UnitOfMeasure     = command.UnitOfMeasure,
-                MinimumStockLevel = command.MinimumStockLevel,
-                ReorderPoint      = command.ReorderPoint,
-                ReorderQuantity   = command.ReorderQuantity,
-                UnitCost    = command.UnitCost,
-                IsActive    = true,
-                CreatedAt   = DateTime.UtcNow,
-                UpdatedAt   = DateTime.UtcNow,
-                CreatedBy   = command.CreatedBy,
-                UpdatedBy   = command.CreatedBy
-            };
+            var product = Product.Create(
+                command.SKU,
+                command.Name,
+                command.Description,
+                command.Category,
+                command.UnitOfMeasure,
+                command.MinimumStockLevel,
+                command.ReorderPoint,
+                command.ReorderQuantity,
+                command.UnitCost,
+                command.CreatedBy);
 
             db.Products.Add(product);
             await db.SaveChangesAsync(cancellationToken);

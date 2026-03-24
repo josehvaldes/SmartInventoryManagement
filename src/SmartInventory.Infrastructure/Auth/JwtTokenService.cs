@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Domain.Identity;
-using SmartInventory.Domain.Interfaces;
 using SmartInventory.Infrastructure.Settings;
 using System;
 using System.Collections.Generic;

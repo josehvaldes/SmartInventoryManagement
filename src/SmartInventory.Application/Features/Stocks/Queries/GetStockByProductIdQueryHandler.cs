@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartInventory.Application.Features.Stocks.Commands
+namespace SmartInventory.Application.Features.Stocks.Queries
 {
     public class GetStockByProductIdQueryHandler(IApplicationDbContext db, ICacheService cache) : IQueryHandler<GetStockByProductIdQuery, StockDto>
     {

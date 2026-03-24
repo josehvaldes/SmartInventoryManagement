@@ -1,8 +1,10 @@
 ﻿using Asp.Versioning;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using SmartInventory.API.HealthChecks;
+using SmartInventory.API.Validators;
 using SmartInventory.Infrastructure.Settings;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -21,6 +23,7 @@ namespace SmartInventory.API
 
             services.AddOpenApi("v1");
 
+            services.AddValidatorsFromAssembly(typeof(CreateProductRequestValidator).Assembly);
             return services;
         }
 

@@ -23,18 +23,17 @@ namespace SmartInventory.Seeds
                 }
                 else
                 {
-                    // Optionally, update existing product details here
-                    existingProduct.Name = product.Name;
-                    existingProduct.Description = product.Description;
-                    existingProduct.Category = product.Category;
-                    existingProduct.UnitOfMeasure = product.UnitOfMeasure;
-                    existingProduct.MinimumStockLevel = product.MinimumStockLevel;
-                    existingProduct.ReorderPoint = product.ReorderPoint;
-                    existingProduct.ReorderQuantity = product.ReorderQuantity;
-                    existingProduct.UnitCost = product.UnitCost;
-                    existingProduct.IsActive = product.IsActive;
-                    existingProduct.UpdatedAt = DateTime.UtcNow;
-                    existingProduct.UpdatedBy = "Seeder";
+                    existingProduct.UpdateDetails(
+                        product.Name,
+                        product.Description,
+                        product.Category,
+                        product.UnitOfMeasure,
+                        product.MinimumStockLevel,
+                        product.ReorderPoint,
+                        product.ReorderQuantity,
+                        product.UnitCost,
+                        product.IsActive,
+                        "Seeder");
                 }
             }
             // Save changes to the database

@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using SmartInventory.Application.Features.Products.Commands.CreateProduct;
 using SmartInventory.Application.Features.Products.Queries.GetProducts;
 using SmartInventory.Contracts.Requests.Products;
 using SmartInventory.Contracts.Responses.Products;
@@ -40,7 +41,10 @@ namespace SmartInventory.API.Controllers.V1
                 return BadRequest(validationResult.Errors);
             }
 
-            return Ok(validationResult);
+            var command = request.Adapt<CreateProductCommand>();
+            var id = await mediator.Send(command);
+
+            return Ok(id);
         }
     }
 }

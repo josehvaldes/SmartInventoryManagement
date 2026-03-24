@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.Application.Common.Interfaces;
-using SmartInventory.Contracts.Requests.Products;
-
 
 namespace SmartInventory.Application.Features.Products.Commands.CreateProduct
 {
     public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {
-        IApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
+
         public CreateProductCommandValidator(IApplicationDbContext db)
         {
             _context = db;
@@ -20,7 +19,7 @@ namespace SmartInventory.Application.Features.Products.Commands.CreateProduct
             RuleFor(x => x.UnitCost)
                 .GreaterThanOrEqualTo(0).WithMessage("Unit Cost must be a non-negative value.");
             RuleFor(x => x.SKU)
-                .MustAsync(BeUniqueSKU).WithMessage("SKU must be unique."); // Ensure SKU is unique
+                .MustAsync(BeUniqueSKU).WithMessage("SKU must be unique.");
         }
 
         private async Task<bool> BeUniqueSKU(string sku, CancellationToken cancellationToken)

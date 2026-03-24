@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using NSubstitute;
+using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Interfaces;
-using SmartInventory.Application.Features.Stocks.Commands;
+using SmartInventory.Application.Features.Stocks.DTO;
+using SmartInventory.Application.Features.Stocks.Queries;
 using SmartInventory.Domain.Entities;
 using SmartInventory.UnitTests.Common;
 using Xunit;
@@ -11,6 +13,7 @@ namespace SmartInventory.UnitTests.Stocks
     public class GetStockByProductIdQueryHandlerTests
     {
         private readonly IApplicationDbContext _db;
+        private readonly ICacheService _cache;
         private readonly GetStockByProductIdQueryHandler _handler;
         private readonly List<Stock> _stocks;
 
@@ -21,7 +24,10 @@ namespace SmartInventory.UnitTests.Stocks
             _db = Substitute.For<IApplicationDbContext>();
             _db.Stocks.Returns(mockStocksSet);
 
-            _handler = new GetStockByProductIdQueryHandler(_db, null!);
+            _cache = Substitute.For<ICacheService>();
+            _cache.GetAsync<StockDto>(Arg.Any<string>()).Returns((StockDto?)null); // Simulate cache miss
+
+            _handler = new GetStockByProductIdQueryHandler(_db, _cache);
         }
 
         [Fact]

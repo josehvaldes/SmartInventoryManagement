@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Domain.Identity;
-using SmartInventory.Domain.Interfaces;
 using SmartInventory.Infrastructure.Auth;
 using SmartInventory.Infrastructure.Data.Cache;
 using SmartInventory.Infrastructure.Data.Context;

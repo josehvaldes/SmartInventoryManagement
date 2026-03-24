@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartInventory.Application.Features.Stocks.Commands
+namespace SmartInventory.Application.Features.Stocks.Queries
 {
     public record GetStockByProductIdQuery(Guid productId): IQuery<StockDto> { }
 }
