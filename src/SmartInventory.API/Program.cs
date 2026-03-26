@@ -4,6 +4,7 @@ using SmartInventory.API.Middleware;
 using SmartInventory.Infrastructure;
 using SmartInventory.Application;
 using SmartInventory.API;
+using SmartInventory.Infrastructure.AWS;
 
 MappingConfig.RegisterMappings();
 
@@ -28,6 +29,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 
 builder.Services.AddAPIDependencies(builder.Configuration);
+builder.Services.AddAWSDependencies(builder.Configuration);
 
 var app = builder.Build();
 

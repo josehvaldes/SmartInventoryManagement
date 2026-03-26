@@ -1,17 +1,21 @@
 ﻿using Asp.Versioning;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using SmartInventory.API.Extensions;
 using SmartInventory.Application.Features.Auth.Commands;
 using SmartInventory.Contracts.Requests.Login;
 
 namespace SmartInventory.API.Controllers.V1
 {
     [ApiController]
-    [Route("api/v{version:apiVersion}/auth/[controller]")]
+    [Route("api/v{version:apiVersion}/auth")]
     [ApiVersion("1.0")]
-    public class LoginController(IMediator mediator, ILogger<LoginController> logger) : ControllerBase
+    public class LoginController(IMediator mediator,
+        IValidator<LoginRequest> loginValidator,
+        ILogger<LoginController> logger) : ControllerBase
     {
 
         [HttpPost("login")]
@@ -19,6 +23,9 @@ namespace SmartInventory.API.Controllers.V1
         [EnableRateLimiting("AuthEndpoints")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
+
+            var validationResult = await loginValidator.ValidateAsync(request);
+            validationResult.ThrowIfInvalid();
             logger.LogInformation("Login attempt for user: {Username}", request.Username);
             var response = await mediator.Send(new LoginCommand(request.Username, request.Password));
             return Ok(response);

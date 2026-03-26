@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SmartInventory.Application.Common.Exceptions;
 
 namespace SmartInventory.Application.Common.Validation
 {
@@ -31,7 +29,15 @@ namespace SmartInventory.Application.Common.Validation
                 .ToList();
 
             if (failures.Any())
-                throw new ValidationException(failures);
+            {
+                var errors = failures
+                    .GroupBy(f => f.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(f => f.ErrorMessage).Distinct().ToArray());
+
+                throw new SmartInventory.Application.Common.Exceptions.ValidationException(errors);
+            }
 
             return await next();
         }
