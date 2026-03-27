@@ -6,7 +6,7 @@ namespace SmartInventory.Application.Features.Products.Commands.GetUploadUrl
     {
         public async Task<string> Handle(GetUploadUrlCommand request, CancellationToken cancellationToken)
         {
-            var  newFilename = $"{request.ProductSku}_{Path.GetExtension(request.FileName)}";
+            var newFilename = $"{request.ProductSku}{Path.GetExtension(request.FileName)}";
 
             return await _fileStorage.GetUploadUrlAsync(
                 newFilename,

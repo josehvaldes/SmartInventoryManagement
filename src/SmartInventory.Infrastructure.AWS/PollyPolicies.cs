@@ -12,11 +12,13 @@ namespace SmartInventory.Infrastructure.AWS
             return Policy
                 .Handle<AmazonS3Exception>(ex =>
                     ex.StatusCode == System.Net.HttpStatusCode.InternalServerError ||
-                    ex.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                    ex.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable ||
+                    ex.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
                 .Or<System.Net.Http.HttpRequestException>()
                 .WaitAndRetryAsync(
                     3,
-                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) // exponential backoff
+                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+                                  + TimeSpan.FromMilliseconds(Random.Shared.Next(0, 1000)) // jitter
                 );
         }
 

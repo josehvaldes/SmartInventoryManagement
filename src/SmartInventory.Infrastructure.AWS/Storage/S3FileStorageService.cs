@@ -16,14 +16,12 @@ namespace SmartInventory.Infrastructure.AWS.Storage
         private readonly string _bucketName;
         private readonly IAmazonS3 _s3Client;
         private readonly IAsyncPolicy _policy;
-        public S3FileStorageService(IOptions<AwsSettings> options, IAsyncPolicy policy)
+        public S3FileStorageService(IOptions<AwsSettings> options, IAmazonS3 s3Client, IAsyncPolicy policy)
         {
             _policy = policy;
             _awsSettings = options.Value;
             _bucketName = _awsSettings.S3BucketName;
-            _s3Client = new AmazonS3Client(_awsSettings.AccessKey, 
-                _awsSettings.SecretKey, 
-                Amazon.RegionEndpoint.GetBySystemName(_awsSettings.Region));
+            _s3Client = s3Client;
         }
 
         public async Task<string> GetUploadUrlAsync(string fileName, string contentType)
