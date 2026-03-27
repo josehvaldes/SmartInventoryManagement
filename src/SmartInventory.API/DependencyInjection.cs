@@ -49,7 +49,21 @@ namespace SmartInventory.API
             this IServiceCollection services, IConfiguration config)
         {
 
-            var jwt = config.GetSection("JwtSettings").Get<JwtSettings>()!;
+            var jwt = config.GetSection("JwtSettings").Get<JwtSettings>()
+                ?? throw new InvalidOperationException("JwtSettings section is missing from configuration.");
+
+            if (string.IsNullOrWhiteSpace(jwt.Secret))
+                throw new InvalidOperationException(
+                    "JwtSettings:Secret is not configured. " +
+                    "Set it via the environment variable: JwtSettings__Secret");
+            if (string.IsNullOrWhiteSpace(jwt.Issuer))
+                throw new InvalidOperationException(
+                    "JwtSettings:Issuer is not configured. " +
+                    "Set it via the environment variable: JwtSettings__Issuer");
+            if (string.IsNullOrWhiteSpace(jwt.Audience))
+                throw new InvalidOperationException(
+                    "JwtSettings:Audience is not configured. " +
+                    "Set it via the environment variable: JwtSettings__Audience");
 
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -81,7 +95,7 @@ namespace SmartInventory.API
             services.Configure<DiskCheckOptions>(config.GetSection("DiskHealthCheck"));
 
             services.AddHealthChecks()
-                .AddSqlServer(config.GetConnectionString("DefaultConnection")??string.Empty, tags: new[] { "ready" })
+                .AddSqlServer(config.GetConnectionString("DefaultConnection") ?? string.Empty, tags: new[] { "ready" })
                 .AddRedis(config["Cache:ConnectionString"] ?? string.Empty, name: "Redis Cache", tags: new[] { "ready" })
                 .AddCheck<MemoryHealthCheck>("memory", tags: new[] { "ready" })
                 .AddCheck<DiskHealthCheck>("disk", tags: new[] { "ready" })

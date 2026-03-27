@@ -41,7 +41,7 @@ app.UseSerilogRequestLogging();     // Enable request logging
 app.MapCustomBehaviors(); // Extension method for any custom middleware or behaviors
 
 app.UseRateLimiter();
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment()) app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
