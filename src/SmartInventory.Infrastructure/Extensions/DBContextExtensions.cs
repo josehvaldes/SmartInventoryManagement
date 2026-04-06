@@ -3,9 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Infrastructure.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmartInventory.Infrastructure.Extensions
 {
@@ -22,10 +19,10 @@ namespace SmartInventory.Infrastructure.Extensions
                 provider => provider.GetRequiredService<AuthDbContext>());
 
             services.AddDbContext<SmartInventoryDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(config.GetConnectionString("SmartInventoryDb")));
 
             services.AddDbContext<AuthDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(config.GetConnectionString("SmartInventoryDb")));
 
             return services;
         }

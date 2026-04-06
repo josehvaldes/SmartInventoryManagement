@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SmartInventory.Seeds;
-using System;
-
 
 Console.WriteLine("SmartInventory Product Seeder");
 Console.WriteLine($"Env: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production"}");
@@ -14,8 +12,8 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-var connectionString = configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = configuration.GetConnectionString("SmartInventoryDb")
+    ?? throw new InvalidOperationException("Connection string 'SmartInventoryDb' not found.");
 
 Console.WriteLine("Starting seed...");
 

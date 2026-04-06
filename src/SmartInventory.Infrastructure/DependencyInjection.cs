@@ -33,7 +33,7 @@ namespace SmartInventory.Infrastructure
             services.AddSingleton<IConnectionMultiplexer>(sp =>
             {
                 var config = sp.GetRequiredService<IConfiguration>();
-                var connectionString = config["Cache:ConnectionString"] ?? string.Empty;
+                var connectionString = config.GetConnectionString("redis") ?? string.Empty;
                 return ConnectionMultiplexer.Connect(connectionString);
             });
 

@@ -95,8 +95,8 @@ namespace SmartInventory.API
             services.Configure<DiskCheckOptions>(config.GetSection("DiskHealthCheck"));
 
             services.AddHealthChecks()
-                .AddSqlServer(config.GetConnectionString("DefaultConnection") ?? string.Empty, tags: new[] { "ready" })
-                .AddRedis(config["Cache:ConnectionString"] ?? string.Empty, name: "Redis Cache", tags: new[] { "ready" })
+                .AddSqlServer(config.GetConnectionString("SmartInventoryDb") ?? string.Empty, tags: new[] { "ready" })
+                .AddRedis(config.GetConnectionString("redis") ?? string.Empty, name: "Redis Cache", tags: new[] { "ready" })
                 .AddCheck<MemoryHealthCheck>("memory", tags: new[] { "ready" })
                 .AddCheck<DiskHealthCheck>("disk", tags: new[] { "ready" })
                 .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "live" });

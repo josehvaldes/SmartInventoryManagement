@@ -40,6 +40,7 @@ namespace SmartInventory.API.Controllers.V1
 
         [HttpPost]
         [EnableRateLimiting("WriteOperations")]
+        [Authorize]
         public async Task<IActionResult> CreateProduct(CreateProductRequest request)
         {            
             var validationResult = await productValidator.ValidateAsync(request);
@@ -48,7 +49,7 @@ namespace SmartInventory.API.Controllers.V1
             var command = request.Adapt<CreateProductCommand>();
             var id = await mediator.Send(command);
 
-            return Ok(id);
+            return Created($"products/{id}", new { Id = id });
         }
 
 

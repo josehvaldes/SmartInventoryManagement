@@ -6,6 +6,7 @@
   <Folder Name="/src/">
     <Project Path="src/SmartInventory.API/SmartInventory.API.csproj" Id="405517fb-f267-4848-9bf1-6038c2298026" />
     <Project Path="src/SmartInventory.Application/SmartInventory.Application.csproj" Id="7656c934-945e-44c3-82ab-4a7a54968a0f" />
+    <Project Path="src/SmartInventory.AspireAppHost/SmartInventory.AspireAppHost.csproj" Id="76f36aa2-4d59-42c3-9cd5-967bfad71396" />
     <Project Path="src/SmartInventory.Contracts/SmartInventory.Contracts.csproj" Id="75058cc5-58e9-4ad9-abe3-e29647f0b98b" />
     <Project Path="src/SmartInventory.Domain/SmartInventory.Domain.csproj" Id="2110e120-321e-41ac-a419-bd8b2aa179ab" />
     <Project Path="src/SmartInventory.Infrastructure.AWS/SmartInventory.Infrastructure.AWS.csproj" Id="da18030b-49b4-4697-94ae-1da8750b59c3" />
