@@ -14,6 +14,11 @@ namespace SmartInventory.Seeds
 
         protected override void ProcessSeed(SmartInventoryDbContext context, List<StockTransaction> seeds) 
         {
+            if (context.StockTransactions.Any())
+            {
+                return; // Exit if there are already stock transactions in the database
+            }
+
             foreach (var transaction in seeds) 
             {
                 if (!context.StockTransactions.Any(t => t.Id == transaction.Id))

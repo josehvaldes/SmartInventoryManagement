@@ -13,6 +13,10 @@ namespace SmartInventory.Seeds
         protected override void ProcessSeed(SmartInventoryDbContext context, List<PurchaseOrder> seeds)
         {
             Console.WriteLine($"Seeding {seeds.Count} purchase orders...");
+            if (context.PurchaseOrders.Any())
+            {
+                return; // Exit if there are already purchase order items in the database
+            }
 
             try 
             {

@@ -18,6 +18,12 @@ namespace SmartInventory.Seeds
         protected override void ProcessSeed(SmartInventoryDbContext context, List<Supplier> seeds) 
         {
             Console.WriteLine($"Seeding {seeds.Count} suppliers...");
+
+            if (context.Suppliers.Any())
+            {
+                return; // Exit if there are already suppliers in the database
+            }
+
             foreach (var supplier in seeds)
             {
                 var existingSupplier = context.Suppliers.Find(supplier.Id);

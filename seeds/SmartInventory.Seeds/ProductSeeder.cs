@@ -12,6 +12,11 @@ namespace SmartInventory.Seeds
 
         protected override void ProcessSeed(SmartInventoryDbContext context, List<Product> seeds) 
         {
+            if (context.Products.Any()) 
+            {
+                return; // Exit if there are already products in the database
+            }
+
             foreach (var product in seeds)
             {
                 // Check if the product already exists by SKU

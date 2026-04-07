@@ -10,60 +10,41 @@ using System.Text.Json;
 
 namespace SmartInventory.Seeds
 {
-    public class WarehouseSeeder
+    public class WarehouseSeeder : BaseSeeder<Warehouse>
     {
-        private string _connectionString = string.Empty;
+        public WarehouseSeeder(string connectionString): base(connectionString) { }
 
-        public WarehouseSeeder(string connectionString)
+        protected override void ProcessSeed(SmartInventoryDbContext context, List<Warehouse> seeds)
         {
-            _connectionString = connectionString;
-        }
-
-        public async Task Seed(string filePath)
-        {
-            if (string.IsNullOrWhiteSpace(filePath))
+            if (context.Warehouses.Any())
             {
-                Console.WriteLine("File path is not provided. Skipping product seeding.");
-                return;
+                return; // Exit if there are already users in the database
             }
 
-            using (var reader = new StreamReader(filePath))
+            foreach (var warehouse in seeds)
             {
-                var json = await reader.ReadToEndAsync();
-                var warehouses = JsonConvert.DeserializeObject<List<Warehouse>>(json) ?? new List<Warehouse>();
-
-                var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                    .UseSqlServer(_connectionString)
-                    .Options;
-
-                using (var context = new SmartInventoryDbContext(options)) 
+                var existingWarehouse = context.Warehouses.Find(warehouse.Id);
+                if (existingWarehouse == null)
                 {
-                    foreach (var warehouse in warehouses)
-                    {
-                        var existingWarehouse = await context.Warehouses.FindAsync(warehouse.Id);
-                        if (existingWarehouse == null)
-                        {
-                            context.Warehouses.Add(warehouse);
-                        }
-                        else
-                        {
-                            existingWarehouse.Name = warehouse.Name;
-                            existingWarehouse.Code = warehouse.Code;
-                            existingWarehouse.Address = warehouse.Address;
-                            existingWarehouse.WarehouseType = warehouse.WarehouseType;
-                            existingWarehouse.Capacity = warehouse.Capacity;
-                            existingWarehouse.ManagerEmail = warehouse.ManagerEmail;
-                            existingWarehouse.ManagerPhone = warehouse.ManagerPhone;
-                            existingWarehouse.ManagerName = warehouse.ManagerName;
-                            existingWarehouse.IsActive = warehouse.IsActive;
-                            existingWarehouse.UpdatedAt = DateTime.UtcNow;
+                    context.Warehouses.Add(warehouse);
+                }
+                else
+                {
+                    existingWarehouse.Name = warehouse.Name;
+                    existingWarehouse.Code = warehouse.Code;
+                    existingWarehouse.Address = warehouse.Address;
+                    existingWarehouse.WarehouseType = warehouse.WarehouseType;
+                    existingWarehouse.Capacity = warehouse.Capacity;
+                    existingWarehouse.ManagerEmail = warehouse.ManagerEmail;
+                    existingWarehouse.ManagerPhone = warehouse.ManagerPhone;
+                    existingWarehouse.ManagerName = warehouse.ManagerName;
+                    existingWarehouse.IsActive = warehouse.IsActive;
+                    existingWarehouse.UpdatedAt = DateTime.UtcNow;
 
-                        }
-                    }
-                    // Save changes to the database
-                    await context.SaveChangesAsync();
-                }                
+                }
             }
+            // Save changes to the database
+            context.SaveChanges();            
         }
     }
 }

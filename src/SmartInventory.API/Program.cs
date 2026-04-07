@@ -1,10 +1,13 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using SmartInventory.API;
 using SmartInventory.API.Mappings;
 using SmartInventory.API.Middleware;
-using SmartInventory.Infrastructure;
 using SmartInventory.Application;
-using SmartInventory.API;
+using SmartInventory.Infrastructure;
 using SmartInventory.Infrastructure.AWS;
+using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.Seeds;
 
 MappingConfig.RegisterMappings();
 
@@ -46,5 +49,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+if (app.Environment.IsDevelopment()) 
+{
+    using var scope = app.Services.CreateScope();
+    var inventoryDb = scope.ServiceProvider.GetRequiredService<SmartInventoryDbContext>();
+    var authDb = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+
+    await inventoryDb.Database.MigrateAsync();
+    await authDb.Database.MigrateAsync();
+    var connectionString = builder.Configuration.GetConnectionString("SmartInventoryDb") ?? string.Empty;
+    await DatabaseSeeder.SeedAllAsync(connectionString);
+}
 
 app.Run();

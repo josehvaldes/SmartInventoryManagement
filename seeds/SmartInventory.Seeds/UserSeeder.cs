@@ -38,6 +38,11 @@ namespace SmartInventory.Seeds
 
                 using (var context = new AuthDbContext(options))
                 {
+                    if (context.Users.Any())
+                    {
+                        return; // Exit if there are already users in the database
+                    }
+
                     foreach (var user in users)
                     {
                         var existingUser = await context.Users.FindAsync(user.Id);

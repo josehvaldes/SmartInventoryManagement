@@ -17,59 +17,36 @@ var connectionString = configuration.GetConnectionString("SmartInventoryDb")
 
 Console.WriteLine("Starting seed...");
 
-if (args.Length == 0)
-    {
-    Console.WriteLine("No command provided. Please specify a seeding command (e.g., ProductSeeder, WarehouseSeeder, StockSeeder).");
-    return;
-}
+var dataDir = Path.Combine(AppContext.BaseDirectory, "Data");
 
-var command = args[0];
-
-switch (command)
+var seeders = new Dictionary<string, Func<Task>>(StringComparer.OrdinalIgnoreCase)
 {
-    case "ProductSeeder":
-        var productsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "products.json");
-        var productSeeder = new ProductSeeder(connectionString);
-        await productSeeder.Seed(productsFilePath);
-        break;
-    case "WarehouseSeeder":
-        var stocksFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "warehouses.json");
-        var warehouseSeeder = new WarehouseSeeder(connectionString);
-        await warehouseSeeder.Seed(stocksFilePath);
-        break;
-    case "StockSeeder":
-        var stockFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "stocks.json");
-        var stockSeeder = new StockSeeder(connectionString);
-        await stockSeeder.Seed(stockFilePath);
-        break;
-    case "UserSeeder":
-        var usersFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "users.json");
-        var userSeeder = new UserSeeder(connectionString);
-        await userSeeder.Seed(usersFilePath);
-        break;
-    case "StockTransactions":
-        var transactionsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "stock_transactions.json");
-        var transactionSeeder = new StockTransactionSeeder(connectionString);
-        await transactionSeeder.Seed(transactionsFilePath);
-        break;
-    case "SupplierSeeder":
-        var suppliersFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "suppliers.json");
-        var supplierSeeder = new SupplierSeeder(connectionString);
-        await supplierSeeder.Seed(suppliersFilePath);
-        break;
-    case "PurchaseOrderSeeder":
-        var purchaseOrdersFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "purchase_orders.json");
-        var purchaseOrderSeeder = new PurchaseOrderSeeder(connectionString);
-        await purchaseOrderSeeder.Seed(purchaseOrdersFilePath);
-        break;
-     case "PurchaseOrderItemsSeeder":
-        var purchaseOrderItemsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "purchase_order_items.json");
-        var purchaseOrderItemsSeeder = new PurchaseOrderItemsSeeder(connectionString);
-        await purchaseOrderItemsSeeder.Seed(purchaseOrderItemsFilePath);
-        break;
-    default:
-        Console.WriteLine($"Unknown command: {command}");
-        break;
+    [nameof(ProductSeeder)]            = () => new ProductSeeder(connectionString).Seed(Path.Combine(dataDir, "products.json")),
+    [nameof(WarehouseSeeder)]          = () => new WarehouseSeeder(connectionString).Seed(Path.Combine(dataDir, "warehouses.json")),
+    [nameof(StockSeeder)]              = () => new StockSeeder(connectionString).Seed(Path.Combine(dataDir, "stocks.json")),
+    [nameof(UserSeeder)]               = () => new UserSeeder(connectionString).Seed(Path.Combine(dataDir, "users.json")),
+    [nameof(StockTransactionSeeder)]   = () => new StockTransactionSeeder(connectionString).Seed(Path.Combine(dataDir, "stock_transactions.json")),
+    [nameof(SupplierSeeder)]           = () => new SupplierSeeder(connectionString).Seed(Path.Combine(dataDir, "suppliers.json")),
+    [nameof(PurchaseOrderSeeder)]      = () => new PurchaseOrderSeeder(connectionString).Seed(Path.Combine(dataDir, "purchase_orders.json")),
+    [nameof(PurchaseOrderItemsSeeder)] = () => new PurchaseOrderItemsSeeder(connectionString).Seed(Path.Combine(dataDir, "purchase_order_items.json")),
+};
+
+if (args.Length == 0)
+{
+    Console.WriteLine("No command provided. Seeding all by default...");
+    await Task.WhenAll(seeders.Values.Select(seed => seed()));
+}
+else
+{
+    var command = args[0];
+    if (seeders.TryGetValue(command, out var seed))
+    {
+        await seed();
+    }
+    else
+    {
+        Console.WriteLine($"Unknown command: '{command}'. Available seeders: {string.Join(", ", seeders.Keys)}");
+    }
 }
 
 Console.WriteLine("Seed completed.");
