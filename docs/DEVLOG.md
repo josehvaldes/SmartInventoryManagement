@@ -178,17 +178,42 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 - [X] Implement rate limiter  into the API
 - [X] Implement Infrastructure health checks from the API
 
-- [ ] Implement Products feature:
+- [X] Implement Products feature:
   - `CreateProductCommand` and `CreateProductCommandHandler`
   - `CreateProductValidator` (FluentValidation)
-  - `ProductDto` and AutoMapper profile
-- [ ] Create contracts:
+  - `ProductDto` 
+- [X] Create contracts:
   - `CreateProductRequest`
   - `ProductResponse`
 
 ---
 
 
-**Document Version:** 1.0  
-**Last Updated:** January 2026  
+### Day 8: Products Feature - Part 2 & API Endpoints
+**Time:** 5-6 hours
+
+- [] Implement remaining Products commands/queries:
+  - `UpdateProductCommand`
+  - `DeleteProductCommand`
+  - `GetProductByIdQuery`
+  - `GetAllProductsQuery` (with pagination)
+- [ ] Create Minimal API endpoints in `ProductsEndpoint.cs`:
+  - POST `/api/products` - Create
+  - PUT `/api/products/{id}` - Update
+  - DELETE `/api/products/{id}` - Delete
+  - GET `/api/products/{id}` - Get by ID
+  - GET `/api/products` - Get all (paginated)
+- [ ] Add endpoint filters for validation
+- [ ] Test endpoints manually with API client (Postman/Insomnia)
+
+**Deliverables:**
+- ✅ Products CRUD complete
+- ✅ Products API endpoints working
+- ✅ Manual testing successful
+
+---
+
+
+**Document Version:** 1.1  
+**Last Updated:** April 2026  
 **Next Review:** End of Week 3

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SmartInventory.Application.Features.Products.Commands.UploadProduct
 {
-    public record UploadProductCommand(string productSKU, string productName, IFormFile file) : ICommand<string>
+    public record UploadProductCommand(string productSKU, string productName, IFormFile file, string updatedBy) : ICommand<string>
     {
     }
 }

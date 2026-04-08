@@ -21,7 +21,6 @@ namespace SmartInventory.Application.Features.Products.Commands.CreateProduct
                 command.CreatedBy);
 
             db.Products.Add(product);
-            await db.SaveChangesAsync(cancellationToken);
 
             return product.Id;
         }

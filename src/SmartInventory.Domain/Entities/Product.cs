@@ -21,6 +21,7 @@ namespace SmartInventory.Domain.Entities
         public DateTime UpdatedAt { get; private set; }
         public string CreatedBy { get; private set; } = string.Empty;
         public string UpdatedBy { get; private set; } = string.Empty;
+        public string ImageUrl { get; private set; } = string.Empty;
 
         /// <summary>
         /// Creates a new product, enforcing all creation-time invariants.
@@ -83,6 +84,13 @@ namespace SmartInventory.Domain.Entities
             IsActive          = isActive;
             UpdatedBy         = updatedBy;
             UpdatedAt         = DateTime.UtcNow;
+        }
+        
+        public void UpdateImageUrl(string urlImage, string updatedBy)
+        {
+            ImageUrl = urlImage;
+            UpdatedBy = updatedBy;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public bool ValidateStockLevel(decimal currentStock) => currentStock >= MinimumStockLevel;

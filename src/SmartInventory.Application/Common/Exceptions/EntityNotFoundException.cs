@@ -16,5 +16,10 @@ namespace SmartInventory.Application.Common.Exceptions
         {
             return new EntityNotFoundException($"Entity of type {typeof(T).Name} with ID {id} was not found.");
         }
+
+        internal static EntityNotFoundException For<T>(string key)
+        {
+            return new EntityNotFoundException($"Entity of type {typeof(T).Name} with key {key} was not found.");
+        }
     }
 }

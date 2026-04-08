@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartInventory.Infrastructure.Data.Context;
 
@@ -11,9 +12,11 @@ using SmartInventory.Infrastructure.Data.Context;
 namespace SmartInventory.Infrastructure.Migrations.Inventory
 {
     [DbContext(typeof(SmartInventoryDbContext))]
-    partial class SmartInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260408211457_AddImageUrlToProduct")]
+    partial class AddImageUrlToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

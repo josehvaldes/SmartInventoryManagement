@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SmartInventory.Application.Common.Behaviors;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Infrastructure.Data.Context;
 
@@ -23,6 +24,9 @@ namespace SmartInventory.Infrastructure.Extensions
 
             services.AddDbContext<AuthDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("SmartInventoryDb")));
+
+            services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<IApplicationDbContext>());
+            services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<IAuthDbContext>());
 
             return services;
         }

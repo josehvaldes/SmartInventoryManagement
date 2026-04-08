@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SmartInventory.API.Extensions;
 using SmartInventory.Application.Features.Products.Commands.CreateProduct;
+using SmartInventory.Application.Features.Products.Commands.DeleteProduct;
 using SmartInventory.Application.Features.Products.Commands.GetUploadUrl;
 using SmartInventory.Application.Features.Products.Commands.UploadProduct;
 using SmartInventory.Application.Features.Products.Queries.GetProducts;
@@ -66,7 +67,8 @@ namespace SmartInventory.API.Controllers.V1
 
             (await uploadRequestValidator.ValidateAsync(request)).ThrowIfInvalid();
 
-            var command = new UploadProductCommand( request.ProductSKU, request.ProductName, file);
+            var updatedBy = User.Identity?.Name ?? "Unknown";
+            var command = new UploadProductCommand( request.ProductSKU, request.ProductName, file, updatedBy);
             logger.LogInformation("Received file {FileName} for product data upload.", file.FileName);
             
             var result = await mediator.Send(command);
@@ -79,15 +81,23 @@ namespace SmartInventory.API.Controllers.V1
         [HttpPost("upload-url")]
         [EnableRateLimiting("WriteOperations")]
         [Authorize]
-        public async Task<IResult> GetUploadUrl(GetUploadUrlRequest request)
+        public async Task<IActionResult> GetUploadUrl(GetUploadUrlRequest request)
         {
             (await getUploadUrlRequestValidator.ValidateAsync(request)).ThrowIfInvalid();
-
             var command = new GetUploadUrlCommand(request.ProductSku, request.FileName, request.ContentType);
-            var url = await mediator.Send( command);
-
-            return Results.Ok(new { UploadUrl = url });
+            var url = await mediator.Send(command);
+            return Ok(new { UploadUrl = url });
         }
 
+
+        [HttpDelete("{id:guid}")]
+        [EnableRateLimiting("WriteOperations")]
+        [Authorize]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            var command = new DeleteProductCommand(id);
+            await mediator.Send(command);
+            return Ok(new { Id = id });
+        }
     }
 }

@@ -3,7 +3,9 @@ using MediatR;
 
 namespace SmartInventory.Application.Common.Interfaces
 {
-    public interface ICommand : IRequest<Unit> { }
+    public interface IBaseCommand { }
 
-    public interface ICommand<TResponse> : IRequest<TResponse> { }
+    public interface ICommand : IRequest<Unit>, IBaseCommand { }
+
+    public interface ICommand<TResponse> : IRequest<TResponse>, IBaseCommand { }
 }
