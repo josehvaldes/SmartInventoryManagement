@@ -6,8 +6,8 @@ namespace SmartInventory.Contracts.Responses.Warehouses
 {
     public class WarehouseResponse
     {
-        public string Code { get; set; }
-        public string Name { get; set; }
+        public string Code { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public string WarehouseType { get; set; } = string.Empty;
         public string? Street { get; set; }
         public string? City { get; set; }
