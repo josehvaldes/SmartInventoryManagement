@@ -192,19 +192,19 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 ### Day 8: Products Feature - Part 2 & API Endpoints
 **Time:** 5-6 hours
 
-- [] Implement remaining Products commands/queries:
+- [X] Implement remaining Products commands/queries:
   - `UpdateProductCommand`
   - `DeleteProductCommand`
   - `GetProductByIdQuery`
   - `GetAllProductsQuery` (with pagination)
-- [ ] Create Minimal API endpoints in `ProductsEndpoint.cs`:
+- [X] Create Minimal API endpoints in `ProductsEndpoint.cs`:
   - POST `/api/products` - Create
   - PUT `/api/products/{id}` - Update
   - DELETE `/api/products/{id}` - Delete
   - GET `/api/products/{id}` - Get by ID
   - GET `/api/products` - Get all (paginated)
-- [ ] Add endpoint filters for validation
-- [ ] Test endpoints manually with API client (Postman/Insomnia)
+- [X] Add endpoint filters for validation
+- [X] Test endpoints manually with API client (Postman/Insomnia)
 
 **Deliverables:**
 - ✅ Products CRUD complete
@@ -212,6 +212,24 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 - ✅ Manual testing successful
 
 ---
+
+
+### Day 9: Warehouses Feature
+**Time:** 5-6 hours
+
+- [X] Implement Warehouses feature (similar to Products):
+  - `CreateWarehouseCommand` with validation
+  - `GetWarehouseByIdQuery`
+  - `GetAllWarehousesQuery`
+  - Validators, DTOs, AutoMapper profiles
+- [X] Create Warehouses API endpoints
+- [X] Test warehouse operations
+- [ ] Add business rule: Cannot delete warehouse with existing stock
+
+**Deliverables:**
+- ✅ Warehouses CRUD complete
+- ✅ Warehouses API endpoints working
+- ✅ Business rules enforced
 
 
 **Document Version:** 1.1  

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SmartInventory.Domain.Entities;
+using SmartInventory.UnitTests.Common;
 using System.Reflection;
 
 
@@ -18,11 +19,9 @@ namespace SmartInventory.UnitTests.Products
 
         public static List<Product> LoadProductsFromFile()
         {
-            if (string.IsNullOrWhiteSpace(ProductsFilePath))
-            {
-                Console.WriteLine("File path is not provided. Skipping product seeding.");
-                throw new Exception("File path is not provided. Skipping product seeding.");
-            }
+            if (string.IsNullOrWhiteSpace(ProductsFilePath) || !File.Exists(ProductsFilePath))
+                throw new FileNotFoundException("File path is not provided or file does not exist. Skipping product seeding.");
+            
             using (var reader = new StreamReader(ProductsFilePath))
             {
                 var products = new List<Product>();
@@ -35,14 +34,4 @@ namespace SmartInventory.UnitTests.Products
         }
     }
 
-    internal sealed class PrivateSetterContractResolver : DefaultContractResolver
-    {
-        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-        {
-            var prop = base.CreateProperty(member, memberSerialization);
-            if (!prop.Writable && member is PropertyInfo pi && pi.GetSetMethod(nonPublic: true) != null)
-                prop.Writable = true;
-            return prop;
-        }
-    }
 }

@@ -23,6 +23,8 @@ namespace SmartInventory.Domain.Entities
     public class Warehouse
     {
 
+        private Warehouse() { } // For EF Core materialisation
+
         public Guid Id { get; set; }
         public string Code { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
@@ -37,5 +39,55 @@ namespace SmartInventory.Domain.Entities
         public DateTime UpdatedAt { get; set; }
 
 
+        public static Warehouse Create(
+            string code,
+            string name,
+            Address? address,
+            WarehouseType warehouseType,
+            decimal? capacity,
+            string managerName,
+            string managerEmail,
+            string managerPhone,
+            string createdBy)
+        {
+            return new Warehouse
+            {
+                Id = Guid.NewGuid(),
+                Code = code,
+                Name = name,
+                Address = address,
+                WarehouseType = warehouseType,
+                Capacity = capacity,
+                ManagerName = managerName,
+                ManagerEmail = managerEmail,
+                ManagerPhone = managerPhone,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
         }
+
+        public void Update(
+            string name,
+            Address? address,
+            WarehouseType warehouseType,
+            decimal? capacity,
+            string managerName,
+            string managerEmail,
+            string managerPhone,
+            bool isActive,
+            string updatedBy)
+        {
+            Name = name;
+            Address = address;
+            WarehouseType = warehouseType;
+            Capacity = capacity;
+            ManagerName = managerName;
+            ManagerEmail = managerEmail;
+            ManagerPhone = managerPhone;
+            IsActive = isActive;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+    }
 }

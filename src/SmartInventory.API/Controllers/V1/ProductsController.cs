@@ -10,6 +10,7 @@ using SmartInventory.Application.Features.Products.Commands.CreateProduct;
 using SmartInventory.Application.Features.Products.Commands.DeleteProduct;
 using SmartInventory.Application.Features.Products.Commands.GetUploadUrl;
 using SmartInventory.Application.Features.Products.Commands.UploadProduct;
+using SmartInventory.Application.Features.Products.Queries.GetProductById;
 using SmartInventory.Application.Features.Products.Queries.GetProducts;
 using SmartInventory.Contracts.Requests.Products;
 using SmartInventory.Contracts.Responses.Products;
@@ -28,16 +29,6 @@ namespace SmartInventory.API.Controllers.V1
         IValidator<GetUploadUrlRequest> getUploadUrlRequestValidator
         ) : ControllerBase
     {
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IEnumerable<ProductResponse>> Get()
-        {
-            logger.LogInformation("Received request to get all products.");
-            var response = await mediator.Send(new GetProductsQuery());
-            logger.LogInformation("Returning {Count} products.", response.Count);
-            return response.Adapt<List<ProductResponse>>();
-        }
 
         [HttpPost]
         [EnableRateLimiting("WriteOperations")]
@@ -70,12 +61,9 @@ namespace SmartInventory.API.Controllers.V1
             var updatedBy = User.Identity?.Name ?? "Unknown";
             var command = new UploadProductCommand( request.ProductSKU, request.ProductName, file, updatedBy);
             logger.LogInformation("Received file {FileName} for product data upload.", file.FileName);
-            
             var result = await mediator.Send(command);
 
-            return Ok(new { 
-                ImageUrl = result,
-            });
+            return Ok(new { ImageUrl = result });
         }
 
         [HttpPost("upload-url")]
@@ -95,9 +83,30 @@ namespace SmartInventory.API.Controllers.V1
         [Authorize]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
+            logger.LogInformation("Received request to delete product with ID: {ProductId}", id);
             var command = new DeleteProductCommand(id);
             await mediator.Send(command);
+            logger.LogInformation("Product with ID: {ProductId} has been deleted.", id);
             return Ok(new { Id = id });
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IEnumerable<ProductResponse>> Get()
+        {
+            logger.LogInformation("Received request to get all products.");
+            var response = await mediator.Send(new GetProductsQuery());
+            return response.Adapt<List<ProductResponse>>();
+        }
+
+        [HttpGet("{id:guid}")]
+        [Authorize]
+        public async Task<IActionResult> GetProduct(Guid id)
+        {
+            logger.LogInformation("Received request to get product with ID: {ProductId}", id);
+            var command = new GetProductByIdQuery(id);
+            var response = await mediator.Send(command);
+            return Ok(response.Adapt<ProductResponse>());
         }
     }
 }

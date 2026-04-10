@@ -10,5 +10,6 @@ namespace SmartInventory.Application.Common.Interfaces
         DbSet<Stock> Stocks { get; }
         DbSet<PurchaseOrder> PurchaseOrders{ get; }
         DbSet<PurchaseOrderItem> PurchaseOrderItems { get; }
+        DbSet<Warehouse> Warehouses { get; }
     }
 }
