@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Mapster;
 using Newtonsoft.Json;
 using NSubstitute;
 using SmartInventory.Application.Common.Cache;
@@ -54,8 +55,8 @@ namespace SmartInventory.UnitTests.Products
         {
             // Arrange
             var product = _products.First();
-            var cachedDto = new ProductDto { Id = product.Id, Name = product.Name };
-            _cache.GetAsync<ProductDto>($"product:{product.Id}").Returns(cachedDto);
+            var cachedDto = product.Adapt<ProductDto>();
+            _cache.GetAsync<ProductDto>(CacheKeys<ProductDto>.ById(product.Id)).Returns(cachedDto);
             var query = new GetProductByIdQuery(product.Id);
 
             // Act
@@ -92,7 +93,7 @@ namespace SmartInventory.UnitTests.Products
 
             // Assert
             await _cache.Received(1).SetAsync(
-                $"product:{product.Id}",
+                CacheKeys<ProductDto>.ById(product.Id),
                 Arg.Any<ProductDto>(),
                 TimeSpan.FromMinutes(5));
         }

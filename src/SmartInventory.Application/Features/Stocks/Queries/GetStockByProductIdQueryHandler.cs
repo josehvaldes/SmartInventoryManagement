@@ -1,8 +1,10 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.Application.Common.Cache;
+using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Application.Features.Stocks.DTO;
+using SmartInventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,7 +27,7 @@ namespace SmartInventory.Application.Features.Stocks.Queries
 
             if (entity == null)
             {
-                throw new KeyNotFoundException($"Stock not found for product ID: {request.productId}");
+                throw EntityNotFoundException.For<Stock>(request.productId);
             }
             stockDto = entity.Adapt<StockDto>();
             await cache.SetAsync(key, stockDto, TimeSpan.FromMinutes(5));

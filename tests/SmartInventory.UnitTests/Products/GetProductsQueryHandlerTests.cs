@@ -31,7 +31,7 @@ namespace SmartInventory.UnitTests.Products
             _cache = Substitute.For<ICacheService>();
             _cache.GetAsync<ProductDto>(Arg.Any<string>()).Returns((ProductDto?)null); // Simulate cache miss
 
-            _handler = new GetProductsQueryHandler(_db);
+            _handler = new GetProductsQueryHandler(_db, _cache);
         }
 
         [Fact]

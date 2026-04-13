@@ -1,10 +1,8 @@
 ﻿using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Interfaces;
+using SmartInventory.Application.Features.Products.DTO;
 using SmartInventory.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmartInventory.Application.Features.Products.Commands.DeleteProduct
 {
@@ -18,8 +16,8 @@ namespace SmartInventory.Application.Features.Products.Commands.DeleteProduct
                 throw EntityNotFoundException.For<Product>(request.guid);
 
             db.Products.Remove(entity);
-
-            await cache.RemoveAsync($"Product_{request.guid}");
+            var key = CacheKeys<ProductDto>.ById(request.guid);
+            await cache.RemoveAsync(key);
 
             return request.guid;
         }

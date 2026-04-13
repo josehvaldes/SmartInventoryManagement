@@ -28,11 +28,6 @@ namespace SmartInventory.API.Mappings
                 .Map(dest => dest.UnitOfMeasure,
                      src  => Enum.Parse<UnitOfMeasure>(src.UnitOfMeasure, ignoreCase: true));
 
-            TypeAdapterConfig<ProductDto, ProductResponse>
-                .NewConfig()
-                .Map(dest => dest.Category,      src => src.Category.ToString())
-                .Map(dest => dest.UnitOfMeasure, src => src.UnitOfMeasure.ToString());
-
             TypeAdapterConfig<CreateWarehouseRequest, CreateWarehouseCommand>
                 .NewConfig()
                 .Map(dest => dest.WarehouseType, src  => Enum.Parse<WarehouseType>(src.WarehouseType, ignoreCase: true));

@@ -12,7 +12,7 @@ namespace SmartInventory.Application.Features.Warehouses.Queries.GetWarehouseByI
     {
         public async Task<WarehouseDto> Handle(GetWarehouseByIdQuery request, CancellationToken cancellationToken)
         {
-            var key = $"Warehouse:{request.Id}";
+            var key = CacheKeys<Warehouse>.ById(request.Id);
             var cachedWarehouse = await cache.GetAsync<WarehouseDto>(key);
 
             if (cachedWarehouse!=null)

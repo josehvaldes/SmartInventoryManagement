@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SmartInventory.API.Extensions;
@@ -11,6 +12,7 @@ using SmartInventory.Contracts.Requests.Login;
 namespace SmartInventory.API.Controllers.V1
 {
     [ApiController]
+    [EnableCors("StrictCors")]
     [Route("api/v{version:apiVersion}/auth")]
     [ApiVersion("1.0")]
     public class LoginController(IMediator mediator,

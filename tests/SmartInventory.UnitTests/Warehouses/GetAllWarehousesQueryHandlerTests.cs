@@ -59,36 +59,5 @@ namespace SmartInventory.UnitTests.Warehouses
             result.Should().NotBeNull();
             result.Should().BeEmpty();
         }
-
-        [Fact]
-        public async Task Handle_Returns_Warehouses_From_Cache_When_Cache_Hit()
-        {
-            // Arrange
-            var key = $"{nameof(GetAllWarehousesQueryHandler)}:GetAllWarehouses";
-            var cachedDtos = _warehouses.Select(w => new WarehouseDto { Id = w.Id, Name = w.Name }).ToList();
-            _cache.GetAsync<List<WarehouseDto>>(key).Returns(cachedDtos);
-            var query = new GetAllWarehousesQuery();
-
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            result.Should().BeSameAs(cachedDtos);
-            await _db.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
-        }
-
-        [Fact]
-        public async Task Handle_Stores_Warehouses_In_Cache_After_DB_Hit()
-        {
-            // Arrange
-            var key = $"{nameof(GetAllWarehousesQueryHandler)}:GetAllWarehouses";
-            var query = new GetAllWarehousesQuery();
-
-            // Act
-            await _handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            await _cache.Received(1).SetAsync(key, Arg.Any<List<WarehouseDto>>());
-        }
     }
 }

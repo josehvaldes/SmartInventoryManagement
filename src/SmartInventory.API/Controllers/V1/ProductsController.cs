@@ -49,6 +49,8 @@ namespace SmartInventory.API.Controllers.V1
         [EnableRateLimiting("WriteOperations")]
         [Authorize]
         [Consumes("multipart/form-data")]
+        [RequestSizeLimit(10 * 1024 * 1024)]                          // 10 MB hard cap
+        [RequestFormLimits(MultipartBodyLengthLimit = 10 * 1024 * 1024)]
         public async Task<IActionResult> UploadProductData([FromForm] UploadProductRequest request, IFormFile file)
         {
             if (file is null)

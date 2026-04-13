@@ -6,6 +6,6 @@ using System.Text;
 
 namespace SmartInventory.Application.Features.Auth.Commands
 {
-    public record LoginCommand(string Username, string Password) : ICommand<LoginResponse>;
+    public record LoginCommand(string Username, string Password) : ICommand<LoginResponse>, ISensitiveRequest;
 
 }

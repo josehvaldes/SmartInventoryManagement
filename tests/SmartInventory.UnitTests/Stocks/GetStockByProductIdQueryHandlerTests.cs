@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using SmartInventory.Application.Common.Cache;
+using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Application.Features.Stocks.DTO;
 using SmartInventory.Application.Features.Stocks.Queries;
@@ -49,7 +50,7 @@ namespace SmartInventory.UnitTests.Stocks
         }
 
         [Fact]
-        public async Task Handle_Throws_KeyNotFoundException_When_ProductId_Does_Not_Exist()
+        public async Task Handle_Throws_EntityNotFoundException_When_ProductId_Does_Not_Exist()
         {
             // Arrange
             var query = new GetStockByProductIdQuery(Guid.NewGuid());
@@ -58,8 +59,7 @@ namespace SmartInventory.UnitTests.Stocks
             var act = async () => await _handler.Handle(query, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage("*Stock not found for product ID*");
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
     }
 }

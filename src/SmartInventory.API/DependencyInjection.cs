@@ -1,9 +1,11 @@
 ﻿using Asp.Versioning;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using SmartInventory.API.HealthChecks;
+using SmartInventory.API.Settings;
 using SmartInventory.API.Validators;
 using SmartInventory.Infrastructure.Settings;
 using System.Text;
@@ -22,6 +24,8 @@ namespace SmartInventory.API
             services.AddAuthenticationServices(config);
 
             services.AddOpenApi("v1");
+            services.AddCors(config);
+            services.AddCoreFormConfiguration(config);
 
             services.AddValidatorsFromAssembly(typeof(CreateProductRequestValidator).Assembly);
             return services;
@@ -31,14 +35,16 @@ namespace SmartInventory.API
             this IServiceCollection services, IConfiguration config)
         {
 
-            services.AddApiVersioning(options => {
+            services.AddApiVersioning(options =>
+            {
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.ReportApiVersions = true;
                 options.ApiVersionReader = ApiVersionReader.Combine(
                     new UrlSegmentApiVersionReader(),   // /api/v1/products
                     new HeaderApiVersionReader("X-Api-Version")); // optional fallback
-            }).AddApiExplorer(options => {
+            }).AddApiExplorer(options =>
+            {
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
             });
@@ -100,7 +106,7 @@ namespace SmartInventory.API
                 .AddCheck<MemoryHealthCheck>("memory", tags: new[] { "ready" })
                 .AddCheck<DiskHealthCheck>("disk", tags: new[] { "ready" })
                 .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "live" });
-                
+
             return services;
         }
 
@@ -179,5 +185,48 @@ namespace SmartInventory.API
 
             return services;
         }
+
+        public static IServiceCollection AddCors(this IServiceCollection services, IConfiguration config)
+        {
+            {
+                var corsSettings = config.GetSection("Cors")
+                                     .Get<CorsSettings>() ?? new CorsSettings();
+
+                services.AddCors(options =>
+                {
+                    options.AddPolicy("DefaultCors", policy =>
+                    {
+                        policy
+                            .WithOrigins(corsSettings.AllowedOrigins)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials(); // Remove this if you don't need cookies/auth headers
+                    });
+
+                    // Strict policy for sensitive endpoints
+                    options.AddPolicy("StrictCors", policy =>
+                    {
+                        policy
+                            .WithOrigins(corsSettings.AllowedOrigins)
+                            .WithHeaders("Content-Type", "Authorization")
+                            .WithMethods("GET", "POST", "PUT", "DELETE");
+                    });
+                });
+                return services;
+            }
+        }
+
+        public static IServiceCollection AddCoreFormConfiguration(this IServiceCollection services, IConfiguration config) 
+        {
+            var aspnetcoreSettings = config.GetSection("aspnetcore")
+                     .Get<AspnetcoreSettings>() ?? new AspnetcoreSettings();
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = aspnetcoreSettings.MultipartBodyLengthLimit;
+            });
+            return services;
+        }
+
     }
 }

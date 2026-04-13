@@ -12,6 +12,7 @@ using SmartInventory.Seeds;
 MappingConfig.RegisterMappings();
 
 var builder = WebApplication.CreateBuilder(args);
+builder.ConfigureKestrel();
 
 // Configure Serilog
 builder.Logging.ClearProviders();   // Avoid duplicate logs
@@ -38,6 +39,8 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
+
+app.UseCors("DefaultCors");
 
 app.UseSerilogRequestLogging();     // Enable request logging
 

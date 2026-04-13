@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
-using SmartInventory.Application.Common.Exceptions;
 
-namespace SmartInventory.Application.Common.Validation
+namespace SmartInventory.Application.Common.Behaviors
 {
     public class ValidationBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
@@ -36,7 +35,7 @@ namespace SmartInventory.Application.Common.Validation
                         g => g.Key,
                         g => g.Select(f => f.ErrorMessage).Distinct().ToArray());
 
-                throw new SmartInventory.Application.Common.Exceptions.ValidationException(errors);
+                throw new Exceptions.ValidationException(errors);
             }
 
             return await next();

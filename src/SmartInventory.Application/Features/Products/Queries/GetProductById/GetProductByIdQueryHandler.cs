@@ -12,7 +12,7 @@ namespace SmartInventory.Application.Features.Products.Queries.GetProductById
     {
         public async Task<ProductDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var key = $"product:{request.Id}";
+            var key = CacheKeys<ProductDto>.ById(request.Id);
 
             var product = await cache.GetAsync<ProductDto>(key);
 
