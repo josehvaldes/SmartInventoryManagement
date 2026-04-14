@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SmartInventory.Application.Common.Cache;
 using StackExchange.Redis;
 using System;
@@ -12,37 +13,61 @@ namespace SmartInventory.Infrastructure.Data.Cache
     {
         private readonly IDatabase _db;
         private readonly int _defaultTtlSeconds;
+        private readonly ILogger<GarnetCacheService> _logger;
 
-        public GarnetCacheService(IConnectionMultiplexer mux, IConfiguration config)
+        public GarnetCacheService(IConnectionMultiplexer mux, IConfiguration config, ILogger<GarnetCacheService> logger)
         {
             _db = mux.GetDatabase();
             _defaultTtlSeconds = int.Parse(config["Cache:DefaultTTLSeconds"]!);
+            _logger = logger;
         }
 
         public async Task<T?> GetAsync<T>(string key)
         {
-            var value = await _db.StringGetAsync(key);
+            try
+            {
+                var value = await _db.StringGetAsync(key);
 
-            if (!value.HasValue)
+                if (!value.HasValue)
+                    return default;
+
+                return JsonSerializer.Deserialize<T>((string)value!);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Cache read failed for key '{Key}'. Falling through to source.", key);
                 return default;
-
-            return JsonSerializer.Deserialize<T>((string)value!);
+            }
         }
 
         public async Task SetAsync<T>(string key, T value, TimeSpan? ttl = null)
         {
-            var json = JsonSerializer.Serialize(value);
+            try
+            {
+                var json = JsonSerializer.Serialize(value);
 
-            await _db.StringSetAsync(
-                key,
-                json,
-                ttl ?? TimeSpan.FromSeconds(_defaultTtlSeconds)
-            );
+                await _db.StringSetAsync(
+                    key,
+                    json,
+                    ttl ?? TimeSpan.FromSeconds(_defaultTtlSeconds)
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Cache write failed for key '{Key}'. Continuing without cache.", key);
+            }
         }
 
         public async Task RemoveAsync(string key)
         {
-            await _db.KeyDeleteAsync(key);
+            try
+            {
+                await _db.KeyDeleteAsync(key);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Cache remove failed for key '{Key}'. Continuing without cache.", key);
+            }
         }
     }
 }

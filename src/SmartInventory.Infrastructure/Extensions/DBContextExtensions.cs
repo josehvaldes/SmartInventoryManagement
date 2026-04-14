@@ -20,10 +20,12 @@ namespace SmartInventory.Infrastructure.Extensions
                 provider => provider.GetRequiredService<AuthDbContext>());
 
             services.AddDbContext<SmartInventoryDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("SmartInventoryDb")));
+                options.UseSqlServer(config.GetConnectionString("SmartInventoryDb"),
+                    sql => sql.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null)));
 
             services.AddDbContext<AuthDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("SmartInventoryDb")));
+                options.UseSqlServer(config.GetConnectionString("SmartInventoryDb"),
+                    sql => sql.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null)));
 
             services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<IApplicationDbContext>());
             services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<IAuthDbContext>());
