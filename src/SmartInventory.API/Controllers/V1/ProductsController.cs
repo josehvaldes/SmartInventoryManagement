@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SmartInventory.API.Extensions;
+using SmartInventory.API.Services;
 using SmartInventory.Application.Features.Products.Commands.CreateProduct;
 using SmartInventory.Application.Features.Products.Commands.DeleteProduct;
 using SmartInventory.Application.Features.Products.Commands.GetUploadUrl;
@@ -23,6 +24,7 @@ namespace SmartInventory.API.Controllers.V1
     [ApiVersion("1.0")]
     public class ProductsController(IMediator mediator,
         ILogger<ProductsController> logger,
+        ILinkService linkService,
         IValidator<CreateProductRequest> productValidator,
         IValidator<IFormFile> fileValidator,
         IValidator<UploadProductRequest> uploadRequestValidator,
@@ -40,8 +42,9 @@ namespace SmartInventory.API.Controllers.V1
 
             var command = request.Adapt<CreateProductCommand>();
             var id = await mediator.Send(command);
-
-            return Created($"products/{id}", new { Id = id });
+            var links = linkService.GetProductLinks(id);
+            
+            return CreatedAtAction(nameof(GetProduct), new { id }, new { Id = id, Links = links });
         }
 
 
@@ -94,11 +97,15 @@ namespace SmartInventory.API.Controllers.V1
 
         [HttpGet]
         [Authorize]
-        public async Task<IEnumerable<ProductResponse>> Get()
+        public async Task<IActionResult> Get()
         {
             logger.LogInformation("Received request to get all products.");
-            var response = await mediator.Send(new GetProductsQuery());
-            return response.Adapt<List<ProductResponse>>();
+            var results = (await mediator.Send(new GetProductsQuery())).Adapt<List<ProductResponse>>();
+
+            foreach (var item in results)
+                item.Links = linkService.GetProductLinks(item.Id);
+
+            return Ok(results);
         }
 
         [HttpGet("{id:guid}")]
@@ -108,7 +115,10 @@ namespace SmartInventory.API.Controllers.V1
             logger.LogInformation("Received request to get product with ID: {ProductId}", id);
             var command = new GetProductByIdQuery(id);
             var response = await mediator.Send(command);
-            return Ok(response.Adapt<ProductResponse>());
+            var result = response.Adapt<ProductResponse>();
+            result.Links = linkService.GetProductLinks(id);
+
+            return Ok(result);
         }
     }
 }

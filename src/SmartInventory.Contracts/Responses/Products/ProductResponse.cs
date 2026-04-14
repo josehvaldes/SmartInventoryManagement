@@ -10,5 +10,6 @@
         public string UnitOfMeasure { get; set; } = string.Empty;
         public decimal? UnitCost { get; set; }
         public bool IsActive { get; set; } = true;
+        public IReadOnlyList<Link> Links { get; set; } = [];
     }
 }

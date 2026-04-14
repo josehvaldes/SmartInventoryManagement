@@ -6,6 +6,7 @@ namespace SmartInventory.Contracts.Responses.Warehouses
 {
     public class WarehouseResponse
     {
+        public Guid Id { get; set; }
         public string Code { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string WarehouseType { get; set; } = string.Empty;
@@ -15,6 +16,8 @@ namespace SmartInventory.Contracts.Responses.Warehouses
         public string? PostalCode { get; set; }
         public string? Country { get; set; }
         public decimal? Capacity { get; set; }
+
+        public IReadOnlyList<Link> Links { get; set; } = [];
 
     }
 }

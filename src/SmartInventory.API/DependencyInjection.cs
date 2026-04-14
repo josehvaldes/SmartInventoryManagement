@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using SmartInventory.API.HealthChecks;
+using SmartInventory.API.Services;
 using SmartInventory.API.Settings;
 using SmartInventory.API.Validators;
 using SmartInventory.Infrastructure.Settings;
@@ -28,6 +29,10 @@ namespace SmartInventory.API
             services.AddCoreFormConfiguration(config);
 
             services.AddValidatorsFromAssembly(typeof(CreateProductRequestValidator).Assembly);
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ILinkService, LinkService>();
+
             return services;
         }
 
