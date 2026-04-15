@@ -12,7 +12,6 @@ namespace SmartInventory.Application.Features.Products.Commands.CreateProduct
         decimal MinimumStockLevel,
         decimal ReorderPoint,
         decimal ReorderQuantity,
-        decimal? UnitCost,
-        string CreatedBy
+        decimal? UnitCost
     ) : ICommand<Guid>;
 }

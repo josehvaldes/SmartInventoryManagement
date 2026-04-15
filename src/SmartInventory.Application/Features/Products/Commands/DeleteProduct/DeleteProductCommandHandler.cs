@@ -1,4 +1,5 @@
-﻿using SmartInventory.Application.Common.Cache;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Application.Features.Products.DTO;
@@ -11,7 +12,7 @@ namespace SmartInventory.Application.Features.Products.Commands.DeleteProduct
     {
         public async Task<Guid> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var entity = db.Products.FirstOrDefault(x => x.Id == request.guid);
+            var entity = await db.Products.FirstOrDefaultAsync(x => x.Id == request.guid, cancellationToken);
             if (entity == null)
                 throw EntityNotFoundException.For<Product>(request.guid);
 

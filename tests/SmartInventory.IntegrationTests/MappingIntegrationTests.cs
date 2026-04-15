@@ -14,7 +14,7 @@ namespace SmartInventory.IntegrationTests
         public void ProjectTo_Mapping_IsValid()
         {
             // This test would require a mock of the database context and is typically done in integration tests rather than unit tests.
-            var connectionString = "Server=PEPUSOPC\\MSSQLSERVER01;Database=smart_inventory;Trusted_Connection=True;TrustServerCertificate=True;";
+            var connectionString = "Server=SERVERPC;Database=smart_inventory;Trusted_Connection=True;TrustServerCertificate=True;";
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
                             .UseSqlServer(connectionString)
                             .Options;

@@ -8,6 +8,7 @@ using SmartInventory.API.HealthChecks;
 using SmartInventory.API.Services;
 using SmartInventory.API.Settings;
 using SmartInventory.API.Validators;
+using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Infrastructure.Settings;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -32,6 +33,8 @@ namespace SmartInventory.API
 
             services.AddHttpContextAccessor();
             services.AddScoped<ILinkService, LinkService>();
+
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             return services;
         }

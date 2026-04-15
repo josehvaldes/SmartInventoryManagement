@@ -3,7 +3,7 @@ using SmartInventory.Domain.Entities;
 
 namespace SmartInventory.Application.Features.Warehouses.Commands.CreateWarehouse
 {
-    public class CreateWarehouseCommandHandler(IApplicationDbContext db)
+    public class CreateWarehouseCommandHandler(IApplicationDbContext db, ICurrentUserService currentUserService)
         : ICommandHandler<CreateWarehouseCommand, Guid>
     {
         public async Task<Guid> Handle(CreateWarehouseCommand command, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ namespace SmartInventory.Application.Features.Warehouses.Commands.CreateWarehous
                 command.ManagerName,
                 command.ManagerEmail,
                 command.ManagerPhone,
-                command.CreatedBy);
+                currentUserService.Username);
 
             db.Warehouses.Add(warehouse);
 

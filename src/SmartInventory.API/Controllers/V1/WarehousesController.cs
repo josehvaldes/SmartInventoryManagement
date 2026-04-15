@@ -53,7 +53,7 @@ namespace SmartInventory.API.Controllers.V1
             var command = new DeleteWarehouseCommand(id);
             await mediator.Send(command);
             logger.LogInformation("Warehouse with ID: {Id} has been deleted.", id);
-            return Ok(new { Id = id });
+            return NoContent();
         }
 
         [HttpGet]

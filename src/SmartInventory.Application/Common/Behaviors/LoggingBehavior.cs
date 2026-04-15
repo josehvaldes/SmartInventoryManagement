@@ -31,10 +31,8 @@ namespace SmartInventory.Application.Common.Behaviors
                 var response = await next();
                 stopwatch.Stop();
 
-                logger.LogInformation(
-                    "Handled {RequestName} in {ElapsedMs}ms",
-                    requestName,
-                    stopwatch.ElapsedMilliseconds);
+                if (request is not ISensitiveRequest)
+                    logger.LogInformation("Handled {RequestName} in {ElapsedMs}ms", requestName, stopwatch.ElapsedMilliseconds);
 
                 return response;
             }

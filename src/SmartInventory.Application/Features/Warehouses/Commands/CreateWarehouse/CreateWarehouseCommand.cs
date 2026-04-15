@@ -15,7 +15,6 @@ namespace SmartInventory.Application.Features.Warehouses.Commands.CreateWarehous
         decimal? Capacity,
         string ManagerName,
         string ManagerEmail,
-        string ManagerPhone,
-        string CreatedBy
+        string ManagerPhone
     ) : ICommand<Guid>;
 }

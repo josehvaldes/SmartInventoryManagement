@@ -43,6 +43,7 @@ namespace SmartInventory.API.Controllers.V1
             validationResult.ThrowIfInvalid();
 
             var command = request.Adapt<CreateProductCommand>();
+
             var id = await mediator.Send(command);
             var links = linkService.GetProductLinks(id);
             
@@ -94,7 +95,7 @@ namespace SmartInventory.API.Controllers.V1
             var command = new DeleteProductCommand(id);
             await mediator.Send(command);
             logger.LogInformation("Product with ID: {ProductId} has been deleted.", id);
-            return Ok(new { Id = id });
+            return NoContent();
         }
 
         [HttpGet]

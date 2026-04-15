@@ -3,7 +3,7 @@ using SmartInventory.Domain.Entities;
 
 namespace SmartInventory.Application.Features.Products.Commands.CreateProduct
 {
-    public class CreateProductCommandHandler(IApplicationDbContext db)
+    public class CreateProductCommandHandler(IApplicationDbContext db, ICurrentUserService currentUserService)
         : ICommandHandler<CreateProductCommand, Guid>
     {
         public async Task<Guid> Handle(CreateProductCommand command, CancellationToken cancellationToken)
@@ -18,7 +18,7 @@ namespace SmartInventory.Application.Features.Products.Commands.CreateProduct
                 command.ReorderPoint,
                 command.ReorderQuantity,
                 command.UnitCost,
-                command.CreatedBy);
+                currentUserService.Username);
 
             db.Products.Add(product);
 

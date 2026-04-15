@@ -11,6 +11,9 @@ namespace SmartInventory.Contracts.Requests.Products
         public string Description { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public string UnitOfMeasure { get; set; } = string.Empty;
+        public decimal MinimumStockLevel { get; set; }
+        public decimal ReorderPoint { get; set; }
+        public decimal ReorderQuantity { get; set; }        
         public decimal? UnitCost { get; set; }
     }
 }
