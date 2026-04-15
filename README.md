@@ -6,7 +6,7 @@ A modern, enterprise-grade inventory management system built with .NET 10, demon
 
 **Purpose:** Portfolio POC showcasing production-ready .NET development with AI integration capabilities  
 **Timeline:** 6-week development cycle  
-**Architecture:** 'Pargmatic' Clean Architecture with Vertical Slice flexibility
+**Architecture:** 'Pragmatic' Clean Architecture with Vertical Slice flexibility
 
 This system manages product inventory across multiple warehouses, handles purchase orders, tracks stock movements, and provides automated alerts for low stock conditions.
 
@@ -21,7 +21,6 @@ The project implements a **hybrid architecture** combining:
 - **Vertical Slice Architecture** for feature-focused development
 - **Domain-Driven Design (DDD)** with rich domain models
 - **CQRS-lite** for separating read and write operations
-- ** Specification Pattern ** for reusable and complex EF queries.
 
 ### Key Benefits
 ✅ Highly maintainable and testable  
@@ -37,42 +36,52 @@ The project implements a **hybrid architecture** combining:
 ### Core Framework
 - **.NET 10** - Latest framework
 - **C# 13** - Modern language features
-- **ASP.NET Core Minimal APIs** - Lightweight, high-performance APIs
+- **ASP.NET Core MVC Controllers** - Versioned REST API controllers
 
 ### Database & Data Access
 - **SQL Server 2025** - Primary database
-- **Entity Framework Core 10** - ORM for standard operations
-- **Dapper** - High-performance queries for complex reports
+- **Entity Framework Core 10** - ORM with code-first migrations (two separate DbContexts: Inventory and Auth)
 
 ### Caching & Background Processing
-- **StackExchange.Redis** - Distributed caching
-- **Quartz.NET** - Scheduled jobs (low stock checks, reorder suggestions)
+- **Microsoft Garnet** - Redis-compatible distributed cache (via StackExchange.Redis client)
+- **Quartz.NET** - Scheduled background jobs (e.g. low stock checks)
 
 ### Validation & Mapping
-- **FluentValidation 11.x** - Request validation
-- **AutoMapper 13.x** - DTO mapping
+- **FluentValidation 11.x** - Request validation (pipeline behavior + controller-level)
+- **Mapster** - High-performance object mapping with custom type adapter configurations
 
-### Architecture Patterns
-- **MediatR** - Command/Query handling (Mediator pattern)
-- **Repository Pattern** - Data access abstraction
-- **Unit of Work Pattern** - Transaction management
+### Architecture Patterns & Libraries
+- **MediatR** - Command/Query handling with pipeline behaviors (Logging, Validation, UnitOfWork)
+- **Asp.Versioning** - URL-segment and header-based API versioning
+- **HATEOAS** - Hypermedia links on resource responses via `ILinkService`
+- **Polly** - Resilience and transient-fault-handling policies (retry + circuit breaker)
+
+### Cloud & File Storage
+- **AWS S3** - Product image storage with pre-signed upload URLs
+- **Amazon SDK for .NET** - S3 client integration
+
+### Orchestration
+- **.NET Aspire** - Local development orchestration (SQL Server + Redis + API)
 
 ### Logging & Monitoring
-- **Serilog** - Structured logging with SQL Server sink
-- **Health Checks** - SQL Server, Redis, and application health monitoring
+- **Serilog** - Structured logging with request logging middleware
+- **Health Checks** - SQL Server, Redis, memory, and disk health endpoints (`/health`, `/health/ready`, `/health/live`)
+- **HealthChecks.UI** - Rich JSON health check responses
 
 ### API Documentation
 - **Scalar** - Modern OpenAPI documentation UI
 
 ### Security
-- **JWT Bearer Authentication** - Token-based auth
-- **BCrypt.Net** - Password hashing
+- **JWT Bearer Authentication** - Token-based auth with configurable issuer/audience/secret
+- **ASP.NET Core Identity** - User and role management
+- **Role-based Authorization** - `AdminOnly` and `ManagerOnly` policies
+- **Rate Limiting** - Sliding window (global), fixed window (write ops), strict fixed window (auth endpoints)
+- **CORS** - Configurable allowed origins per policy
 
 ### Testing
-- **xUnit** - Testing framework
+- **xUnit v3** - Testing framework
 - **FluentAssertions** - Readable assertions
 - **NSubstitute** - Mocking
-- **Testcontainers** (optional) - Integration tests with real databases
 
 ---
 
@@ -83,49 +92,70 @@ SmartInventory/
 │
 ├── src/
 │   ├── SmartInventory.API/              # Presentation Layer
-│   │   ├── Endpoints/                   # Minimal API endpoints
-│   │   ├── Middleware/                  # Exception handling, logging
-│   │   ├── Filters/                     # Validation filters
-│   │   └── Program.cs                   # Entry point
+│   │   ├── Controllers/V1/              # Versioned MVC controllers (Products, Warehouses, Auth)
+│   │   ├── Middleware/                  # Global exception handler
+│   │   ├── Validators/                  # FluentValidation validators (API layer)
+│   │   ├── HealthChecks/                # Memory and disk health checks
+│   │   ├── Services/                    # ILinkService (HATEOAS), ICurrentUserService
+│   │   ├── Mappings/                    # Mapster type adapter configuration
+│   │   ├── Settings/                    # CORS and Aspnet core settings
+│   │   └── Program.cs                   # Entry point + auto-migration + seeding (dev)
 │   │
 │   ├── SmartInventory.Application/      # Application Layer
 │   │   ├── Features/                    # Vertical slices by feature
-│   │   │   ├── Products/
-│   │   │   ├── Warehouses/
-│   │   │   ├── Stock/
-│   │   │   ├── Suppliers/
-│   │   │   └── PurchaseOrders/
+│   │   │   ├── Auth/                    # Login command
+│   │   │   ├── Products/                # Create, Delete, GetById, GetAll, Upload, GetUploadUrl
+│   │   │   ├── Warehouses/              # Create, Delete, GetById, GetAll
+│   │   │   └── Stocks/                  # GetStockByProductId
 │   │   ├── Common/
-│   │   │   ├── Behaviors/               # MediatR pipelines
-│   │   │   ├── DTOs/
-│   │   │   └── Validation/
-│   │   └── Interfaces/
+│   │   │   ├── Behaviors/               # MediatR pipelines: Logging, Validation, UnitOfWork
+│   │   │   ├── Cache/                   # ICacheService abstraction + cache keys
+│   │   │   ├── Exceptions/              # EntityNotFoundException, ValidationException
+│   │   │   ├── Interfaces/              # IApplicationDbContext, IAuthDbContext, IJwtTokenService,
+│   │   │   │                            # IFileStorageService, ICurrentUserService, ICommand/IQuery
+│   │   │   └── Models/                  # PagedResult<T>
+│   │   └── DependencyInjection.cs
 │   │
 │   ├── SmartInventory.Domain/           # Domain Layer (Core)
-│   │   ├── Entities/                    # Domain entities
-│   │   ├── ValueObjects/                # Address, Money
-│   │   ├── Enums/                       # Domain enumerations
-│   │   ├── Events/                      # Domain events
-│   │   └── Interfaces/                  # Repository interfaces
+│   │   ├── Entities/                    # Product, Warehouse, Stock, StockTransaction,
+│   │   │                                # Supplier, PurchaseOrder, PurchaseOrderItem, StockAlert
+│   │   ├── Identity/                    # User, Role, UserRole (ASP.NET Core Identity)
+│   │   ├── Enums/                       # ProductCategory, UnitOfMeasure, TransactionType,
+│   │   │                                # PurchaseOrderStatus, AlertStatus, AlertSeverity, etc.
+│   │   ├── Events/                      # Domain events (StockLevelChanged, ProductReorderPointReached, etc.)
+│   │   └── Exceptions/                  # Domain-specific exceptions
 │   │
-│   ├── SmartInventory.Infrastructure/   # Infrastructure Layer
+│   ├── SmartInventory.Infrastructure/   # Infrastructure Layer (SQL Server + Garnet/Redis + Quartz)
 │   │   ├── Data/
-│   │   │   ├── Context/                 # EF Core DbContext
-│   │   │   ├── Configurations/          # Entity configurations
-│   │   │   ├── Repositories/            # Repository implementations
-│   │   │   └── Migrations/
-│   │   ├── BackgroundJobs/              # Quartz.NET jobs
-│   │   ├── Caching/                     # Redis implementation
-│   │   └── Logging/                     # Serilog setup
+│   │   │   ├── Context/                 # SmartInventoryDbContext, AuthDbContext (+ factories)
+│   │   │   ├── Configurations/          # EF Core entity type configurations
+│   │   │   ├── Cache/                   # GarnetCacheService (StackExchange.Redis)
+│   │   │   └── Migrations/              # EF Core migrations (Inventory + Auth schemas)
+│   │   ├── Auth/                        # JwtTokenService
+│   │   ├── BackgroundJobs/              # LowStockCheckJob (Quartz.NET)
+│   │   ├── Extensions/                  # QuartzExtensions, DBContextExtensions
+│   │   └── Settings/                    # JwtSettings
 │   │
-│   └── SmartInventory.Contracts/        # Shared DTOs
-│       ├── Requests/
-│       └── Responses/
+│   ├── SmartInventory.Infrastructure.AWS/  # AWS Infrastructure Layer
+│   │   ├── Storage/                     # S3FileStorageService (upload + pre-signed URLs)
+│   │   ├── Settings/                    # AwsSettings
+│   │   └── PollyPolicies.cs             # Retry + circuit breaker policies
+│   │
+│   ├── SmartInventory.AspireAppHost/    # .NET Aspire Orchestration
+│   │   └── AppHost.cs                   # Wires SQL Server, Redis, and API resources
+│   │
+│   └── SmartInventory.Contracts/        # Shared Request/Response DTOs
+│       ├── Requests/                    # CreateProductRequest, CreateWarehouseRequest,
+│       │                                # LoginRequest, UploadProductRequest, GetUploadUrlRequest
+│       └── Responses/                   # ProductResponse, WarehouseResponse, LoginResponse,
+│                                        # PagedResponse<T>, Link
+│
+├── seeds/
+│   └── SmartInventory.Seeds/            # Database seeder (auto-run in Development)
 │
 ├── tests/
-│   ├── SmartInventory.UnitTests/
-│   ├── SmartInventory.IntegrationTests/
-│   └── SmartInventory.ArchitectureTests/
+│   ├── SmartInventory.UnitTests/        # Handler unit tests (Products, Warehouses, Stocks)
+│   └── SmartInventory.IntegrationTests/ # Mapping integration tests
 │
 └── docs/
     ├── architecture/                     # Architecture documents
@@ -137,35 +167,43 @@ SmartInventory/
 
 ## 🎯 Core Features
 
-### Inventory Management
+### Products
 - ✅ Product catalog with SKU management
-- ✅ Multi-warehouse support
-- ✅ Real-time stock tracking
-- ✅ Stock reservations for orders
-- ✅ Automated low stock alerts
+- ✅ Create, retrieve (by ID / paged list), and delete products
+- ✅ Product image upload to AWS S3 (direct stream upload)
+- ✅ Pre-signed S3 URL generation for client-side uploads
+- ✅ Paginated product listing with HATEOAS links
 
-### Stock Transactions
-- ✅ Receipt, Issue, Transfer, Adjustment tracking
-- ✅ Immutable audit trail
-- ✅ Transaction reversal support
-- ✅ Historical reporting
+### Warehouses
+- ✅ Multi-warehouse support (Retail, Distribution, Cold Storage, etc.)
+- ✅ Create, retrieve (by ID / paged list), and delete warehouses
+- ✅ Address value object embedded in warehouse entity
+- ✅ HATEOAS links on warehouse responses
 
-### Purchase Orders
-- ✅ Supplier management
-- ✅ PO creation and approval workflow
-- ✅ Automated stock updates on receipt
-- ✅ Status tracking (Draft → Submitted → Confirmed → Received)
+### Stock
+- ✅ Stock entity per product/warehouse combination
+- ✅ Query stock levels by product ID
+- ✅ Domain entities for StockTransaction and StockAlert defined
 
-### Alerts & Notifications
-- ✅ Low stock alerts
-- ✅ Reorder point monitoring
-- ✅ Alert severity levels
-- ✅ Acknowledgment and resolution workflow
+### Authentication & Authorization
+- ✅ JWT login endpoint with FluentValidation
+- ✅ Role-based authorization (`AdminOnly`, `ManagerOnly` policies)
+- ✅ Rate-limited auth endpoint (5 req/min, no queuing)
+- 🔲 Refresh token endpoint (placeholder — not fully implemented)
 
 ### Background Jobs
-- ✅ Automated low stock checks (hourly)
-- ✅ Daily stock snapshots
-- ✅ Reorder suggestions
+- ✅ Low stock check job wired with Quartz.NET (runs on cron schedule)
+- 🔲 Full stock check logic (job scaffolded, business logic pending)
+- 🔲 Daily stock snapshots
+- 🔲 Reorder suggestions
+
+### Purchase Orders & Suppliers
+- 🔲 Supplier management (domain entities defined, API not yet implemented)
+- 🔲 PO creation and approval workflow
+- 🔲 Status tracking (Draft → Submitted → Confirmed → Received)
+
+### Alerts & Notifications
+- 🔲 Low stock alert workflow (domain entities defined, API not yet implemented)
 
 ---
 
@@ -175,8 +213,9 @@ SmartInventory/
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [SQL Server 2025 Developer](https://www.microsoft.com/sql-server/sql-server-downloads)
-- [Redis](https://redis.io/download) (optional for local development)
-- IDE: Visual Studio 2026, VS Code
+- [Microsoft Garnet](https://microsoft.github.io/garnet/) or [Redis](https://redis.io/download) (optional for local development)
+- AWS account with an S3 bucket (required for file upload features)
+- IDE: Visual Studio 2026
 
 ### Installation
 
@@ -186,14 +225,25 @@ SmartInventory/
    cd SmartInventoryManagement
    ```
 
-2. **Update connection strings**
-   
+2. **Update connection strings and settings**
+
    Edit `src/SmartInventory.API/appsettings.Development.json`:
    ```json
    {
      "ConnectionStrings": {
-       "DefaultConnection": "Server=localhost;Database=SmartInventoryDB;Trusted_Connection=True;TrustServerCertificate=True;",
-       "RedisConnection": "localhost:6379"
+       "SmartInventoryDb": "Server=localhost;Database=SmartInventoryDB;Trusted_Connection=True;TrustServerCertificate=True;",
+       "redis": "localhost:6379"
+     },
+     "JwtSettings": {
+       "Secret": "<your-secret>",
+       "Issuer": "<your-issuer>",
+       "Audience": "<your-audience>"
+     },
+     "AwsSettings": {
+       "AccessKey": "<your-access-key>",
+       "SecretKey": "<your-secret-key>",
+       "Region": "us-east-1",
+       "S3BucketName": "<your-bucket>"
      }
    }
    ```
@@ -203,22 +253,31 @@ SmartInventory/
    dotnet restore
    ```
 
-4. **Create database**
-   ```powershell
-   cd \scripts\database
-   sqlcmd -S yourServerName[\instanceName] -i schema.sql 
+4. **Run the application**
 
-   ```
-
-5. **Run the application**
+   **Option A – Direct run** (auto-migrates and seeds the DB in Development):
    ```powershell
-   cd ../SmartInventory.API
+   cd src/SmartInventory.API
    dotnet run
    ```
 
-6. **Access API documentation**
-   
-   Open browser to: `https://localhost:5001/scalar/v1` (or configured port)
+   **Option B – .NET Aspire** (orchestrates SQL Server, Redis, and the API together):
+   ```powershell
+   cd src/SmartInventory.AspireAppHost
+   dotnet run
+   ```
+
+5. **Access API documentation**
+
+   Open browser to: `https://localhost:<port>/scalar/v1`
+
+6. **Health check endpoints**
+
+   | Endpoint | Description |
+   |----------|-------------|
+   | `/health` | Overall health |
+   | `/health/ready` | Readiness (SQL Server, Redis, memory, disk) |
+   | `/health/live` | Liveness (self check) |
 
 ---
 
@@ -239,16 +298,18 @@ dotnet test tests/SmartInventory.IntegrationTests
 dotnet test
 ```
 
+> **Note:** Integration tests require a live SQL Server connection. Update the connection string in `MappingIntegrationTests.cs` before running.
+
 ---
 
 ## 📊 Database Schema
 
-The system uses SQL Server with the following schema organization:
+The system uses SQL Server with two separate EF Core DbContexts:
 
-- **Inventory Schema**: Products, Warehouses, Stock, StockTransactions
-- **Purchasing Schema**: Suppliers, PurchaseOrders, PurchaseOrderItems
-- **Alerts Schema**: StockAlerts
-- **Audit Schema**: Audit logs (future)
+- **SmartInventoryDbContext** – Inventory schema: Products, Warehouses, Stock, StockTransactions, Suppliers, PurchaseOrders, PurchaseOrderItems, StockAlerts
+- **AuthDbContext** – Identity schema: Users, Roles, UserRoles (ASP.NET Core Identity)
+
+Migrations are applied automatically on startup in `Development` mode. The `SmartInventory.Seeds` project seeds initial data after migration.
 
 See [Database Schema Documentation](docs/architecture/smart-inventory-db-schema.md) for detailed schema design.
 
@@ -260,25 +321,26 @@ This project demonstrates the following design patterns:
 
 | Pattern | Purpose | Location |
 |---------|---------|----------|
-| **Repository** | Data access abstraction | Infrastructure |
-| **Unit of Work** | Transaction management | Infrastructure |
-| **Mediator (MediatR)** | Decoupled request handling | Application |
-| **CQRS** | Separate read/write operations | Application |
-| **Strategy** | Inventory valuation algorithms | Domain/Application |
-| **Factory** | Object creation | Infrastructure |
-| **Specification** | Business rule encapsulation | Domain |
+| **CQRS** | Separate read/write operations via ICommand/IQuery | Application |
+| **Mediator (MediatR)** | Decoupled request handling with pipeline behaviors | Application |
+| **Unit of Work** | Transaction management via behavior | Application/Infrastructure |
+| **Factory** | DbContext factory for design-time migrations | Infrastructure |
+| **Chain of Responsibility** | MediatR pipeline: Logging → Validation → UnitOfWork | Application |
+| **Decorator** | Polly wrapping AWS S3 calls with retry + circuit breaker | Infrastructure.AWS |
+| **HATEOAS** | Hypermedia links on API responses | API |
 
 ---
 
 ## 🔐 Security Features
 
-- JWT token-based authentication
-- Role-based authorization (RBAC)
-- Secure password hashing (BCrypt)
-- Input validation and sanitization
-- SQL injection prevention (parameterized queries)
-- HTTPS enforcement
-- API rate limiting
+- JWT token-based authentication (configurable secret, issuer, audience)
+- Role-based authorization (AdminOnly, ManagerOnly policies)
+- ASP.NET Core Identity for user and role management
+- Input validation via FluentValidation (pipeline + controller layer)
+- SQL injection prevention (parameterized EF Core queries)
+- Rate limiting: sliding window (global), fixed window (writes), strict fixed window (auth)
+- CORS: configurable per-policy allowed origins
+- HTTPS enforcement (Development environment)
 
 ---
 
@@ -286,9 +348,11 @@ This project demonstrates the following design patterns:
 
 **Current Implementation:**
 - Stateless API design (horizontal scaling ready)
-- Distributed caching with Redis
-- Database connection pooling
-- Background job processing
+- Distributed caching with Garnet/Redis
+- Database connection pooling via EF Core
+- Background job processing with Quartz.NET
+- .NET Aspire for local orchestration (cloud-deployable)
+- Polly resilience policies on external S3 calls
 
 **Future Enhancements:**
 - Read replicas for reporting
@@ -322,24 +386,23 @@ The system is designed to integrate with AI agents for:
 ### Phase 1 (Weeks 1-2) ✅
 - Project setup and architecture
 - Domain model implementation
-- Database schema creation
+- Database schema and EF Core migrations
+- JWT authentication and ASP.NET Core Identity
 
-### Phase 2 (Weeks 3-4)
-- Core CRUD operations
+### Phase 2 (Weeks 3-4) ✅
+- Products and Warehouses CRUD with versioned controllers
+- AWS S3 file upload (direct stream + pre-signed URLs)
+- MediatR pipeline behaviors (Logging, Validation, UnitOfWork)
+- Mapster type adapter mappings
+- API versioning, rate limiting, CORS, HATEOAS links
+- .NET Aspire orchestration
+
+### Phase 3 (Weeks 5-6) 🔲
 - Stock transaction management
 - Purchase order workflow
-
-### Phase 3 (Weeks 5-6)
-- Alert system
-- Background jobs
-- API documentation
-- Testing suite
-
-### Future Enhancements
-- Web dashboard (Blazor/React)
-- Advanced reporting
-- Multi-tenant support
-- Barcode scanning integration
+- Alert system and notifications
+- Full background job implementation
+- Expanded test suite
 
 ---
 
