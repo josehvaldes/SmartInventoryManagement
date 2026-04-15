@@ -12,9 +12,10 @@ using SmartInventory.Application.Features.Warehouses.Commands.CreateWarehouse;
 using SmartInventory.Application.Features.Warehouses.Commands.DeleteWarehouse;
 using SmartInventory.Application.Features.Warehouses.Queries.GetAllWarehouses;
 using SmartInventory.Application.Features.Warehouses.Queries.GetWarehouseById;
+using SmartInventory.Contracts.Requests;
 using SmartInventory.Contracts.Requests.Warehouses;
+using SmartInventory.Contracts.Responses;
 using SmartInventory.Contracts.Responses.Warehouses;
-using SmartInventory.Domain.Entities;
 
 namespace SmartInventory.API.Controllers.V1
 {
@@ -57,15 +58,23 @@ namespace SmartInventory.API.Controllers.V1
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll([FromQuery] GetPagingRequest request)
         {
             logger.LogInformation("Received request to get all warehouses");
-            var results = (await mediator.Send(new GetAllWarehousesQuery())).Adapt<List<WarehouseResponse>>();
-            
-            foreach (var item in results)
+            var pagedResult = await mediator.Send(new GetAllWarehousesQuery(request.PageNumber, request.PageSize));
+
+            var items = pagedResult.Items.Adapt<List<WarehouseResponse>>();
+            foreach (var item in items)
                 item.Links = linkService.GetWarehouseLinks(item.Id);
 
-            return Ok(results);
+            return Ok(new PagedResponse<WarehouseResponse>(
+                items,
+                pagedResult.TotalCount,
+                pagedResult.PageNumber,
+                pagedResult.PageSize,
+                pagedResult.TotalPages,
+                pagedResult.HasPreviousPage,
+                pagedResult.HasNextPage));
         }
 
         [HttpGet("{id:guid}")]

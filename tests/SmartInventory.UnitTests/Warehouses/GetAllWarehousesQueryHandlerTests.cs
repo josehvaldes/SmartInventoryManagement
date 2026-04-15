@@ -34,14 +34,14 @@ namespace SmartInventory.UnitTests.Warehouses
         public async Task GetAllWarehousesQueryHandler_Returns_List_of_Warehouses()
         {
             // Arrange
-            var query = new GetAllWarehousesQuery();
+            var query = new GetAllWarehousesQuery(PageNumber: 1, PageSize: 20);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             result.Should().NotBeNull();
-            result.Count.Should().Be(_warehouses.Count);
+            result.Items.Count.Should().Be(_warehouses.Count);
         }
 
         [Fact]
@@ -50,14 +50,14 @@ namespace SmartInventory.UnitTests.Warehouses
             // Arrange
             var emptySet = MockDbSetHelper.CreateMockDbSet(new List<Warehouse>());
             _db.Warehouses.Returns(emptySet);
-            var query = new GetAllWarehousesQuery();
+            var query = new GetAllWarehousesQuery(PageNumber: 1, PageSize: 20);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().BeEmpty();
+            result.Items.Should().BeEmpty();
         }
     }
 }

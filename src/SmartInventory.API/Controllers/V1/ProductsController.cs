@@ -12,8 +12,10 @@ using SmartInventory.Application.Features.Products.Commands.DeleteProduct;
 using SmartInventory.Application.Features.Products.Commands.GetUploadUrl;
 using SmartInventory.Application.Features.Products.Commands.UploadProduct;
 using SmartInventory.Application.Features.Products.Queries.GetProductById;
-using SmartInventory.Application.Features.Products.Queries.GetProducts;
+using SmartInventory.Application.Features.Products.Queries.GetAllProducts;
+using SmartInventory.Contracts.Requests;
 using SmartInventory.Contracts.Requests.Products;
+using SmartInventory.Contracts.Responses;
 using SmartInventory.Contracts.Responses.Products;
 using ValidationException = SmartInventory.Application.Common.Exceptions.ValidationException;
 
@@ -97,15 +99,23 @@ namespace SmartInventory.API.Controllers.V1
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll([FromQuery] GetPagingRequest request)
         {
             logger.LogInformation("Received request to get all products.");
-            var results = (await mediator.Send(new GetProductsQuery())).Adapt<List<ProductResponse>>();
+            var pagedResult = await mediator.Send(new GetAllProductsQuery(request.PageNumber, request.PageSize));
 
-            foreach (var item in results)
+            var items = pagedResult.Items.Adapt<List<ProductResponse>>();
+            foreach (var item in items)
                 item.Links = linkService.GetProductLinks(item.Id);
 
-            return Ok(results);
+            return Ok(new PagedResponse<ProductResponse>(
+                items,
+                pagedResult.TotalCount,
+                pagedResult.PageNumber,
+                pagedResult.PageSize,
+                pagedResult.TotalPages,
+                pagedResult.HasPreviousPage,
+                pagedResult.HasNextPage));
         }
 
         [HttpGet("{id:guid}")]

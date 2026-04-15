@@ -5,8 +5,10 @@ namespace SmartInventory.UnitTests.Common
     internal class TestAsyncEnumerable<T>(Expression expression)
     : EnumerableQuery<T>(expression), IAsyncEnumerable<T>, IQueryable<T>
     {
+        IQueryProvider IQueryable.Provider =>
+            new TestAsyncQueryProvider<T>((IQueryProvider)this);
+
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken ct = default) =>
             new TestAsyncEnumerator<T>(this.AsEnumerable().GetEnumerator());
-        
     }
 }

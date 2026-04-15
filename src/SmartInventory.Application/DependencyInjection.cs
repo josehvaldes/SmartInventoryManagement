@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartInventory.Application.Common.Behaviors;
-using SmartInventory.Application.Features.Products.Queries.GetProducts;
+using SmartInventory.Application.Features.Products.Queries.GetAllProducts;
 
 namespace SmartInventory.Application
 {
@@ -16,7 +16,7 @@ namespace SmartInventory.Application
 
             // Scan the Application assembly where all handlers live
             services.AddMediatR(cfg => {
-                cfg.RegisterServicesFromAssembly(typeof(GetProductsQuery).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(GetAllProductsQuery).Assembly);
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
