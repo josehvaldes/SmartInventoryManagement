@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Mapster;
-using Newtonsoft.Json;
 using NSubstitute;
 using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Exceptions;
