@@ -4,21 +4,14 @@ using System.Text;
 
 namespace SmartInventory.Domain.Events
 {
-    internal class StockLevelChangedEvent
+    public class StockLevelChangedEvent : IDomainEvent
     {
-        /*
-         * ProductId: Guid
-         * WarehouseId: Guid
-         * OldQuantity: decimal
-         * NewQuantity: decimal
-         * ChangeReason: string
-         * OccurredAt: DateTime
-         */
-        public Guid ProductId { get; }
-        public Guid WarehouseId { get; }
-        public decimal OldQuantity { get; }
-        public decimal NewQuantity { get; }
-        public string ChangeReason { get; } = string.Empty;
-        public DateTime OccurredAt { get; }
+        public Guid ProductId { get; set; }
+        public Guid WarehouseId { get; set; }
+        public decimal OldQuantity { get; set; }
+        public decimal NewQuantity { get; set; }
+        public string ChangeReason { get; set; } = string.Empty;
+        public DateTime OccurredAt { get; set; }
+
     }
 }

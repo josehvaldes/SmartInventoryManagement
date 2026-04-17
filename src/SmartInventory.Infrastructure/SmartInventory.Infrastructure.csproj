@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Repositories\" />
+    <Folder Include="EventDispatchers\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

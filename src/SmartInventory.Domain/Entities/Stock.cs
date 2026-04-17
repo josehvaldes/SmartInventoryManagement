@@ -1,6 +1,9 @@
-﻿using System;
+﻿using SmartInventory.Domain.Events;
+using SmartInventory.Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Transactions;
 
 namespace SmartInventory.Domain.Entities
 {
@@ -17,10 +20,8 @@ namespace SmartInventory.Domain.Entities
     /// LastUpdatedAt: DateTime (UTC)
     /// LastTransactionId: Guid? (reference to last transaction)
     /// </summary>
-    public class Stock
+    public class Stock : BaseEntity
     {
-        
-
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
         public Guid WarehouseId { get; set; }
@@ -30,5 +31,35 @@ namespace SmartInventory.Domain.Entities
         public DateTime? LastStockTakeDate { get; set; } = null!;
         public DateTime LastUpdatedAt { get; set; }
         public Guid LastTransactionId { get; set; }
+
+        public void RemoveStock(decimal quantity, Guid transactionId) 
+        {
+            if (QuantityAvailable < quantity)
+            {
+                throw new InsufficientStockException() { 
+                    ProductId = ProductId,
+                    WarehouseId = WarehouseId,
+                    RequestedQuantity = quantity,
+                    AvailableQuantity = QuantityAvailable
+                };
+            }
+
+            QuantityOnHand -= quantity;
+            QuantityAvailable -= quantity;
+
+            LastStockTakeDate = DateTime.UtcNow;
+            LastUpdatedAt = DateTime.UtcNow;
+            LastTransactionId = transactionId;
+
+            _domainEvents.Add(new StockLevelChangedEvent
+            {
+                ProductId = ProductId,
+                WarehouseId = WarehouseId,
+                OldQuantity = QuantityAvailable + quantity,
+                NewQuantity = QuantityAvailable,
+                ChangeReason = "Stock removed",
+                OccurredAt = DateTime.UtcNow
+            });
+        }
     }
 }

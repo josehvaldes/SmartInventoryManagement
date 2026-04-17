@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Stocks\Commands\" />
     <Folder Include="Features\Warehouses\Commands\UpdateWarehouse\" />
   </ItemGroup>
 

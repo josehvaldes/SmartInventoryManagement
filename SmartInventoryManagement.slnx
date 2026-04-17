@@ -3,6 +3,7 @@
     <Project Path="seeds/SmartInventory.Seeds/SmartInventory.Seeds.csproj" Id="d02b7eca-a098-4678-9720-78ca6d5501e1" />
   </Folder>
   <Folder Name="/Solution Items/">
+    <File Path="docs/architecture/smart-inventory-architecture.md" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">

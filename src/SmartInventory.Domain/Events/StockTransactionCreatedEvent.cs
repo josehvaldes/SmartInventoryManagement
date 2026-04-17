@@ -14,7 +14,7 @@ namespace SmartInventory.Domain.Events
     /// Quantity: decimal
     /// CreatedAt: DateTime
     /// </summary>
-    public class StockTransactionCreatedEvent
+    public class StockTransactionCreatedEvent : IDomainEvent
     {
         public Guid TransactionId { get; set; }
         public TransactionType TransactionType { get; set; }
@@ -23,7 +23,5 @@ namespace SmartInventory.Domain.Events
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
         public DateTime CreatedAt { get; set; }
-
-        public StockTransactionCreatedEvent() { }
     }
 }

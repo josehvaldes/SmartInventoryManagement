@@ -3,7 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Polly;
+using SmartInventory.Application.Common.Integration;
 using SmartInventory.Application.Common.Interfaces;
+using SmartInventory.Infrastructure.AWS.EventPublisher;
 using SmartInventory.Infrastructure.AWS.Settings;
 using SmartInventory.Infrastructure.AWS.Storage;
 using System;
@@ -31,6 +33,9 @@ namespace SmartInventory.Infrastructure.AWS
 
             services.AddPollyDependencies(config);
             services.AddSingleton<IFileStorageService, S3FileStorageService>();
+
+            // Register the SNS event publisher
+            services.AddScoped<IIntegrationEventPublisher, SNSEventPublisher>();
 
             return services;
         }
