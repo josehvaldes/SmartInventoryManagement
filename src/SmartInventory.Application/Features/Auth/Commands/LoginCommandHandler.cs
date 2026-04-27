@@ -8,8 +8,8 @@ using SmartInventory.Domain.Identity;
 
 namespace SmartInventory.Application.Features.Auth.Commands
 {
-    public class LoginCommandHandler(IAuthDbContext db, 
-        IJwtTokenService jwt, 
+    public class LoginCommandHandler(IAuthDbContext db,
+        IJwtTokenService jwt,
         IPasswordHasher<User> hasher,
         ILogger<LoginCommandHandler> logger)
     : ICommandHandler<LoginCommand, LoginResponse>
@@ -27,9 +27,21 @@ namespace SmartInventory.Application.Features.Auth.Commands
             }
 
             var roles = user.UserRoles.Select(ur => ur.Role.Name);
-            var token = jwt.GenerateToken(user, roles);
+            var accessToken = jwt.GenerateAccessToken(user, roles);
+            var (refreshTokenValue, refreshTokenExpiry) = jwt.GenerateRefreshToken();
 
-            return new LoginResponse(token, user.Username);
+            db.RefreshTokens.Add(new RefreshToken
+            {
+                Token = refreshTokenValue,
+                UserId = user.Id,
+                ExpiresAt = refreshTokenExpiry
+            });
+
+            return new LoginResponse(accessToken, user.Username, jwt.AccessTokenExpirySeconds)
+            {
+                RawRefreshToken = refreshTokenValue,
+                RefreshTokenExpiry = refreshTokenExpiry
+            };
         }
     }
 }

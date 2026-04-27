@@ -17,13 +17,25 @@ namespace SmartInventory.Infrastructure.Extensions
                 q.AddJob<LowStockCheckJob>(opts => opts
                     .WithIdentity(LowStockCheckJob.Key)
                     .WithDescription("Checks for low/below-reorder-point stock across all warehouses.")
-                    .StoreDurably()); // keep the job definition even if no trigger is attached
+                    .StoreDurably());
 
                 q.AddTrigger(opts => opts
                     .ForJob(LowStockCheckJob.Key)
                     .WithIdentity("low-stock-check-trigger", "inventory")
                     .WithDescription("Fires every hour")
-                    .WithCronSchedule("0 0/2 * ? * *")); // every 3 minutes, on the hour (UTC). Move to config if needed.
+                    .WithCronSchedule("0 0/2 * ? * *"));
+
+                // ---- ExpiredRefreshTokenCleanupJob ----
+                q.AddJob<ExpiredRefreshTokenCleanupJob>(opts => opts
+                    .WithIdentity(ExpiredRefreshTokenCleanupJob.Key)
+                    .WithDescription("Purges refresh tokens outside the 30-day reuse-detection retention window.")
+                    .StoreDurably());
+
+                q.AddTrigger(opts => opts
+                    .ForJob(ExpiredRefreshTokenCleanupJob.Key)
+                    .WithIdentity("expired-refresh-token-cleanup-trigger", "auth")
+                    .WithDescription("Fires once a day at 03:00 UTC")
+                    .WithCronSchedule("0 0 3 * * ?"));
             });
 
             // This registers the hosted service that drives the Quartz scheduler.

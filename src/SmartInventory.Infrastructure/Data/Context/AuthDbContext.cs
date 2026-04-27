@@ -11,6 +11,7 @@ namespace SmartInventory.Infrastructure.Data.Context
         public DbSet<User> Users => Set<User>();
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<UserRole> UserRoles => Set<UserRole>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
         public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) 
         {
