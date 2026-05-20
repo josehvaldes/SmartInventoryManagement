@@ -9,16 +9,19 @@ using System.Text;
 
 namespace SmartInventory.Seeds
 {
-    public abstract class BaseSeeder<T>
+
+    internal static class SeederSettings
     {
-
-        protected string _connectionString { get; set; }
-
-        private static readonly JsonSerializerSettings _deserializationSettings = new()
+        internal static readonly JsonSerializerSettings DeserializationSettings = new()
         {
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
             ContractResolver    = new PrivateSetterContractResolver()
         };
+    }
+
+    public abstract class BaseSeeder<T>
+    {
+        protected string _connectionString { get; set; }
 
         public BaseSeeder(string connectionString) 
         {
@@ -34,7 +37,7 @@ namespace SmartInventory.Seeds
             using (var reader = new StreamReader(filePath)) 
             {
                 var json = await reader.ReadToEndAsync();
-                var seeds = JsonConvert.DeserializeObject<List<T>>(json, _deserializationSettings) ?? new List<T>();
+                var seeds = JsonConvert.DeserializeObject<List<T>>(json, SeederSettings.DeserializationSettings) ?? new List<T>();
                 var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
                                 .UseSqlServer(_connectionString)
                                 .Options;
