@@ -29,6 +29,7 @@ namespace SmartInventory.API.Controllers.V1
             IValidator<CreateWarehouseRequest> warehouseValidator
         ) : ControllerBase
     {
+        [ValidateAntiForgeryToken]
         [HttpPost]
         [EnableRateLimiting("WriteOperations")]
         [Authorize]

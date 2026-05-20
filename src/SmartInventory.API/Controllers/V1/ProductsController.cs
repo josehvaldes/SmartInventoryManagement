@@ -33,7 +33,7 @@ namespace SmartInventory.API.Controllers.V1
         IValidator<GetUploadUrlRequest> getUploadUrlRequestValidator
         ) : ControllerBase
     {
-
+        [ValidateAntiForgeryToken]
         [HttpPost]
         [EnableRateLimiting("WriteOperations")]
         [Authorize]

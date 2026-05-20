@@ -71,7 +71,7 @@ namespace SmartInventory.UnitTests.ApiValidators
         public void Should_Fail_When_FileName_Is_Empty()
         {
             var request = ValidRequest();
-            request.FileName = string.Empty;
+            request.FileName = "";
 
             var result = _validator.Validate(request);
 
@@ -83,7 +83,7 @@ namespace SmartInventory.UnitTests.ApiValidators
         public void Should_Fail_When_FileName_Exceeds_255_Characters()
         {
             var request = ValidRequest();
-            request.FileName = new string('a', 256);
+            request.FileName = string.Concat(Enumerable.Repeat("a", 256));
 
             var result = _validator.Validate(request);
 
@@ -95,7 +95,7 @@ namespace SmartInventory.UnitTests.ApiValidators
         public void Should_Pass_When_FileName_Is_Exactly_255_Characters()
         {
             var request = ValidRequest();
-            request.FileName = new string('a', 255);
+            request.FileName = string.Concat(Enumerable.Repeat("a", 255));
 
             var result = _validator.Validate(request);
 
