@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\products.json" Link="Data\products.json" />
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\purchase_orders.json" Link="Data\purchase_orders.json" />
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\purchase_order_items.json" Link="Data\purchase_order_items.json" />
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\stocks.json" Link="Data\stocks.json" />
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\stock_transactions.json" Link="Data\stock_transactions.json" />
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\suppliers.json" Link="Data\suppliers.json" />
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\users.json" Link="Data\users.json" />
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\warehouses.json" Link="Data\warehouses.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -16,7 +27,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
     <PackageReference Include="NSubstitute" Version="5.3.0" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.6" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.14" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,6 +41,10 @@
     <ProjectReference Include="..\..\src\SmartInventory.Domain\SmartInventory.Domain.csproj" />
     <ProjectReference Include="..\..\src\SmartInventory.Infrastructure\SmartInventory.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\SmartInventory.API\SmartInventory.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

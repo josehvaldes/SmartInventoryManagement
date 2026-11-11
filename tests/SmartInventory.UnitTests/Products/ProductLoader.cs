@@ -9,7 +9,7 @@ namespace SmartInventory.UnitTests.Products
 {
     public static class ProductLoader
     {
-        private static readonly string ProductsFilePath = "C:\\personal\\_SmartInventoryMgmtSystem\\SmartInventoryManagement\\seeds\\SmartInventory.Seeds\\Data\\products.json";
+        private static readonly string ProductsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "products.json");
 
         private static readonly JsonSerializerSettings _deserializationSettings = new()
         {

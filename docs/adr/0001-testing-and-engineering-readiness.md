@@ -1,7 +1,7 @@
 # ADR 0001: Testing & Engineering Readiness Before the Multi-Tenant Refactor 
 
 ## Status: 
-Proposed
+Accepted
 
 ## Date: 2026-11-09 
 
@@ -13,6 +13,8 @@ We plan to turn the Smart Inventory portfolio app into a **multi-tenant SaaS**. 
 - Unit tests for query handlers use `MockDbSetHelper` plus a custom async query provider. They do not exercise real SQL translation, so they miss provider-specific behaviour the schema relies on: `NEWSEQUENTIALID()`, the persisted computed column `Stock.QuantityAvailable`, check constraints and unique indexes (`UK_Products_SKU`, `UK_Stock_Product_Warehouse`). EF InMemory/SQLite cannot validate these either.
 - No HTTP-level tests cover the pipeline (auth, validation, `GlobalExceptionHandler`, MediatR behaviors, Unit of Work). The integration test project has no `Microsoft.NET.Test.Sdk`, `Microsoft.AspNetCore.Mvc.Testing` or reference to the API.
 - There is no CI workflow. `.github/` only contains the Codacy instructions file.
+
+- There is not OpenAPI specification for future frontend testing integration.
 
 **Engineering hygiene**
 - [Program.cs](../../src/SmartInventory.API/Program.cs) runs `MigrateAsync()` and `DatabaseSeeder.SeedAllAsync()` inline under `IsDevelopment()`, and the API project references the Seeds project. This couples app startup to migration/seeding and makes a "Testing" environment awkward.
@@ -42,6 +44,7 @@ Before any tenancy work starts, we will make the following improvements in four 
 - Replace `IFileStorageService` (S3) with a test double. LocalStack is out of scope for now.
 - Rewrite `MappingIntegrationTests` on the new fixture (no `SERVERPC`).
 - Document the Docker prerequisite in `docs/setup/`.
+- Add a OpenAPI generator integrated in the build process.
 
 ### Phase 2: Characterization test suite
 Add HTTP-level integration tests that pin **current single-tenant behaviour** for login/refresh/revoke, products (including SKU uniqueness and paging), warehouses, and stock removal (including the computed `QuantityAvailable` and check constraints). This suite is the regression net for the tenancy refactor. Keep fast, pure-logic unit tests (validators, domain rules). Migrate `MockDbSetHelper`-based handler tests to integration tests opportunistically, not in one big bang.
@@ -76,6 +79,7 @@ LocalStack/S3, load/performance testing, contract testing, and any schema or beh
 - A regression net exists before the risky refactor, and the same fixture is reused for cross-tenant isolation tests.
 - Startup is decoupled from migration/seeding, and CI gates every PR.
 - Licensing and fail-open identity risks are found before they matter.
+- A generated OpenAPI specification document will facilitated integration tests between the API and future frontend applications
 
 **Trade-offs**
 - **Docker is required** to run integration tests, including locally.
@@ -97,3 +101,7 @@ LocalStack/S3, load/performance testing, contract testing, and any schema or beh
 ## Related ADRS
 - [0000-template.md](./0000-template.md): the template this ADR follows.
 - ADR 0002 (planned): multi-tenancy model and tenant isolation. It depends on this ADR.
+
+## Implementation details.
+- Bugs in API contracts will not be fixed, but new test cases are added and marked as "Skip" for a later bug-fixing stage
+- Bugs that block the TestContainers will be fixed with High priority.

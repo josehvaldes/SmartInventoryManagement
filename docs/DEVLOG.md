@@ -232,6 +232,26 @@ This roadmap breaks down the 6-week development timeline into manageable tasks, 
 - ✅ Business rules enforced
 
 
+### Day 10: Suppliers Feature & Week 2 Review
+**Time:** 5-6 hours
+
+- [ ] Implement Suppliers feature:
+  - Commands: Create, Update, UpdateRating
+  - Queries: GetById, GetAll, GetActiveSuppliers
+  - Full validation and DTO mapping
+- [ ] Create Suppliers API endpoints
+- [ ] Test all Week 2 features end-to-end
+- [ ] Code review and refactoring
+- [ ] Update documentation with progress
+
+**Deliverables:**
+- ✅ Suppliers CRUD complete
+- ✅ All basic CRUD operations working
+- ✅ Clean, tested codebase
+
+
+---
+
 **Document Version:** 1.1  
 **Last Updated:** April 2026  
 **Next Review:** End of Week 3
