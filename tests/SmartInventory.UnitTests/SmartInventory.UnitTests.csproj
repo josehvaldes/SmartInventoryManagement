@@ -7,14 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\products.json" Link="Data\products.json" />
-    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\purchase_orders.json" Link="Data\purchase_orders.json" />
-    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\purchase_order_items.json" Link="Data\purchase_order_items.json" />
-    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\stocks.json" Link="Data\stocks.json" />
-    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\stock_transactions.json" Link="Data\stock_transactions.json" />
-    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\suppliers.json" Link="Data\suppliers.json" />
-    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\users.json" Link="Data\users.json" />
-    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\warehouses.json" Link="Data\warehouses.json" />
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\products.json" Link="Data\products.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\purchase_orders.json" Link="Data\purchase_orders.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\purchase_order_items.json" Link="Data\purchase_order_items.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\stocks.json" Link="Data\stocks.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\stock_transactions.json" Link="Data\stock_transactions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\suppliers.json" Link="Data\suppliers.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\users.json" Link="Data\users.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\warehouses.json" Link="Data\warehouses.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +38,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="FluentAssertions" Version="8.9.0" />
+    <PackageReference Include="FluentAssertions" Version="7.2.2" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />

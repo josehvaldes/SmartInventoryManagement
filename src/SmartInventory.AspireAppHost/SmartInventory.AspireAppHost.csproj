@@ -1,4 +1,4 @@
-﻿<Project Sdk="Aspire.AppHost.Sdk/13.2.1">
+﻿<Project Sdk="Aspire.AppHost.Sdk/13.6.5">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,10 +7,12 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>58f1fba2-cc40-4730-ad9d-ef0fde0633dd</UserSecretsId>
   </PropertyGroup>
-
+	<PropertyGroup>
+		<AspireUseCliBundle>true</AspireUseCliBundle>
+	</PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.Redis" Version="13.6.4" />
-    <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.6.4" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="13.6.5" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.6.5" />
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
   </ItemGroup>
 

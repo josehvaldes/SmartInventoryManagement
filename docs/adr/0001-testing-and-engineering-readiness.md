@@ -13,7 +13,6 @@ We plan to turn the Smart Inventory portfolio app into a **multi-tenant SaaS**. 
 - Unit tests for query handlers use `MockDbSetHelper` plus a custom async query provider. They do not exercise real SQL translation, so they miss provider-specific behaviour the schema relies on: `NEWSEQUENTIALID()`, the persisted computed column `Stock.QuantityAvailable`, check constraints and unique indexes (`UK_Products_SKU`, `UK_Stock_Product_Warehouse`). EF InMemory/SQLite cannot validate these either.
 - No HTTP-level tests cover the pipeline (auth, validation, `GlobalExceptionHandler`, MediatR behaviors, Unit of Work). The integration test project has no `Microsoft.NET.Test.Sdk`, `Microsoft.AspNetCore.Mvc.Testing` or reference to the API.
 - There is no CI workflow. `.github/` only contains the Codacy instructions file.
-
 - There is not OpenAPI specification for future frontend testing integration.
 
 **Engineering hygiene**
@@ -41,8 +40,8 @@ Before any tenancy work starts, we will make the following improvements in four 
 - Expose the entry point with `public partial class Program { }` so `WebApplicationFactory<Program>` works.
 - Start containers **once per test run** with an xUnit v3 assembly/collection fixture. The `WebApplicationFactory` overrides `ConnectionStrings:SmartInventoryDb`, the `redis` connection string and `JwtSettings`, and runs in a `Testing` environment. The fixture applies EF migrations for both `SmartInventoryDbContext` and `AuthDbContext` explicitly, and the Development-only migrate/seed block in `Program.cs` stays untouched.
 - Reset data between tests with **Respawn** (ignoring `__EFMigrationsHistory`) and seed through small test-data builders instead of the full `DatabaseSeeder`.
-- Replace `IFileStorageService` (S3) with a test double. LocalStack is out of scope for now.
-- Rewrite `MappingIntegrationTests` on the new fixture (no `SERVERPC`).
+- Replace `IFileStorageService` (S3) with a test double for Unit tests AND LocalStack for Integration Tests with TestContainers.
+- Remove or Rewrite `MappingIntegrationTests` on the new fixture (no `SERVERPC`).
 - Document the Docker prerequisite in `docs/setup/`.
 - Add a OpenAPI generator integrated in the build process.
 
@@ -105,3 +104,6 @@ LocalStack/S3, load/performance testing, contract testing, and any schema or beh
 ## Implementation details.
 - Bugs in API contracts will not be fixed, but new test cases are added and marked as "Skip" for a later bug-fixing stage
 - Bugs that block the TestContainers will be fixed with High priority.
+- FluentAssertions version was downgraded to 7.2.2 to avoid the Commercial-Licensing problem and use the apache license
+- MediatR version was downgraded to 12.5.0 to avoid the Commercial-Licensing problem and use the apache license
+- `MappingIntegrationTests` class was removed and replaced by TestContainer tests.

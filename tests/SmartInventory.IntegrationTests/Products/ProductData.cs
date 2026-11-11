@@ -1,9 +1,6 @@
 ﻿using SmartInventory.Contracts.Requests.Products;
 using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmartInventory.IntegrationTests.Products
 {

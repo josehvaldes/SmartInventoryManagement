@@ -7,7 +7,6 @@ using SmartInventory.Application;
 using SmartInventory.Infrastructure;
 using SmartInventory.Infrastructure.AWS;
 using SmartInventory.Infrastructure.Data.Context;
-using SmartInventory.Seeds;
 
 MappingConfig.RegisterMappings();
 
@@ -62,7 +61,6 @@ if (app.Environment.IsDevelopment())
     await inventoryDb.Database.MigrateAsync();
     await authDb.Database.MigrateAsync();
     var connectionString = builder.Configuration.GetConnectionString("SmartInventoryDb") ?? string.Empty;
-    await DatabaseSeeder.SeedAllAsync(connectionString);
 }
 
 app.Run();

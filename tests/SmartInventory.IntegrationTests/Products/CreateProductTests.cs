@@ -51,6 +51,30 @@ namespace SmartInventory.IntegrationTests.Products
         }
 
         [Fact]
+        public async Task CreateProduct_ValidateSelfLink()
+        {
+            var newProduct = ProductData.Product1;
+            var response = await Client.PostAsJsonAsync("/api/v1/products", newProduct, CancellationToken.None);
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+            using var document = await response.Content.ReadFromJsonAsync<JsonDocument>(cancellationToken: CancellationToken.None);
+            var root = document!.RootElement;
+            var id = root.GetProperty("id").GetGuid();
+            id.Should().NotBeEmpty();
+            var links = root.GetProperty("links")
+                .EnumerateArray()
+                .ToArray();
+            var selfLink = links.FirstOrDefault(link => link.GetProperty("rel").GetString() == "self");
+            selfLink.Should().NotBeNull();
+            var href = selfLink.GetProperty("href").GetString();
+            href.Should().NotBeNullOrEmpty();
+            Uri.TryCreate(href, UriKind.Absolute, out var uri).Should().BeTrue($"The href '{href}' should be a valid absolute URL.");
+
+            var getResponse = await Client.GetAsync(uri!, CancellationToken.None);
+            getResponse.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
         public async Task CreateProduct_PersistsProductAndReturnsItsDetails()
         {
             var response = await Client.PostAsJsonAsync("/api/v1/products", ProductData.Product1, CancellationToken.None);

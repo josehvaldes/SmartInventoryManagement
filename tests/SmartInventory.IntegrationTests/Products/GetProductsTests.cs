@@ -1,10 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using SmartInventory.Contracts.Responses;
 using SmartInventory.Contracts.Responses.Products;
-using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Enums;
 using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.IntegrationTests.Infrastructure;
