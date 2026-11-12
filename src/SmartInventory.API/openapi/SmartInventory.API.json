@@ -17,62 +17,6 @@
         }
       }
     },
-    "/api/v1/auth/login": {
-      "post": {
-        "tags": [
-          "Login"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/auth/refresh-token": {
-      "post": {
-        "tags": [
-          "Login"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/auth/revoke": {
-      "post": {
-        "tags": [
-          "Login"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/v1/Products": {
       "post": {
         "tags": [
@@ -260,7 +204,63 @@
         }
       }
     },
-    "/api/v1/Stocks/removestock": {
+    "/api/v1/auth/session": {
+      "post": {
+        "tags": [
+          "Sessions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/refresh-token": {
+      "post": {
+        "tags": [
+          "Sessions"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/revoke": {
+      "post": {
+        "tags": [
+          "Sessions"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Stocks/reduction": {
       "post": {
         "tags": [
           "Stocks"
@@ -543,17 +543,6 @@
         "type": "string",
         "format": "binary"
       },
-      "LoginRequest": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
       "RemoveStockRequest": {
         "required": [
           "productId",
@@ -579,6 +568,17 @@
             "format": "double"
           }
         }
+      },
+      "SessionRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
       }
     }
   },
@@ -587,10 +587,10 @@
       "name": "Versions"
     },
     {
-      "name": "Login"
+      "name": "Products"
     },
     {
-      "name": "Products"
+      "name": "Sessions"
     },
     {
       "name": "Stocks"

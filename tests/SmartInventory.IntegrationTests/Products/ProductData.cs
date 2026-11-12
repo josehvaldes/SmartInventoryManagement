@@ -1,11 +1,38 @@
-﻿using SmartInventory.Contracts.Requests.Products;
+﻿using Newtonsoft.Json;
+using SmartInventory.Contracts.Requests.Products;
 using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Enums;
+using SmartInventory.IntegrationTests.Common;
 
 namespace SmartInventory.IntegrationTests.Products
 {
-    public class ProductData
-    {
+    public static class ProductData
+    { 
+
+        private static readonly string ProductsFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "products.json");
+
+        private static readonly JsonSerializerSettings _deserializationSettings = new()
+        {
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+            ContractResolver = new PrivateSetterContractResolver()
+        };
+
+        public static List<Product> LoadProductsFromFile()
+        {
+            if (string.IsNullOrWhiteSpace(ProductsFilePath) || !File.Exists(ProductsFilePath))
+                throw new FileNotFoundException("File path is not provided or file does not exist. Skipping product seeding.");
+
+            using (var reader = new StreamReader(ProductsFilePath))
+            {
+                var products = new List<Product>();
+                var json = reader.ReadToEnd();
+                var seeds = JsonConvert.DeserializeObject<List<Product>>(json, _deserializationSettings) ?? new List<Product>();
+                products.AddRange(seeds);
+
+                return products;
+            }
+        }
+
         public static readonly CreateProductRequest Product1 = new CreateProductRequest
         {
             SKU = "ITM-USB-C-001",

@@ -3,7 +3,6 @@ using FluentValidation;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SmartInventory.API.Extensions;

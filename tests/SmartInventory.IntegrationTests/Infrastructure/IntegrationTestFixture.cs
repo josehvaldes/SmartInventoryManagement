@@ -79,6 +79,14 @@ namespace SmartInventory.IntegrationTests.Infrastructure
             {
                 await context.Database.MigrateAsync();
             }
+
+            var authOptions = new DbContextOptionsBuilder<AuthDbContext>()
+                .UseSqlServer(ConnectionString)
+                .Options;
+            using (var context = new AuthDbContext(authOptions))
+            {
+                await context.Database.MigrateAsync();
+            }
         }
     }
 }

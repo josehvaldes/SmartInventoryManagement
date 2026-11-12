@@ -14,7 +14,7 @@ namespace SmartInventory.UnitTests.ApiValidators
             _validator = new LoginRequestValidator();
         }
 
-        private static LoginRequest ValidRequest() => new()
+        private static SessionRequest ValidRequest() => new()
         {
             Username = "admin",
             Password = "secret123"
@@ -32,7 +32,7 @@ namespace SmartInventory.UnitTests.ApiValidators
         [Fact]
         public void Should_Fail_When_Username_Is_Empty()
         {
-            var request = new LoginRequest { Username = string.Empty, Password = "secret123" };
+            var request = new SessionRequest { Username = string.Empty, Password = "secret123" };
 
             var result = _validator.Validate(request);
 
@@ -43,7 +43,7 @@ namespace SmartInventory.UnitTests.ApiValidators
         [Fact]
         public void Should_Fail_When_Username_Is_Whitespace()
         {
-            var request = new LoginRequest { Username = "   ", Password = "secret123" };
+            var request = new SessionRequest { Username = "   ", Password = "secret123" };
 
             var result = _validator.Validate(request);
 
@@ -56,7 +56,7 @@ namespace SmartInventory.UnitTests.ApiValidators
         [Fact]
         public void Should_Fail_When_Password_Is_Empty()
         {
-            var request = new LoginRequest { Username = "admin", Password = string.Empty };
+            var request = new SessionRequest { Username = "admin", Password = string.Empty };
 
             var result = _validator.Validate(request);
 
@@ -67,7 +67,7 @@ namespace SmartInventory.UnitTests.ApiValidators
         [Fact]
         public void Should_Fail_When_Password_Is_Whitespace()
         {
-            var request = new LoginRequest { Username = "admin", Password = "   " };
+            var request = new SessionRequest { Username = "admin", Password = "   " };
 
             var result = _validator.Validate(request);
 
@@ -78,7 +78,7 @@ namespace SmartInventory.UnitTests.ApiValidators
         [Fact]
         public void Should_Fail_When_Both_Username_And_Password_Are_Empty()
         {
-            var request = new LoginRequest { Username = string.Empty, Password = string.Empty };
+            var request = new SessionRequest { Username = string.Empty, Password = string.Empty };
 
             var result = _validator.Validate(request);
 

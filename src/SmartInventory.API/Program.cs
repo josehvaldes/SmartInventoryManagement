@@ -60,7 +60,6 @@ if (app.Environment.IsDevelopment())
 
     await inventoryDb.Database.MigrateAsync();
     await authDb.Database.MigrateAsync();
-    var connectionString = builder.Configuration.GetConnectionString("SmartInventoryDb") ?? string.Empty;
 }
 
 app.Run();

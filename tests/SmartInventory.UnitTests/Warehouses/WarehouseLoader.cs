@@ -1,12 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using SmartInventory.Domain.Entities;
 using SmartInventory.UnitTests.Common;
-using SmartInventory.UnitTests.Products;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 
 namespace SmartInventory.UnitTests.Warehouses
 {

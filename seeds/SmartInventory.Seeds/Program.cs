@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.Seeds;
 
 Console.WriteLine("SmartInventory Product Seeder");
@@ -19,22 +21,35 @@ Console.WriteLine("Starting seed...");
 
 var dataDir = Path.Combine(AppContext.BaseDirectory, "Data");
 
+var authOptions = new DbContextOptionsBuilder<AuthDbContext>()
+    .UseSqlServer(connectionString)
+    .Options;
+var smartInventoryOptions = new DbContextOptionsBuilder<SmartInventoryDbContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+using var authContext= new AuthDbContext(authOptions);
+using var dbContext = new SmartInventoryDbContext(smartInventoryOptions);
+
+await authContext.Database.MigrateAsync();
+await dbContext.Database.MigrateAsync();
+
 var seeders = new Dictionary<string, Func<Task>>(StringComparer.OrdinalIgnoreCase)
 {
-    [nameof(ProductSeeder)]            = () => new ProductSeeder(connectionString).Seed(Path.Combine(dataDir, "products.json")),
-    [nameof(WarehouseSeeder)]          = () => new WarehouseSeeder(connectionString).Seed(Path.Combine(dataDir, "warehouses.json")),
-    [nameof(StockSeeder)]              = () => new StockSeeder(connectionString).Seed(Path.Combine(dataDir, "stocks.json")),
-    [nameof(UserSeeder)]               = () => new UserSeeder(connectionString).Seed(Path.Combine(dataDir, "users.json")),
-    [nameof(StockTransactionSeeder)]   = () => new StockTransactionSeeder(connectionString).Seed(Path.Combine(dataDir, "stock_transactions.json")),
-    [nameof(SupplierSeeder)]           = () => new SupplierSeeder(connectionString).Seed(Path.Combine(dataDir, "suppliers.json")),
-    [nameof(PurchaseOrderSeeder)]      = () => new PurchaseOrderSeeder(connectionString).Seed(Path.Combine(dataDir, "purchase_orders.json")),
-    [nameof(PurchaseOrderItemsSeeder)] = () => new PurchaseOrderItemsSeeder(connectionString).Seed(Path.Combine(dataDir, "purchase_order_items.json")),
+    [nameof(ProductSeeder)]            = () => new ProductSeeder(dbContext).Seed(Path.Combine(dataDir, "products.json")),
+    [nameof(WarehouseSeeder)]          = () => new WarehouseSeeder(dbContext).Seed(Path.Combine(dataDir, "warehouses.json")),
+    [nameof(StockSeeder)]              = () => new StockSeeder(dbContext).Seed(Path.Combine(dataDir, "stocks.json")),
+    [nameof(UserSeeder)]               = () => new UserSeeder(authContext).Seed(Path.Combine(dataDir, "users.json")),
+    [nameof(StockTransactionSeeder)]   = () => new StockTransactionSeeder(dbContext).Seed(Path.Combine(dataDir, "stock_transactions.json")),
+    [nameof(SupplierSeeder)]           = () => new SupplierSeeder(dbContext).Seed(Path.Combine(dataDir, "suppliers.json")),
+    [nameof(PurchaseOrderSeeder)]      = () => new PurchaseOrderSeeder(dbContext).Seed(Path.Combine(dataDir, "purchase_orders.json")),
+    [nameof(PurchaseOrderItemsSeeder)] = () => new PurchaseOrderItemsSeeder(dbContext).Seed(Path.Combine(dataDir, "purchase_order_items.json")),
 };
 
 if (args.Length == 0)
 {
     Console.WriteLine("No command provided. Seeding all by default...");
-    await Task.WhenAll(seeders.Values.Select(seed => seed()));
+    await DatabaseSeeder.SeedAllAsync(authContext, dbContext);
 }
 else
 {

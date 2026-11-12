@@ -8,7 +8,7 @@ namespace SmartInventory.Seeds
     public class ProductSeeder: BaseSeeder<Product>
     {
         
-        public ProductSeeder(string connectionString): base(connectionString) { }
+        public ProductSeeder(SmartInventoryDbContext context): base(context) { }
 
         protected override void ProcessSeed(SmartInventoryDbContext context, List<Product> seeds) 
         {

@@ -12,7 +12,7 @@ namespace SmartInventory.Seeds
 {
     public class WarehouseSeeder : BaseSeeder<Warehouse>
     {
-        public WarehouseSeeder(string connectionString): base(connectionString) { }
+        public WarehouseSeeder(SmartInventoryDbContext context): base(context) { }
 
         protected override void ProcessSeed(SmartInventoryDbContext context, List<Warehouse> seeds)
         {

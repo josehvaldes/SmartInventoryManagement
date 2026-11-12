@@ -15,9 +15,9 @@ namespace SmartInventory.API.Controllers.V1
     [EnableCors("StrictCors")]
     [Route("api/v{version:apiVersion}/auth")]
     [ApiVersion("1.0")]
-    public class LoginController(IMediator mediator,
-        IValidator<LoginRequest> loginValidator,
-        ILogger<LoginController> logger) : ControllerBase
+    public class SessionsController(IMediator mediator,
+        IValidator<SessionRequest> loginValidator,
+        ILogger<SessionsController> logger) : ControllerBase
     {
         private const string RefreshTokenCookieName = "refreshToken";
 
@@ -25,10 +25,10 @@ namespace SmartInventory.API.Controllers.V1
         /// OAuth-style token endpoint: validates credentials, returns an access token in the
         /// response body and a refresh token in an HttpOnly Secure cookie (not accessible to JS).
         /// </summary>
-        [HttpPost("login")]
+        [HttpPost("session")]
         [AllowAnonymous]
         [EnableRateLimiting("AuthEndpoints")]
-        public async Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Session(SessionRequest request)
         {
             var validationResult = await loginValidator.ValidateAsync(request);
             validationResult.ThrowIfInvalid();

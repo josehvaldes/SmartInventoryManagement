@@ -75,7 +75,8 @@ namespace SmartInventory.IntegrationTests.Infrastructure
                 config.AddInMemoryCollection(new Dictionary<string, string?>
                 {
                     ["ConnectionStrings:SmartInventoryDb"] = connectionString,
-                    ["ConnectionStrings:redis"] = redisConnectionString
+                    ["ConnectionStrings:redis"] = redisConnectionString,
+                    ["RateLimiting:AuthEndpoints:PermitLimit"] = "1000"
                 });
             });
 

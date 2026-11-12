@@ -4,7 +4,8 @@
     "username": "admin",
     "email": "admin@smartinventory.com",
     "name": "Alice Thompson",
-    "passwordHash": "Admin@123!",
+    "passwordHash": "AQAAAAEAACcQAAAAELpo10170luQf1mei1TxbRKmy4Mdz5U82Fp/qdhZAAGyguv7S1lHNVHdN2lT0vO7PQ==",
+    "password": "Admin@123!",
     "isActive": true
   },
   {
@@ -12,7 +13,8 @@
     "username": "wh.manager",
     "email": "wh.manager@smartinventory.com",
     "name": "Robert Hayes",
-    "passwordHash": "WhManager@123!",
+    "passwordHash": "AQAAAAEAACcQAAAAEPByJfJgzGTX8REnKdpgpJl288JxK04UVk1q4J0OTB6sWhX+aVa/jsVb8mcWx0IN5g==",
+    "password": "WhManager@123!",
     "isActive": true
   },
   {
@@ -20,7 +22,8 @@
     "username": "stock.analyst",
     "email": "analyst@smartinventory.com",
     "name": "Emily Carter",
-    "passwordHash": "StockAnalyst@123!",
+    "passwordHash": "AQAAAAEAACcQAAAAEMUtveB4+SGfmkosbP6pDgh26uzx3iMb1ivgJFEapnOjJ64Lo51DxUX3oTGxHgJMog==",
+    "password": "StockAnalyst@123!",
     "isActive": true
   },
   {
@@ -28,7 +31,8 @@
     "username": "procurement",
     "email": "procurement@smartinventory.com",
     "name": "James Wilson",
-    "passwordHash": "Procurement@123!",
+    "passwordHash": "AQAAAAEAACcQAAAAEAKNoCyAgLlZeoAwwEPBY0mHjRkFffdO8NFo5K55NMNChmNhK/L2efoh4nZRN78QHA==",
+    "password": "Procurement@123!",
     "isActive": true
   },
   {
@@ -36,7 +40,8 @@
     "username": "viewer",
     "email": "viewer@smartinventory.com",
     "name": "Laura Bennett",
-    "passwordHash": "Viewer@123!",
+    "passwordHash": "AQAAAAEAACcQAAAAEBjrimDu5zBTpSWZa9sbQM5r9dk5LCEMh23DZRdnBpFAUUQ8l6yIcaoSlZhxbCWJcA==",
+    "password": "Viewer@123!",
     "isActive": true
   }
 ]

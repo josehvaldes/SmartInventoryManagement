@@ -3,7 +3,7 @@ using SmartInventory.Contracts.Requests.Login;
 
 namespace SmartInventory.API.Validators
 {
-    public class LoginRequestValidator: AbstractValidator<LoginRequest>
+    public class LoginRequestValidator: AbstractValidator<SessionRequest>
     {
         public LoginRequestValidator() 
         {

@@ -20,10 +20,10 @@ namespace SmartInventory.API.Controllers.V1
         ) : ControllerBase
     {
 
-        [HttpPost("removestock")]
+        [HttpPost("reduction")]
         [EnableRateLimiting("WriteOperations")]
         [Authorize]
-        public async Task<IActionResult> RemoveStock(RemoveStockRequest request) 
+        public async Task<IActionResult> StockReduction(RemoveStockRequest request) 
         {
             (await removeStockRequestValidator.ValidateAsync(request)).ThrowIfInvalid();
 
