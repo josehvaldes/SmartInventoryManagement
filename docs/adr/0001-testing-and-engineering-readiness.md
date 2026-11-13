@@ -59,7 +59,7 @@ Add HTTP-level integration tests that pin **current single-tenant behaviour** fo
 Once Phases 1-3 are green, write **ADR 0002 (tenancy model)**, covering the isolation strategy (shared DB with `TenantId` and EF global query filters vs. schema-per-tenant vs. DB-per-tenant), tenant resolution, per-tenant uniqueness, cache/storage/job scoping, and a **cross-tenant isolation test suite** built on the Phase 1 fixture. That decision is deliberately not made here.
 
 ### Out of scope
-LocalStack/S3, load/performance testing, contract testing, and any schema or behaviour change to the product itself.
+load/performance testing, contract testing, and any schema or behaviour change to the product itself.
 
 ## Alternatives
 | Option | Why not (for now) |

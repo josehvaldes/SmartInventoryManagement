@@ -52,7 +52,7 @@ namespace SmartInventory.UnitTests.Warehouses
             // Arrange
             var warehouse = _warehouses.First();
             var cachedDto = new WarehouseDto { Id = warehouse.Id, Name = warehouse.Name };
-            _cache.GetAsync<WarehouseDto>($"Warehouse:{warehouse.Id}").Returns(cachedDto);
+            _cache.GetAsync<WarehouseDto>($"WarehouseDto:{warehouse.Id}").Returns(cachedDto);
             var query = new GetWarehouseByIdQuery(warehouse.Id);
 
             // Act
@@ -89,7 +89,7 @@ namespace SmartInventory.UnitTests.Warehouses
 
             // Assert
             await _cache.Received(1).SetAsync(
-                $"Warehouse:{warehouse.Id}",
+                $"WarehouseDto:{warehouse.Id}",
                 Arg.Any<WarehouseDto>(),
                 TimeSpan.FromMinutes(5));
         }
