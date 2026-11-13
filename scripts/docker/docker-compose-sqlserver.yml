@@ -1,0 +1,19 @@
+name: smartinventory
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-CU20-ubuntu-22.04
+    container_name: smartinventory-sqlserver
+    env_file:
+      - .env
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - smartinventory-sql-data:/var/opt/mssql
+    restart: unless-stopped
+
+volumes:
+  smartinventory-sql-data:

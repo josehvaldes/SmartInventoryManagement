@@ -33,7 +33,6 @@ namespace SmartInventory.API.Controllers.V1
         IValidator<GetUploadUrlRequest> getUploadUrlRequestValidator
         ) : ControllerBase
     {
-        [ValidateAntiForgeryToken]
         [HttpPost]
         [EnableRateLimiting("WriteOperations")]
         [Authorize]
@@ -66,7 +65,7 @@ namespace SmartInventory.API.Controllers.V1
 
             (await uploadRequestValidator.ValidateAsync(request)).ThrowIfInvalid();
 
-            var updatedBy = User.Identity?.Name ?? "Unknown";
+            var updatedBy = User.Identity?.Name ?? throw new InvalidOperationException("User identity is not available.");
             var command = new UploadProductCommand( request.ProductSKU, request.ProductName, file, updatedBy);
             logger.LogInformation("Received file {FileName} for product data upload.", file.FileName);
             var result = await mediator.Send(command);

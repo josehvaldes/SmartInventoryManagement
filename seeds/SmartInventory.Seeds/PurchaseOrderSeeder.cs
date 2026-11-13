@@ -8,7 +8,7 @@ namespace SmartInventory.Seeds
 {
     public class PurchaseOrderSeeder : BaseSeeder<PurchaseOrder>
     {
-        public PurchaseOrderSeeder(string connectionString) : base(connectionString) { }
+        public PurchaseOrderSeeder(SmartInventoryDbContext context) : base(context) { }
         
         protected override void ProcessSeed(SmartInventoryDbContext context, List<PurchaseOrder> seeds)
         {

@@ -21,11 +21,14 @@ namespace SmartInventory.Application.Common.Behaviors
 
             var context = new ValidationContext<TRequest>(request);
 
-            var failures = _validators
-                .Select(v => v.Validate(context))
-                .SelectMany(r => r.Errors)
-                .Where(f => f != null)
-                .ToList();
+            // Sequential: validators may share a scoped DbContext, which doesn't support concurrent use.
+            var failures = new List<FluentValidation.Results.ValidationFailure>();
+            foreach (var validator in _validators)
+            {
+                var result = await validator.ValidateAsync(context, cancellationToken);
+                failures.AddRange(result.Errors.Where(f => f != null));
+            }
+
 
             if (failures.Any())
             {

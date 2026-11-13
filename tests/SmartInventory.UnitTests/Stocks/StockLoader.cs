@@ -5,10 +5,11 @@ namespace SmartInventory.UnitTests.Stocks
 {
     public static class StockLoader
     {
-        private static readonly string StocksFilePath = "C:\\personal\\_SmartInventoryMgmtSystem\\SmartInventoryManagement\\seeds\\SmartInventory.Seeds\\Data\\stocks.json";
+        private static readonly string StocksFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "stocks.json");
 
         public static List<Stock> LoadStocksFromFile()
         {
+            
             if (string.IsNullOrWhiteSpace(StocksFilePath))
             {
                 Console.WriteLine("File path is not provided. Skipping stock loading.");

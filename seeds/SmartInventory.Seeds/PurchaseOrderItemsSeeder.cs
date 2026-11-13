@@ -8,7 +8,7 @@ namespace SmartInventory.Seeds
 {
     public class PurchaseOrderItemsSeeder : BaseSeeder<PurchaseOrderItem>
     {
-        public PurchaseOrderItemsSeeder(string connectionString) : base(connectionString) { }
+        public PurchaseOrderItemsSeeder(SmartInventoryDbContext context) : base(context) { }
         protected override void ProcessSeed(SmartInventoryDbContext context, List<PurchaseOrderItem> seeds)
         {
             Console.WriteLine($"Seeding {seeds.Count} purchase order items...");

@@ -99,7 +99,7 @@ SmartInventory/
 │   │   ├── Services/                    # ILinkService (HATEOAS), ICurrentUserService
 │   │   ├── Mappings/                    # Mapster type adapter configuration
 │   │   ├── Settings/                    # CORS and Aspnet core settings
-│   │   └── Program.cs                   # Entry point + auto-migration + seeding (dev)
+│   │   └── Program.cs                   # Entry point + auto-migration
 │   │
 │   ├── SmartInventory.Application/      # Application Layer
 │   │   ├── Features/                    # Vertical slices by feature
@@ -151,7 +151,7 @@ SmartInventory/
 │                                        # PagedResponse<T>, Link
 │
 ├── seeds/
-│   └── SmartInventory.Seeds/            # Database seeder (auto-run in Development)
+│   └── SmartInventory.Seeds/            # Database seeder (independent application)
 │
 ├── tests/
 │   ├── SmartInventory.UnitTests/        # Handler unit tests (Products, Warehouses, Stocks)
@@ -255,7 +255,7 @@ SmartInventory/
 
 4. **Run the application**
 
-   **Option A – Direct run** (auto-migrates and seeds the DB in Development):
+   **Option A – Direct run** (auto-migrates):
    ```powershell
    cd src/SmartInventory.API
    dotnet run
@@ -309,7 +309,8 @@ The system uses SQL Server with two separate EF Core DbContexts:
 - **SmartInventoryDbContext** – Inventory schema: Products, Warehouses, Stock, StockTransactions, Suppliers, PurchaseOrders, PurchaseOrderItems, StockAlerts
 - **AuthDbContext** – Identity schema: Users, Roles, UserRoles (ASP.NET Core Identity)
 
-Migrations are applied automatically on startup in `Development` mode. The `SmartInventory.Seeds` project seeds initial data after migration.
+Migrations are applied automatically on startup in `Development` mode. 
+The `SmartInventory.Seeds` may be executed after migration, but it is a distinct operation.
 
 See [Database Schema Documentation](docs/architecture/smart-inventory-db-schema.md) for detailed schema design.
 

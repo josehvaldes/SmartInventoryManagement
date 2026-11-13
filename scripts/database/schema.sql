@@ -1,3 +1,11 @@
+IF DB_ID('SmartInventoryDB') IS NULL
+BEGIN
+    CREATE DATABASE SmartInventoryDB;
+END
+GO
+
+USE SmartInventoryDB;
+GO
 
 -- Application schemas for logical grouping
 CREATE SCHEMA [Inventory] AUTHORIZATION dbo;

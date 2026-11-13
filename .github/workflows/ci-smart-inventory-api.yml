@@ -1,0 +1,47 @@
+name: ci-api
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "seeds/**"
+      - "SmartInventoryManagement.slnx"
+      - "Directory.Build.props"              # shared props → rebuild all
+      - "Directory.Packages.props"
+      - ".github/workflows/ci-smart-inventory-api.yml"
+      - ".github/workflows/build-dotnet.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "seeds/**"
+      - "SmartInventoryManagement.slnx"
+      - "Directory.Build.props"
+      - "Directory.Packages.props"
+      - ".github/workflows/ci-smart-inventory-api.yml"
+      - ".github/workflows/build-dotnet.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-api-${{ github.ref }}
+  # Never cancel a running publish on main
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/build-dotnet.yml
+    with:
+      service: smartinventory
+      image-name: smartinventory-api
+      solution: SmartInventoryManagement.slnx
+      context: ./
+      dockerfile: src/SmartInventory.API/Dockerfile
+      # Publish only on pushes to main, never on PRs
+      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    secrets: inherit

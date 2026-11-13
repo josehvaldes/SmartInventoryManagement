@@ -162,7 +162,7 @@ namespace SmartInventory.API
 
                     return RateLimitPartition.GetFixedWindowLimiter(clientIp, _ => new FixedWindowRateLimiterOptions
                     {
-                        PermitLimit = 5,
+                        PermitLimit = config.GetValue("RateLimiting:AuthEndpoints:PermitLimit", 5),
                         Window = TimeSpan.FromMinutes(1),
                         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                         QueueLimit = 0   // no queuing — reject immediately

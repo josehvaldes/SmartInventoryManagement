@@ -19,7 +19,6 @@ namespace SmartInventory.Application
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
-                cfg.LicenseKey = config["MediatR:LicenseKey"] ?? "FREE-LIMITED-USE";
             });
 
             services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);

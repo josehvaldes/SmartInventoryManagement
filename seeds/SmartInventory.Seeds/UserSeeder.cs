@@ -4,17 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.Seeds.CustomModel;
 
 namespace SmartInventory.Seeds
 {
     public class UserSeeder
     {
-        private string _connectionString;
         private PasswordHasher<User> _hasher;
+        private AuthDbContext _authContext;
 
-        public UserSeeder(string connectionString)
+        public UserSeeder(AuthDbContext authContext)
         {
-            _connectionString = connectionString;
+            _authContext = authContext;
             _hasher = new PasswordHasher<User>();
         }
 
@@ -30,37 +31,31 @@ namespace SmartInventory.Seeds
             using (var reader = new StreamReader(filePath))
             {
                 var json = await reader.ReadToEndAsync();
-                var users = JsonConvert.DeserializeObject<List<User>>(json) ?? new List<User>();
+                var users = JsonConvert.DeserializeObject<List<CustomUser>>(json) ?? new List<CustomUser>();
 
-                var options = new DbContextOptionsBuilder<AuthDbContext>()
-                    .UseSqlServer(_connectionString)
-                    .Options;
-
-                using (var context = new AuthDbContext(options))
+                if (_authContext.Users.Any())
                 {
-                    if (context.Users.Any())
-                    {
-                        return; // Exit if there are already users in the database
-                    }
-
-                    foreach (var user in users)
-                    {
-                        var existingUser = await context.Users.FindAsync(user.Id);
-                        if (existingUser == null)
-                        {
-                            
-                            user.PasswordHash = HashPassword(user, user.PasswordHash);
-                            context.Users.Add(user);
-                        }
-                        else
-                        {
-                            existingUser.Name = user.Name;
-                            existingUser.Email = user.Email;
-                            existingUser.IsActive = user.IsActive;
-                        }
-                    }
-                    await context.SaveChangesAsync();
+                    return; // Exit if there are already users in the database
                 }
+
+                foreach (var user in users)
+                {
+                    var existingUser = await _authContext.Users.FindAsync(user.Id);
+                    if (existingUser == null)
+                    {
+                            
+                        user.PasswordHash = HashPassword(user, user.Password);
+                        _authContext.Users.Add(user);
+                    }
+                    else
+                    {
+                        existingUser.Name = user.Name;
+                        existingUser.Email = user.Email;
+                        existingUser.IsActive = user.IsActive;
+                    }
+                }
+                await _authContext.SaveChangesAsync();
+                
             }
         }
 

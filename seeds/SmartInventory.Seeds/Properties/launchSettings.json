@@ -2,7 +2,6 @@
   "profiles": {
     "SmartInventory.Seeds": {
       "commandName": "Project",
-      "commandLineArgs": "UserSeeder",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }

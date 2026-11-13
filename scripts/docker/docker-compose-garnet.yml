@@ -1,3 +1,4 @@
+name: smartinventory
 services:
   garnet:
     image: 'ghcr.io/microsoft/garnet'

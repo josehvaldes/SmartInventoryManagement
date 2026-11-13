@@ -10,7 +10,7 @@ namespace SmartInventory.Seeds
 {
     public class StockSeeder : BaseSeeder<Stock>
     {
-        public StockSeeder(string connectionString) : base(connectionString) { }
+        public StockSeeder(SmartInventoryDbContext context) : base(context) { }
 
         protected override void ProcessSeed(SmartInventoryDbContext context, List<Stock> seeds)
         {

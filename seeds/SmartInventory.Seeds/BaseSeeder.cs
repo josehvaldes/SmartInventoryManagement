@@ -21,11 +21,11 @@ namespace SmartInventory.Seeds
 
     public abstract class BaseSeeder<T>
     {
-        protected string _connectionString { get; set; }
+        protected SmartInventoryDbContext _context { get; set; }
 
-        public BaseSeeder(string connectionString) 
+        public BaseSeeder(SmartInventoryDbContext context) 
         {
-            _connectionString = connectionString;
+            _context = context;
         }
         public async Task Seed(string filePath) 
         {
@@ -38,22 +38,8 @@ namespace SmartInventory.Seeds
             {
                 var json = await reader.ReadToEndAsync();
                 var seeds = JsonConvert.DeserializeObject<List<T>>(json, SeederSettings.DeserializationSettings) ?? new List<T>();
-                var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                                .UseSqlServer(_connectionString)
-                                .Options;
 
-                using (var context = new SmartInventoryDbContext(options)) 
-                {
-                    try 
-                    {
-                        ProcessSeed(context, seeds);
-                    }
-                    catch (SeederException ex) 
-                    {
-                        Console.WriteLine($"Seeder failed for file {filePath}: {ex.Message}");
-                        return;
-                    }
-                }
+                ProcessSeed(_context, seeds);
             }
         }
 

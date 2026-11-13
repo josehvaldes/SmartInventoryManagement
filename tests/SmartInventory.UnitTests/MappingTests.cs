@@ -44,7 +44,7 @@ namespace SmartInventory.UnitTests
         public void CustomConfiguration_Mapping_IsValid()
         {
             TypeAdapterConfig<Product, ProductDto>.NewConfig()
-                .Map(dest => dest.Name, src => src.Name.ToUpper());
+                .Map(dest => dest.Name, src => src.Name);
 
             Product product = Product.Create(
                 sku: "TEST123",

@@ -39,6 +39,7 @@ namespace SmartInventory.API.Mappings
                 .Map(dest => dest.State,      src => src.Address != null ? src.Address.State      : string.Empty)
                 .Map(dest => dest.PostalCode, src => src.Address != null ? src.Address.PostalCode : string.Empty)
                 .Map(dest => dest.Country,    src => src.Address != null ? src.Address.Country    : string.Empty);
+
             TypeAdapterConfig<WarehouseDto, WarehouseResponse>
                 .NewConfig()
                 .Map(dest => dest.WarehouseType, src => src.WarehouseType.ToString());
