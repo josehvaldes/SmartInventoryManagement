@@ -78,7 +78,7 @@ namespace SmartInventory.IntegrationTests.Sessions
         [Fact]
         public async Task RefreshToken_WithoutCookie_ReturnsUnauthorized()
         {
-            using var response = await Client.PostAsync("/api/v1/auth/refresh-token", content: null);
+            using var response = await Client.PostAsync("/api/v1/auth/refresh-token", content: null, CancellationToken.None);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }

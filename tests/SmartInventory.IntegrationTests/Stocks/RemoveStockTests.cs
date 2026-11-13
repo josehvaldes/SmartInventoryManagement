@@ -16,9 +16,9 @@ namespace SmartInventory.IntegrationTests.Stocks
     [Collection("Integration")]
     public class RemoveStockTests(IntegrationTestFixture fixture) : IntegrationTest(fixture)
     {
-        private Product _product;
-        private Warehouse _warehouse;
-        private Stock _stock;
+        private Product _product = null!;
+        private Warehouse _warehouse = null!;
+        private Stock _stock = null!;
 
         protected override async Task SeedDataAsync(SqlConnection connection)
         {

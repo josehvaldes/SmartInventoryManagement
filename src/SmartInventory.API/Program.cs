@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SmartInventory.API;
+using SmartInventory.API.Logging;
 using SmartInventory.API.Mappings;
 using SmartInventory.API.Middleware;
+using SmartInventory.API.Settings;
 using SmartInventory.Application;
 using SmartInventory.Infrastructure;
 using SmartInventory.Infrastructure.AWS;
 using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.Observability;
 
 MappingConfig.RegisterMappings();
 
@@ -16,8 +19,16 @@ builder.ConfigureKestrel();
 // Configure Serilog
 builder.Logging.ClearProviders();   // Avoid duplicate logs
 
+var appSettings = builder.Configuration.GetSection(AppSettings.SectionName)
+                                    .Get<AppSettings>() ?? new AppSettings();
+
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("version", appSettings.AppVersion)
+    .Enrich.WithProperty("service", appSettings.AppName)
+    .Enrich.With<OpenTelemetryEnricher>()
+    .WriteTo.Console(new PythonCompatibleJsonFormatter(appSettings.AppName, appSettings.AppVersion))
     .CreateLogger();
 
 builder.Host.UseSerilog();          // Register Serilog
@@ -27,6 +38,9 @@ builder.Host.UseSerilog();          // Register Serilog
 builder.Services.AddControllers();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
+builder.Services.ConfigureHttpPipeline(); // Configure HTTP pipeline settings
+
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
@@ -62,6 +76,7 @@ if (app.Environment.IsDevelopment())
     await authDb.Database.MigrateAsync();
 }
 
+app.AddPrometheusMapping(); // Add Prometheus metrics mapping
 app.Run();
 
 

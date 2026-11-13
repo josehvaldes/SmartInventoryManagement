@@ -16,7 +16,7 @@ namespace SmartInventory.IntegrationTests.Warehouses
     [Collection("Integration")]
     public class DeleteWarehouseTests(IntegrationTestFixture fixture) : IntegrationTest(fixture)
     {
-        private List<Warehouse> _warehouses;
+        private List<Warehouse> _warehouses = null!;
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()

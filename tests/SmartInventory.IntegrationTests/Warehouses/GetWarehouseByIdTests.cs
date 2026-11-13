@@ -17,7 +17,7 @@ namespace SmartInventory.IntegrationTests.Warehouses
     [Collection("Integration")]
     public class GetWarehouseByIdTests(IntegrationTestFixture fixture) : IntegrationTest(fixture)
     {
-        private IReadOnlyList<Warehouse> _warehouses;
+        private IReadOnlyList<Warehouse> _warehouses = null!;
 
         protected override async Task SeedDataAsync(SqlConnection connection)
         {

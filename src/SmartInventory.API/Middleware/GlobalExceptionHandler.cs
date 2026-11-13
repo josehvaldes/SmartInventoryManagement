@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Polly.CircuitBreaker;
 using SmartInventory.Application.Common.Exceptions;
+using SmartInventory.Observability.AppMetrics;
 
 namespace SmartInventory.API.Middleware
 {
@@ -21,6 +22,18 @@ namespace SmartInventory.API.Middleware
                 BrokenCircuitException=> (StatusCodes.Status503ServiceUnavailable, "Service temporarily Unavailable"),
                 _                          => (StatusCodes.Status500InternalServerError, "Server Error")
             };
+            
+            switch (statusCode)
+            {
+                case StatusCodes.Status401Unauthorized:
+                    WebMetrics.AuthenticationErrors.Inc();
+                    break;
+                case StatusCodes.Status503ServiceUnavailable:
+                    WebMetrics.ServiceUnavailableErrors.Inc();
+                    break;
+                default:
+                    break;
+            }
 
             logger.LogError(
                 exception,

@@ -1,0 +1,25 @@
+name: smartinventory
+networks:
+  smartinventory_network:
+    external: true
+    name: smartinventory_network
+volumes:
+  prometheus-data:
+  
+services:
+  # --- Observability Stack ---
+  prometheus:
+    image: prom/prometheus:v3.6.0
+    container_name: smartinventory-prometheus
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    networks:
+      - smartinventory_network
