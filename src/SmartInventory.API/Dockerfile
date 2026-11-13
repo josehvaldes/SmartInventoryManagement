@@ -19,6 +19,7 @@ COPY ["src/SmartInventory.Contracts/SmartInventory.Contracts.csproj", "src/Smart
 COPY ["src/SmartInventory.Domain/SmartInventory.Domain.csproj", "src/SmartInventory.Domain/"]
 COPY ["src/SmartInventory.Infrastructure.AWS/SmartInventory.Infrastructure.AWS.csproj", "src/SmartInventory.Infrastructure.AWS/"]
 COPY ["src/SmartInventory.Infrastructure/SmartInventory.Infrastructure.csproj", "src/SmartInventory.Infrastructure/"]
+COPY ["src/SmartInventory.Observability/SmartInventory.Observability.csproj", "src/SmartInventory.Observability/"]
 RUN dotnet restore "./src/SmartInventory.API/SmartInventory.API.csproj"
 COPY . .
 WORKDIR "/src/src/SmartInventory.API"

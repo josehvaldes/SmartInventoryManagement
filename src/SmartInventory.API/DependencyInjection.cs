@@ -12,6 +12,11 @@ using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Infrastructure.Settings;
 using System.Text;
 using System.Threading.RateLimiting;
+using OpenTelemetry.Context.Propagation;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using SmartInventory.Observability.Traces;
+
 
 namespace SmartInventory.API
 {
@@ -233,6 +238,31 @@ namespace SmartInventory.API
             {
                 options.MultipartBodyLengthLimit = aspnetcoreSettings.MultipartBodyLengthLimit;
             });
+            return services;
+        }
+
+
+        public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration config)
+        {
+            var openTelemetrySettings = config.GetSection(OpenTelemetrySettings.SectionName)
+                .Get<OpenTelemetrySettings>() ?? new OpenTelemetrySettings();
+
+            var appSettings = config.GetSection(AppSettings.SectionName)
+                                    .Get<AppSettings>() ?? new AppSettings();
+
+
+            services.AddOpenTelemetry()
+                .ConfigureResource(r => r
+                    .AddService(serviceName: appSettings.AppName,
+                                serviceVersion: appSettings.AppVersion))
+                .WithTracing(tp => tp
+                    .AddSource(Telemetry.ActivitySourceName)
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddOtlpExporter(o => o.Endpoint =
+                        new Uri(openTelemetrySettings.OtlpEndpoint)));
+
+            services.AddSingleton<TextMapPropagator>(new TraceContextPropagator());
             return services;
         }
 

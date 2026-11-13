@@ -55,7 +55,12 @@ Add HTTP-level integration tests that pin **current single-tenant behaviour** fo
 4. **Licensing review**: decide on `FluentAssertions` 8.x (replace with `AwesomeAssertions`/`Shouldly` or accept the license) and on `MediatR`'s license key before the SaaS launch.
 5. **Config/secrets**: keep connection strings and JWT secrets out of `appsettings*.json` for non-dev environments (env vars or a secret store).
 
-### Phase 4: Hand-off to the tenancy ADR
+### Phase 4: Add Observability Stack
+1. Implement Prometheus metrics for the API. Basic metrics for Authentication errors and Poly's service unavailability are enought at this stage.
+2. Clean console loggings, promttail add Loki containers.
+3. Add Tempo container and OpenTelemetry dependencies and basic configuration in the API.
+
+### Phase 5: Hand-off to the tenancy ADR
 Once Phases 1-3 are green, write **ADR 0002 (tenancy model)**, covering the isolation strategy (shared DB with `TenantId` and EF global query filters vs. schema-per-tenant vs. DB-per-tenant), tenant resolution, per-tenant uniqueness, cache/storage/job scoping, and a **cross-tenant isolation test suite** built on the Phase 1 fixture. That decision is deliberately not made here.
 
 ### Out of scope
@@ -96,6 +101,8 @@ load/performance testing, contract testing, and any schema or behaviour change t
 - The CI workflow runs unit and integration tests on PRs.
 - Characterization tests cover the auth, products, warehouses and stock endpoints.
 - ADR 0002 can start from a green baseline.
+- Prometheus Metrics are available in /metrics endpoint.
+
 
 ## Related ADRS
 - [0000-template.md](./0000-template.md): the template this ADR follows.

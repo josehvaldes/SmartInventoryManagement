@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SmartInventory.Application\SmartInventory.Application.csproj" />
     <ProjectReference Include="..\SmartInventory.Domain\SmartInventory.Domain.csproj" />
+    <ProjectReference Include="..\SmartInventory.Observability\SmartInventory.Observability.csproj" />
   </ItemGroup>
 
 </Project>
