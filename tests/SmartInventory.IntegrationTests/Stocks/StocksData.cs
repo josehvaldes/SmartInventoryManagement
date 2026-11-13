@@ -16,7 +16,7 @@ namespace SmartInventory.IntegrationTests.Stocks
             if (string.IsNullOrWhiteSpace(StocksFilePath))
             {
                 Console.WriteLine("File path is not provided. Skipping stock loading.");
-                throw new Exception("File path is not provided. Skipping stock loading.");
+                throw new FileNotFoundException("File path is not provided. Skipping stock loading.");
             }
             using (var reader = new StreamReader(StocksFilePath))
             {
