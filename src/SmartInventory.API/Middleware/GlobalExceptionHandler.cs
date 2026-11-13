@@ -31,6 +31,8 @@ namespace SmartInventory.API.Middleware
                 case StatusCodes.Status503ServiceUnavailable:
                     WebMetrics.ServiceUnavailableErrors.Inc();
                     break;
+                default:
+                    break;
             }
 
             logger.LogError(
