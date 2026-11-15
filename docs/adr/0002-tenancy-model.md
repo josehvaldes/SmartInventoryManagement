@@ -41,7 +41,7 @@ The following are committed as part of this ADR. They go in **Phase 1 of the mig
 
 #### 2.1 `Tenant` aggregate (Domain layer)
 
-New aggregate root in `SmartInventory.Domain/Entities/Tenant.cs`:
+New aggregate root in `SmartInventory.Domain/Identity/Tenant.cs`, alongside the existing `User`, `Role` and `UserRole` identity entities. `Tenant` is an identity concept (it defines access scope, lives in `AuthDbContext`, and is referenced by `User` through `TenantMembership`), so it follows the existing convention that `AuthDbContext`-owned entities live under `Identity/`:
 
 ```csharp
 public class Tenant : BaseEntity
@@ -169,7 +169,7 @@ The remaining milestones are scoped here only as **pointers**, so each future AD
 - **EF Core global query filters can be bypassed** with `IgnoreQueryFilters()`. Mitigation: the write-side interceptor enforces `TenantId` on writes, and the M8 test suite explicitly probes for filter-bypass attempts. `IgnoreQueryFilters()` calls will be flagged in code review.
 - **Migration of existing data.** The current single-tenant rows need a `TenantId` backfill. This is a one-time operation in M3 (ADR 0004), scoped to a default tenant that the existing data is assigned to.
 - **Per-tenant uniqueness is enforced at the DB layer**, which means migrations for unique-index changes must be careful (drop old, backfill `TenantId`, create new). ADR 0004 will detail this.
-- **Two DbContexts sharing a database with a cross-context FK** is slightly unusual. It works because the two contexts already share one physical database, but the FK is not modelled in EF — it exists only at the SQL schema level. Documented in §2.4.
+- **Two DbContexts sharing a database with a cross-context FK**, although slightly unusual, was an architectural decision to enforce a clear separation between business data and identity/authentication data. It works because the two contexts already share one physical database, but the FK is not modelled in EF — it exists only at the SQL schema level. Documented in §2.4.
 - **Auto-generated sequences become per-tenant.** `TransactionNumber` and `OrderNumber` lose global ordering. Acceptable: they were never meaningful across tenants.
 
 ### Risks
