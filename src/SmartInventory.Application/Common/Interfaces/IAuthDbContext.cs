@@ -10,5 +10,8 @@ namespace SmartInventory.Application.Common.Interfaces
         DbSet<Role> Roles { get; }
         DbSet<UserRole> UserRoles { get; }
         DbSet<RefreshToken> RefreshTokens { get; }
+        DbSet<Tenant> Tenants { get; }
+        DbSet<TenantMembership> TenantMemberships { get; }
+
     }
 }
