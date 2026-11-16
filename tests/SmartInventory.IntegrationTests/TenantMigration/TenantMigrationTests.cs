@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Enums;
 using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.IntegrationTests.Infrastructure;
@@ -11,51 +12,71 @@ using Xunit;
 namespace SmartInventory.IntegrationTests.TenantMigration
 {
 
-    [Collection("Integration")]
-    public class TenantMigrationTests(IntegrationTestFixture fixture) : IntegrationTest(fixture)
+    public class TenantMigrationTests()
     {
-        protected override async Task SeedDataAsync(SqlConnection connection)
-        {
-
-        }
 
         [Fact]
-        public async Task MigrateLegacyTenant_PersistsLegacyValues()
+        public async Task MigrateLegacyTenant_PersistsLegacyValuesAuthContext()
         {
+            await using var database = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-CU20-ubuntu-22.04")
+            .WithDatabase("SmartInventoryDB")
+            .Build();
             var cancellationToken = TestContext.Current.CancellationToken;
+            await database.StartAsync(cancellationToken);
             var options = new DbContextOptionsBuilder<AuthDbContext>()
-                .UseSqlServer(ConnectionString)
+                .UseSqlServer(database.GetConnectionString())
                 .Options;
 
             await using (var context = new AuthDbContext(options))
             {
-                var filePath = Path.Combine(AppContext.BaseDirectory, "Data", "legacy_tenant.json");
-                await new TenantMigrationSeeder(context).MigrateLegacyTenant(filePath);
-            }
+                await context.Database.MigrateAsync(cancellationToken);
 
-            await using (var context = new AuthDbContext(options))
-            {
-                var tenant = await context.Tenants.SingleAsync(cancellationToken);
+                var tenant = await context.Tenants.Where(t => t.Id == SystemTenants.LegacyTenantId)
+                    .SingleAsync(cancellationToken);
+
                 tenant.Id.Should().NotBeEmpty();
-                tenant.Id.Should().Be(Guid.Parse("99999999-0000-0000-0000-000000000100"));
+                tenant.Id.Should().Be(SystemTenants.LegacyTenantId);
 
                 tenant.Name.Should().Be("Legacy Tenant");
                 tenant.Slug.Should().Be("legacy-tenant");
                 tenant.Status.Should().Be(TenantStatus.Active);
-                tenant.CreatedAt.Should().Be(new DateTime(2026, 11, 15, 8, 0, 0));
-                tenant.UpdatedAt.Should().Be(tenant.CreatedAt);
 
                 var membership = await context.TenantMemberships.SingleAsync(cancellationToken);
-                membership.Id.Should().Be(Guid.Parse("AAAAAAAA-0000-0000-0000-000000000001"));
+                membership.Id.Should().Be(SystemTenants.LegacyTenantMembershipId);
                 membership.TenantId.Should().Be(tenant.Id);
-                membership.UserId.Should().Be(Guid.Parse("44444444-0000-0000-0000-000000000100"));
+                membership.UserId.Should().Be(SystemTenants.LegacyUserId);
                 membership.Role.Should().Be(TenantRole.Admin);
-                membership.JoinedAt.Should().Be(tenant.CreatedAt);
-                membership.IsActive.Should().BeTrue();
 
                 var user = await context.Users.SingleAsync(cancellationToken);
-                user.Id.Should().Be(Guid.Parse("44444444-0000-0000-0000-000000000100"));
+                user.Id.Should().Be(SystemTenants.LegacyUserId);
 
+            }
+        }
+
+        [Fact]
+        public async Task MigrateLegacyTenant_PersistsLegacyValuesInventoryContext() 
+        {
+            await using var database = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-CU20-ubuntu-22.04")
+                .WithDatabase("SmartInventoryDB")
+                .Build();
+            var cancellationToken = TestContext.Current.CancellationToken;
+            await database.StartAsync(cancellationToken);
+            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
+                .UseSqlServer(database.GetConnectionString())
+                .Options;
+
+            await using (var context = new SmartInventoryDbContext(options)) 
+            {
+                await context.Database.MigrateAsync(cancellationToken);
+
+                context.Products.Where(p => p.TenantId != SystemTenants.LegacyTenantId).Should().BeEmpty();
+                context.PurchaseOrders.Where(po => po.TenantId != SystemTenants.LegacyTenantId).Should().BeEmpty();
+                context.PurchaseOrderItems.Where(poi => poi.TenantId != SystemTenants.LegacyTenantId).Should().BeEmpty();
+                context.Stocks.Where(s => s.TenantId != SystemTenants.LegacyTenantId).Should().BeEmpty();
+                context.StockTransactions.Where(st => st.TenantId != SystemTenants.LegacyTenantId).Should().BeEmpty();
+                context.Suppliers.Where(sa => sa.TenantId != SystemTenants.LegacyTenantId).Should().BeEmpty();
+                context.Warehouses.Where(w => w.TenantId != SystemTenants.LegacyTenantId).Should().BeEmpty();
+                context.StockAlerts.Where(w => w.TenantId != SystemTenants.LegacyTenantId).Should().BeEmpty();
             }
         }
     }

@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmartInventory.Seeds
 {
@@ -24,24 +22,18 @@ namespace SmartInventory.Seeds
                 return;
             }
 
-            if (_authContext.TenantMemberships.Any())
-            {
-                return; // Exit if there are already tenants in the database
-            }
-
             using (var reader = new StreamReader(filePath))
             {
                 var json = await reader.ReadToEndAsync();
                 var tenantsMemberships = JsonConvert.DeserializeObject<List<TenantMembership>>(json) ?? new List<TenantMembership>();
 
-                if (_authContext.TenantMemberships.Any())
-                {
-                    return; // Exit if there are already tenants in the database
-                }
-
                 foreach (var tenantMembership in tenantsMemberships)
                 {
-                    _authContext.TenantMemberships.Add(tenantMembership);
+                    var exists = await _authContext.TenantMemberships.AnyAsync(t => t.Id == tenantMembership.Id);
+                    if (!exists)
+                    {
+                        _authContext.TenantMemberships.Add(tenantMembership);
+                    }
                 }
 
                 await _authContext.SaveChangesAsync();

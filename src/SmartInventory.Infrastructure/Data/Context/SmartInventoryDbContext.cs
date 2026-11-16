@@ -34,6 +34,8 @@ namespace SmartInventory.Infrastructure.Data.Context
 
         public DbSet<Supplier> Suppliers => Set<Supplier>();
 
+        public DbSet<StockAlert> StockAlerts => Set<StockAlert>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
