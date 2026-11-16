@@ -2,7 +2,7 @@
 
 namespace SmartInventory.Domain.Entities
 {
-    public class Product
+    public class Product : ITenantEntity
     {
         private Product() { } // For EF Core materialisation
 
@@ -22,6 +22,7 @@ namespace SmartInventory.Domain.Entities
         public string CreatedBy { get; private set; } = string.Empty;
         public string UpdatedBy { get; private set; } = string.Empty;
         public string ImageUrl { get; private set; } = string.Empty;
+        public Guid? TenantId { get; set; }
 
         /// <summary>
         /// Creates a new product, enforcing all creation-time invariants.

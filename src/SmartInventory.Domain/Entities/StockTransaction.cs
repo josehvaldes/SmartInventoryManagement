@@ -28,7 +28,7 @@ namespace SmartInventory.Domain.Entities
     /// IsReversed: bool (default: false)
     /// ReversedByTransactionId: Guid? (reference to reversal transaction)
     /// </summary>
-    public class StockTransaction
+    public class StockTransaction: ITenantEntity
     {
         public Guid Id { get; init; }
         public string TransactionNumber { get; init; } = string.Empty;
@@ -48,5 +48,6 @@ namespace SmartInventory.Domain.Entities
         public string CreatedBy { get; init; } = string.Empty;
         public bool IsReversed { get; init; } = false;
         public Guid? ReversedByTransactionId { get; init; }
+        public Guid? TenantId { get; set; }
     }
 }

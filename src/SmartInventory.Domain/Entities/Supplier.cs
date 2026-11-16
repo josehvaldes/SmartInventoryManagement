@@ -22,7 +22,7 @@ namespace SmartInventory.Domain.Entities
     /// CreatedAt: DateTime (UTC)
     /// UpdatedAt: DateTime (UTC)
     /// </summary>
-    public class Supplier
+    public class Supplier : ITenantEntity
     {
 
         public Guid Id { get; set; }
@@ -39,6 +39,7 @@ namespace SmartInventory.Domain.Entities
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public Guid? TenantId { get; set; }
 
         public bool CanFulfillOrder(decimal orderValue)
         {

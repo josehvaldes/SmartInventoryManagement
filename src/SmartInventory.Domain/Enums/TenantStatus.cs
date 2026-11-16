@@ -6,8 +6,8 @@ namespace SmartInventory.Domain.Enums
 {
     public enum TenantStatus
     {
-        Active,
-        Suspended,
-        Provisioning
+        Active = 1,
+        Suspended = 2,
+        Provisioning = 3
     }
 }

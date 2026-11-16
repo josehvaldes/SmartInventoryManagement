@@ -21,6 +21,10 @@ namespace SmartInventory.Infrastructure.Data.Configurations
             builder.Property(i => i.Id)
                 .HasDefaultValueSql("NEWSEQUENTIALID()");
 
+            // ── TenantId ───────────────────────────────────────────────────────────
+            builder.Property(p => p.TenantId)
+                .IsRequired(false);
+
             // ── Composite Unique Constraint ───────────────────────────────────
             // A product can only appear once per purchase order
             builder.HasIndex(i => new { i.PurchaseOrderId, i.ProductId })

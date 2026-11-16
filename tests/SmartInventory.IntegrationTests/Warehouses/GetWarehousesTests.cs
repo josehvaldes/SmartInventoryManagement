@@ -68,13 +68,13 @@ namespace SmartInventory.IntegrationTests.Warehouses
         [Fact]
         public async Task GetWarehouses_ShouldReturnRemainingItems_OnLastPage()
         {
-            var response = await Client.GetAsync("/api/v1/warehouses?pageNumber=3&pageSize=2", CancellationToken.None);
+            var response = await Client.GetAsync("/api/v1/warehouses?pageNumber=4&pageSize=2", CancellationToken.None);
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var page = await response.Content.ReadFromJsonAsync<PagedResponse<WarehouseResponse>>(cancellationToken: CancellationToken.None);
 
             page.Should().NotBeNull();
-            page!.Items.Should().HaveCount(1);
+            page!.Items.Should().HaveCount(2);
             page.HasPreviousPage.Should().BeTrue();
             page.HasNextPage.Should().BeFalse();
         }

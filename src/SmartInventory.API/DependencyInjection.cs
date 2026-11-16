@@ -40,6 +40,7 @@ namespace SmartInventory.API
             services.AddScoped<ILinkService, LinkService>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ITenantContext, TenantContext>();
 
             return services;
         }

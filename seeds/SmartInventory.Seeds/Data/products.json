@@ -14,7 +14,8 @@
     "createdAt": "2025-01-10T08:00:00Z",
     "updatedAt": "2025-01-10T08:00:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000001"
   },
   {
     "id": "11111111-0000-0000-0000-000000000002",
@@ -31,7 +32,8 @@
     "createdAt": "2025-01-10T08:05:00Z",
     "updatedAt": "2025-01-10T08:05:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000002"
   },
   {
     "id": "11111111-0000-0000-0000-000000000003",
@@ -48,7 +50,8 @@
     "createdAt": "2025-01-10T08:10:00Z",
     "updatedAt": "2025-01-10T08:10:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000001"
   },
   {
     "id": "11111111-0000-0000-0000-000000000004",
@@ -65,7 +68,8 @@
     "createdAt": "2025-01-10T08:15:00Z",
     "updatedAt": "2025-01-10T08:15:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000002"
   },
   {
     "id": "11111111-0000-0000-0000-000000000005",
@@ -82,7 +86,8 @@
     "createdAt": "2025-01-10T08:20:00Z",
     "updatedAt": "2025-01-10T08:20:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000001"
   },
   {
     "id": "11111111-0000-0000-0000-000000000006",
@@ -99,7 +104,8 @@
     "createdAt": "2025-01-10T08:25:00Z",
     "updatedAt": "2025-01-10T08:25:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000002"
   },
   {
     "id": "11111111-0000-0000-0000-000000000007",
@@ -116,7 +122,8 @@
     "createdAt": "2025-01-10T08:30:00Z",
     "updatedAt": "2025-01-10T08:30:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000001"
   },
   {
     "id": "11111111-0000-0000-0000-000000000008",
@@ -133,7 +140,8 @@
     "createdAt": "2025-01-10T08:35:00Z",
     "updatedAt": "2025-01-10T08:35:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000002"
   },
   {
     "id": "11111111-0000-0000-0000-000000000009",
@@ -150,7 +158,8 @@
     "createdAt": "2025-01-10T08:40:00Z",
     "updatedAt": "2025-01-10T08:40:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000001"
   },
   {
     "id": "11111111-0000-0000-0000-000000000010",
@@ -167,7 +176,8 @@
     "createdAt": "2025-01-10T08:45:00Z",
     "updatedAt": "2025-01-10T08:45:00Z",
     "createdBy": "admin",
-    "updatedBy": "admin"
+    "updatedBy": "admin",
+    "TenantId": "99999999-0000-0000-0000-000000000002"
   }
 ]
 

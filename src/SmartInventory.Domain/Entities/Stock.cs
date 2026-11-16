@@ -20,7 +20,7 @@ namespace SmartInventory.Domain.Entities
     /// LastUpdatedAt: DateTime (UTC)
     /// LastTransactionId: Guid? (reference to last transaction)
     /// </summary>
-    public class Stock : BaseEntity
+    public class Stock :BaseEntity, ITenantEntity
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
@@ -31,6 +31,7 @@ namespace SmartInventory.Domain.Entities
         public DateTime? LastStockTakeDate { get; set; } = null!;
         public DateTime LastUpdatedAt { get; set; }
         public Guid LastTransactionId { get; set; }
+        public Guid? TenantId { get; set; }
 
         public void RemoveStock(decimal quantity, Guid transactionId) 
         {

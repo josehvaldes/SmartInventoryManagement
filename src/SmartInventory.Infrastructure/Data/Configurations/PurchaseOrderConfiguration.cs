@@ -21,6 +21,10 @@ namespace SmartInventory.Infrastructure.Data.Configurations
             builder.Property(po => po.Id)
                 .HasDefaultValueSql("NEWSEQUENTIALID()");
 
+            // ── TenantId ───────────────────────────────────────────────────────────
+            builder.Property(p => p.TenantId)
+                .IsRequired(false);
+
             // ── Order Number ──────────────────────────────────────────────────
             builder.Property(po => po.OrderNumber)
                 .IsRequired()

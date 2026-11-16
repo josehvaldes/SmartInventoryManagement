@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.Contracts.Requests.Warehouses;
+using SmartInventory.Domain.Entities;
 using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
@@ -22,7 +23,7 @@ namespace SmartInventory.IntegrationTests.Warehouses
 
         }
 
-        private static CreateWarehouseRequest BuildValidRequest(SmartInventory.Domain.Entities.Warehouse warehouse) => new()
+        private static CreateWarehouseRequest BuildValidRequest(Warehouse warehouse) => new()
         {
             Name = warehouse.Name,
             Code = warehouse.Code,
