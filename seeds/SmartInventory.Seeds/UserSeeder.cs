@@ -21,12 +21,16 @@ namespace SmartInventory.Seeds
 
         public async Task Seed(string filePath) 
         {
-            if (string.IsNullOrWhiteSpace(filePath))
+            if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
             {
-                Console.WriteLine("File path is not provided. Skipping user seeding.");
+                Console.WriteLine("File path is not provided or file does not exist. Skipping user seeding.");
                 return;
             }
-            
+
+            if (_authContext.Users.Any())
+            {
+                return; // Exit if there are already users in the database
+            }
 
             using (var reader = new StreamReader(filePath))
             {
@@ -40,19 +44,8 @@ namespace SmartInventory.Seeds
 
                 foreach (var user in users)
                 {
-                    var existingUser = await _authContext.Users.FindAsync(user.Id);
-                    if (existingUser == null)
-                    {
-                            
-                        user.PasswordHash = HashPassword(user, user.Password);
-                        _authContext.Users.Add(user);
-                    }
-                    else
-                    {
-                        existingUser.Name = user.Name;
-                        existingUser.Email = user.Email;
-                        existingUser.IsActive = user.IsActive;
-                    }
+                    user.PasswordHash = HashPassword(user, user.Password);
+                    _authContext.Users.Add(user);
                 }
                 await _authContext.SaveChangesAsync();
                 

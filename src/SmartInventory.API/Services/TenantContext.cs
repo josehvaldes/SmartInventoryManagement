@@ -4,10 +4,10 @@ namespace SmartInventory.API.Services
 {
     public class TenantContext : ITenantContext
     {
-        public Guid TenantId => throw new NotImplementedException();
+        public Guid TenantId => throw new InvalidOperationException("Tenant context is not available.");
 
-        public bool IsAvailable => throw new NotImplementedException();
+        public bool IsAvailable => false;
 
-        public bool IsTenantScoped => throw new NotImplementedException();
+        public bool IsTenantScoped => false;
     }
 }

@@ -1,0 +1,27 @@
+{
+  "tenant": {
+    "id": "99999999-0000-0000-0000-000000000100",
+    "name": "Legacy Tenant",
+    "slug": "legacy-tenant",
+    "status": "1",
+    "createdAt": "2026-11-15T08:00:00Z",
+    "updatedAt": "2026-11-15T08:00:00Z"
+  },
+  "membership": {
+    "id": "AAAAAAAA-0000-0000-0000-000000000001",
+    "tenantId": "99999999-0000-0000-0000-000000000100",
+    "userId": "44444444-0000-0000-0000-000000000100",
+    "role": "1",
+    "JoinedAt": "2026-11-15T08:00:00Z",
+    "isActive": true
+  },
+  "user": {
+    "id": "44444444-0000-0000-0000-000000000100",
+    "username": "legacyuser",
+    "email": "legacyuser@example.com",
+    "name": "Legacy User",
+    "passwordHash": "AQAAAAEAACcQAAAAELpo10170luQf1mei1TxbRKmy4Mdz5U82Fp/qdhZAAGyguv7S1lHNVHdN2lT0vO7PQ==",
+    "password": "Admin@123!",
+    "isActive": true
+  }
+}

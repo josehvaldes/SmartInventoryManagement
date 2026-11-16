@@ -15,6 +15,8 @@ namespace SmartInventory.Seeds
             var seeders = new Dictionary<string, Func<Task>>(StringComparer.OrdinalIgnoreCase)
             {
                 [nameof(UserSeeder)] = () => new UserSeeder(authDbContext).Seed(Path.Combine(dataDir, "users.json")),
+                [nameof(TenantSeeder)] = () => new TenantSeeder(authDbContext).Seed(Path.Combine(dataDir, "tenants.json")),
+                [nameof(TenantMembershipSeeder)] = () => new TenantMembershipSeeder(authDbContext).Seed(Path.Combine(dataDir, "tenant_memberships.json")),
                 [nameof(ProductSeeder)] = () => new ProductSeeder(smartInventoryDbContext).Seed(Path.Combine(dataDir, "products.json")),
                 [nameof(WarehouseSeeder)] = () => new WarehouseSeeder(smartInventoryDbContext).Seed(Path.Combine(dataDir, "warehouses.json")),
                 [nameof(StockSeeder)] = () => new StockSeeder(smartInventoryDbContext).Seed(Path.Combine(dataDir, "stocks.json")),                

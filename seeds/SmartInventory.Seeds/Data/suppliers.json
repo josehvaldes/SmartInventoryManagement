@@ -1,6 +1,30 @@
 [
   {
     "id": "66666666-0000-0000-0000-000000000001",
+    "TenantId": "99999999-0000-0000-0000-000000000001",
+    "code": "SUP-001",
+    "name": "TechLine Electronics Ltd.",
+    "contactPerson": "Martin Schulz",
+    "email": "m.schulz@techlineelectronics.com",
+    "phone": "+1-408-555-0601",
+    "address": {
+      "street": "3200 Innovation Drive",
+      "city": "San Jose",
+      "state": "CA",
+      "postalCode": "95101",
+      "country": "USA"
+    },
+    "paymentTerms": "Net 30",
+    "leadTimeDays": 10,
+    "minimumOrderValue": 500.00,
+    "rating": 4.5,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:00:00Z",
+    "updatedAt": "2025-01-10T08:00:00Z"
+  },
+  {
+    "id": "66666666-0000-0000-0000-000000000008",
+    "TenantId": "99999999-0000-0000-0000-000000000002",
     "code": "SUP-001",
     "name": "TechLine Electronics Ltd.",
     "contactPerson": "Martin Schulz",
@@ -23,6 +47,30 @@
   },
   {
     "id": "66666666-0000-0000-0000-000000000002",
+    "TenantId": "99999999-0000-0000-0000-000000000001",
+    "code": "SUP-002",
+    "name": "OfficeFirst Supply Co.",
+    "contactPerson": "Karen Mills",
+    "email": "k.mills@officefirst.com",
+    "phone": "+1-614-555-0602",
+    "address": {
+      "street": "78 Commerce Center Blvd",
+      "city": "Columbus",
+      "state": "OH",
+      "postalCode": "43201",
+      "country": "USA"
+    },
+    "paymentTerms": "Net 15",
+    "leadTimeDays": 4,
+    "minimumOrderValue": 150.00,
+    "rating": 4.2,
+    "isActive": true,
+    "createdAt": "2025-01-10T08:05:00Z",
+    "updatedAt": "2025-01-10T08:05:00Z"
+  },
+  {
+    "id": "66666666-0000-0000-0000-000000000009",
+    "TenantId": "99999999-0000-0000-0000-000000000002",
     "code": "SUP-002",
     "name": "OfficeFirst Supply Co.",
     "contactPerson": "Karen Mills",
@@ -45,6 +93,7 @@
   },
   {
     "id": "66666666-0000-0000-0000-000000000003",
+    "TenantId": "99999999-0000-0000-0000-000000000001",
     "code": "SUP-003",
     "name": "HeavyDuty Machinery Inc.",
     "contactPerson": "Doug Patel",
@@ -67,6 +116,7 @@
   },
   {
     "id": "66666666-0000-0000-0000-000000000004",
+    "TenantId": "99999999-0000-0000-0000-000000000002",
     "code": "SUP-004",
     "name": "ProTools International",
     "contactPerson": "Susan Briggs",
@@ -89,6 +139,7 @@
   },
   {
     "id": "66666666-0000-0000-0000-000000000005",
+    "TenantId": "99999999-0000-0000-0000-000000000001",
     "code": "SUP-005",
     "name": "SafeGuard Equipment Ltd.",
     "contactPerson": "Marcus Reid",
@@ -111,6 +162,7 @@
   },
   {
     "id": "66666666-0000-0000-0000-000000000006",
+    "TenantId": "99999999-0000-0000-0000-000000000002",
     "code": "SUP-006",
     "name": "Metals Direct Corp.",
     "contactPerson": "Irene Novak",
@@ -133,6 +185,7 @@
   },
   {
     "id": "66666666-0000-0000-0000-000000000007",
+    "TenantId": "99999999-0000-0000-0000-000000000001",
     "code": "SUP-007",
     "name": "CircuitCraft Solutions",
     "contactPerson": "Olivia Chen",

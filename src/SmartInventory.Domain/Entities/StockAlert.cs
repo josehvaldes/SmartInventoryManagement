@@ -24,7 +24,7 @@ namespace SmartInventory.Domain.Entities
     /// ResolvedBy: string (optional, username/user ID)
     /// ResolutionNotes: string (optional, max 500 chars)
     /// </summary>
-    public class StockAlert
+    public class StockAlert : ITenantEntity
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
@@ -41,6 +41,6 @@ namespace SmartInventory.Domain.Entities
         public DateTime? ResolvedAt { get; set; }
         public string ResolvedBy { get; set; } = string.Empty;
         public string ResolutionNotes { get; set; } = string.Empty;
-
+        public Guid? TenantId { get; set; }
     }
 }

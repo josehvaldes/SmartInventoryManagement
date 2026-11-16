@@ -25,6 +25,15 @@
     <Content Include="..\..\seeds\SmartInventory.Seeds\Data\suppliers.json" Link="Data\suppliers.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\tenants.json" Link="Data\tenants.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\legacy_tenant.json" Link="Data\legacy_tenant.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\seeds\SmartInventory.Seeds\Data\tenant_memberships.json" Link="Data\tenant_memberships.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\seeds\SmartInventory.Seeds\Data\users.json" Link="Data\users.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -57,6 +66,7 @@
     <ProjectReference Include="..\..\src\SmartInventory.Domain\SmartInventory.Domain.csproj" />
     <ProjectReference Include="..\..\src\SmartInventory.Infrastructure\SmartInventory.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\SmartInventory.API\SmartInventory.API.csproj" />
+    <ProjectReference Include="..\..\seeds\SmartInventory.Seeds\SmartInventory.Seeds.csproj" />
   </ItemGroup>
 
   <ItemGroup>

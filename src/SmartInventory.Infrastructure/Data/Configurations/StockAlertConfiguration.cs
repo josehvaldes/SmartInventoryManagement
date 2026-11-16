@@ -22,6 +22,10 @@ namespace SmartInventory.Infrastructure.Data.Configurations
             builder.Property(a => a.Id)
                 .HasDefaultValueSql("NEWSEQUENTIALID()");
 
+            // ── TenantId ───────────────────────────────────────────────────────────
+            builder.Property(p => p.TenantId)
+                .IsRequired(false);
+
             // ── Enums ─────────────────────────────────────────────────────────
             builder.Property(a => a.AlertType)
                 .IsRequired()

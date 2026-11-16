@@ -10,7 +10,7 @@ using System.Text;
 namespace SmartInventory.Seeds
 {
 
-    internal static class SeederSettings
+    public static class SeederSettings
     {
         internal static readonly JsonSerializerSettings DeserializationSettings = new()
         {
@@ -29,11 +29,12 @@ namespace SmartInventory.Seeds
         }
         public async Task Seed(string filePath) 
         {
-            if (string.IsNullOrWhiteSpace(filePath))
+            if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
             {
-                Console.WriteLine("File path is not provided. Skipping product seeding.");
+                Console.WriteLine("File path is not provided or file does not exist. Skipping product seeding.");
                 return;
             }
+
             using (var reader = new StreamReader(filePath)) 
             {
                 var json = await reader.ReadToEndAsync();

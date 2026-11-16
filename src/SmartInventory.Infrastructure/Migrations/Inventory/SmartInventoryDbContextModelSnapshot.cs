@@ -77,6 +77,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal?>("UnitCost")
                         .HasColumnType("decimal(18,4)");
 
@@ -189,6 +192,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0m);
 
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("TotalAmount")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(18,2)")
@@ -274,6 +280,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("decimal(18,4)")
                         .HasDefaultValue(0m);
 
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("decimal(18,4)");
 
@@ -341,6 +350,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(18,4)")
                         .HasDefaultValue(0m);
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("WarehouseId")
                         .HasColumnType("uniqueidentifier");
@@ -425,6 +437,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("ThresholdQuantity")
                         .HasColumnType("decimal(18,4)");
@@ -513,6 +528,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("SourceWarehouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalCost")
@@ -639,6 +657,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("decimal(3,2)")
                         .HasDefaultValue(3.0m);
 
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -713,6 +734,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()

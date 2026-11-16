@@ -20,7 +20,7 @@ namespace SmartInventory.Domain.Entities
     /// CreatedAt: DateTime (UTC)
     /// UpdatedAt: DateTime (UTC)
     /// </summary>
-    public class Warehouse
+    public class Warehouse : ITenantEntity
     {
 
         private Warehouse() { } // For EF Core materialisation
@@ -37,7 +37,7 @@ namespace SmartInventory.Domain.Entities
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-
+        public Guid? TenantId { get; set; }
 
         public static Warehouse Create(
             string code,

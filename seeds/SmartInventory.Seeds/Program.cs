@@ -44,6 +44,8 @@ var seeders = new Dictionary<string, Func<Task>>(StringComparer.OrdinalIgnoreCas
     [nameof(SupplierSeeder)]           = () => new SupplierSeeder(dbContext).Seed(Path.Combine(dataDir, "suppliers.json")),
     [nameof(PurchaseOrderSeeder)]      = () => new PurchaseOrderSeeder(dbContext).Seed(Path.Combine(dataDir, "purchase_orders.json")),
     [nameof(PurchaseOrderItemsSeeder)] = () => new PurchaseOrderItemsSeeder(dbContext).Seed(Path.Combine(dataDir, "purchase_order_items.json")),
+    [nameof(TenantSeeder)] = () => new TenantSeeder(authContext).Seed(Path.Combine(dataDir, "tenants.json")),
+    [nameof(TenantMembershipSeeder)] = () => new TenantMembershipSeeder(authContext).Seed(Path.Combine(dataDir, "tenant_memberships.json")),
 };
 
 if (args.Length == 0)
@@ -54,7 +56,13 @@ if (args.Length == 0)
 else
 {
     var command = args[0];
-    if (seeders.TryGetValue(command, out var seed))
+    if (command == "tenant-migration-expand")
+    {
+        var tenantMigration = new TenantMigrationSeeder(authContext);
+        var legacyFilePath = Path.Combine(dataDir, "legacy_tenant.json");
+        await tenantMigration.MigrateLegacyTenant(legacyFilePath);
+    }
+    else if (seeders.TryGetValue(command, out var seed))
     {
         await seed();
     }

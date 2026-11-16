@@ -2,6 +2,7 @@
   "profiles": {
     "SmartInventory.Seeds": {
       "commandName": "Project",
+      "commandLineArgs": "tenant-migration-expand",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }

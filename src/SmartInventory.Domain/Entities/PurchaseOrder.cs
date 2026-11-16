@@ -26,7 +26,7 @@ namespace SmartInventory.Domain.Entities
     //     * UpdatedBy: string (username/user ID)         
     //     */
     /// </summary>
-    public class PurchaseOrder
+    public class PurchaseOrder : ITenantEntity
     {
 
         public Guid Id { get; set; }
@@ -51,7 +51,8 @@ namespace SmartInventory.Domain.Entities
 
         /*Collections*/
         //(one-to-many, cascade delete)
-        public List<PurchaseOrderItem> Items { get; set; } = []; 
+        public List<PurchaseOrderItem> Items { get; set; } = [];
 
+        public Guid? TenantId { get; set; }
     }
 }

@@ -98,7 +98,10 @@ Migrations are applied automatically on startup when the environment is `Develop
 $env:ConnectionStrings__SmartInventoryDb = "<connection string>"
 dotnet run --project seeds/SmartInventory.Seeds              # seed everything
 dotnet run --project seeds/SmartInventory.Seeds ProductSeeder # or a single seeder
+dotnet run --project seeds/SmartInventory.Seeds -- tenant-migration-expand # import the legacy tenant
 ```
+
+The legacy import reads `seeds/SmartInventory.Seeds/Data/legacy_tenant.json`. Its membership's user must already exist in the auth database, and its tenant and membership IDs must not conflict with existing records. In particular, the example membership ID is also used in `tenant_memberships.json`; use a distinct ID if those memberships have already been seeded. The import inserts both records and does not update existing ones.
 
 ### 4. Explore
 

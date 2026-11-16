@@ -15,7 +15,7 @@ namespace SmartInventory.Domain.Entities
     /// ReceivedQuantity: decimal (default: 0)
     /// Notes: string (optional, max 500 chars)
     /// </summary>
-    public class PurchaseOrderItem
+    public class PurchaseOrderItem: ITenantEntity
     {
         
 
@@ -27,6 +27,7 @@ namespace SmartInventory.Domain.Entities
         public decimal TotalCost { get; set; }
         public decimal ReceivedQuantity { get; set; } = 0;
         public string Notes { get; set; } = string.Empty;
-
+        
+        public Guid? TenantId { get; set; }
     }
 }
