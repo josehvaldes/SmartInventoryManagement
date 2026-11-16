@@ -23,7 +23,7 @@
   {
     "id": "22222222-0000-0000-0000-000000000006",
     "TenantId": "99999999-0000-0000-0000-000000000002",
-    "code": "WH-MAIN",
+    "code": "WH-CENTRAL-01",
     "name": "Main Distribution Warehouse",
     "address": {
       "street": "1200 Industrial Parkway",
@@ -65,7 +65,7 @@
   {
     "id": "22222222-0000-0000-0000-000000000007",
     "TenantId": "99999999-0000-0000-0000-000000000002",
-    "code": "WH-EAST",
+    "code": "WH-EAST-01",
     "name": "East Regional Distribution Center",
     "address": {
       "street": "450 Logistics Boulevard",
@@ -107,7 +107,7 @@
   {
     "id": "22222222-0000-0000-0000-000000000008",
     "TenantId": "99999999-0000-0000-0000-000000000002",
-    "code": "WH-WEST",
+    "code": "WH-WEST-01",
     "name": "West Regional Distribution Center",
     "address": {
       "street": "8800 Harbor Freight Road",

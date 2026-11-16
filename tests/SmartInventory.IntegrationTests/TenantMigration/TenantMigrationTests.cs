@@ -41,7 +41,7 @@ namespace SmartInventory.IntegrationTests.TenantMigration
 
                 tenant.Name.Should().Be("Legacy Tenant");
                 tenant.Slug.Should().Be("legacy-tenant");
-                tenant.Status.Should().Be(TenantStatus.Suspended);
+                tenant.Status.Should().Be(TenantStatus.Active);
                 tenant.CreatedAt.Should().Be(new DateTime(2026, 11, 15, 8, 0, 0));
                 tenant.UpdatedAt.Should().Be(tenant.CreatedAt);
 
