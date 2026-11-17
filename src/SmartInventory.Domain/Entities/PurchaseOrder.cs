@@ -53,6 +53,6 @@ namespace SmartInventory.Domain.Entities
         //(one-to-many, cascade delete)
         public List<PurchaseOrderItem> Items { get; set; } = [];
 
-        public Guid? TenantId { get; set; }
+        public Guid TenantId { get; set; }
     }
 }

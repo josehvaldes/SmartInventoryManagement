@@ -8,15 +8,16 @@ namespace SmartInventory.Infrastructure.Data.Context
     public class SmartInventoryDbContext : DbContext, IApplicationDbContext
     {
         private readonly IMediator? _mediator;
-
+        private readonly ITenantContext? _tenantContext;
         public interface IInventoryConfiguration { }
 
         public SmartInventoryDbContext(DbContextOptions<SmartInventoryDbContext> options) : base(options)
         {
         }
 
-        public SmartInventoryDbContext(DbContextOptions<SmartInventoryDbContext> options, IMediator mediator) : base(options)
+        public SmartInventoryDbContext(DbContextOptions<SmartInventoryDbContext> options, ITenantContext tenantContext, IMediator? mediator = null) : base(options)
         {
+            _tenantContext = tenantContext;
             _mediator = mediator;
         }
 
@@ -46,6 +47,18 @@ namespace SmartInventory.Infrastructure.Data.Context
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            var needsTenant = ChangeTracker
+                .Entries<ITenantEntity>()
+                .Where(e => e.State == EntityState.Added && e.Entity.TenantId == Guid.Empty)
+                .ToList();
+
+            if (needsTenant.Count > 0)
+            {
+                if (_tenantContext is not { IsAvailable: true })
+                    throw new InvalidOperationException("A tenant is required to save tenant entities, but no tenant context is available.");
+
+                needsTenant.ForEach(e => e.Entity.TenantId = _tenantContext.TenantId);
+            }
 
             var domainEventEntities = ChangeTracker
                 .Entries<BaseEntity>()

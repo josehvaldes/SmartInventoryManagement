@@ -72,8 +72,8 @@ if (app.Environment.IsDevelopment())
     var inventoryDb = scope.ServiceProvider.GetRequiredService<SmartInventoryDbContext>();
     var authDb = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
 
-    await inventoryDb.Database.MigrateAsync();
     await authDb.Database.MigrateAsync();
+    await inventoryDb.Database.MigrateAsync();    
 }
 
 app.AddPrometheusMapping(); // Add Prometheus metrics mapping

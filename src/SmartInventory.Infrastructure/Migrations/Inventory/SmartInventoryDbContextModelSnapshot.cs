@@ -77,7 +77,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("UnitCost")
@@ -111,9 +111,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_Products_Name");
 
-                    b.HasIndex("SKU")
+                    b.HasIndex("TenantId", "SKU")
                         .IsUnique()
-                        .HasDatabaseName("UK_Products_SKU");
+                        .HasDatabaseName("UK_Products_Tenant_SKU");
 
                     b.ToTable("Products", "Inventory", t =>
                         {
@@ -192,7 +192,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0m);
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalAmount")
@@ -221,10 +221,6 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("OrderDate"), new[] { "OrderNumber", "Status", "TotalAmount" });
 
-                    b.HasIndex("OrderNumber")
-                        .IsUnique()
-                        .HasDatabaseName("UK_PurchaseOrders_Number");
-
                     b.HasIndex("Status")
                         .HasDatabaseName("IX_PurchaseOrders_Status");
 
@@ -239,6 +235,10 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasDatabaseName("IX_PurchaseOrders_WarehouseId");
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("WarehouseId"), new[] { "OrderDate", "Status" });
+
+                    b.HasIndex("TenantId", "OrderNumber")
+                        .IsUnique()
+                        .HasDatabaseName("UK_PurchaseOrders_Tenant_OrderNumber");
 
                     b.ToTable("PurchaseOrders", "Purchasing", t =>
                         {
@@ -280,7 +280,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("decimal(18,4)")
                         .HasDefaultValue(0m);
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalCost")
@@ -301,9 +301,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("PurchaseOrderId"), new[] { "ProductId", "Quantity", "UnitCost" });
 
-                    b.HasIndex("PurchaseOrderId", "ProductId")
+                    b.HasIndex("TenantId", "PurchaseOrderId", "ProductId")
                         .IsUnique()
-                        .HasDatabaseName("UK_PurchaseOrderItems_PO_Product");
+                        .HasDatabaseName("UK_PurchaseOrderItems_Tenant_PO_Product");
 
                     b.ToTable("PurchaseOrderItems", "Purchasing", t =>
                         {
@@ -351,7 +351,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("decimal(18,4)")
                         .HasDefaultValue(0m);
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("WarehouseId")
@@ -369,9 +369,9 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("WarehouseId"), new[] { "ProductId", "QuantityOnHand", "QuantityAvailable" });
 
-                    b.HasIndex("ProductId", "WarehouseId")
+                    b.HasIndex("TenantId", "ProductId", "WarehouseId")
                         .IsUnique()
-                        .HasDatabaseName("UK_Stock_Product_Warehouse");
+                        .HasDatabaseName("UK_Stock_Tenant_Product_Warehouse");
 
                     b.ToTable("Stock", "Inventory", t =>
                         {
@@ -438,7 +438,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("ThresholdQuantity")
@@ -455,10 +455,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("CreatedAt"), new[] { "Status", "Severity", "ProductId" });
 
-                    b.HasIndex("ProductId")
-                        .HasDatabaseName("IX_StockAlerts_ProductId");
-
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("ProductId"), new[] { "Status", "Severity", "CreatedAt" });
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("Severity")
                         .HasDatabaseName("IX_StockAlerts_Severity");
@@ -470,10 +467,17 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("Status"), new[] { "ProductId", "WarehouseId", "Severity", "CreatedAt" });
 
-                    b.HasIndex("WarehouseId")
-                        .HasDatabaseName("IX_StockAlerts_WarehouseId");
+                    b.HasIndex("WarehouseId");
 
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("WarehouseId"), new[] { "Status", "Severity", "CreatedAt" });
+                    b.HasIndex("TenantId", "ProductId")
+                        .HasDatabaseName("IX_StockAlerts_Tenant_ProductId");
+
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("TenantId", "ProductId"), new[] { "Status", "Severity", "CreatedAt" });
+
+                    b.HasIndex("TenantId", "WarehouseId")
+                        .HasDatabaseName("IX_StockAlerts_Tenant_WarehouseId");
+
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("TenantId", "WarehouseId"), new[] { "Status", "Severity", "CreatedAt" });
 
                     b.ToTable("StockAlerts", "Alerts");
                 });
@@ -530,7 +534,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                     b.Property<Guid?>("SourceWarehouseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalCost")
@@ -575,10 +579,6 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("TransactionDate"), new[] { "ProductId", "WarehouseId", "Quantity", "TransactionType" });
 
-                    b.HasIndex("TransactionNumber")
-                        .IsUnique()
-                        .HasDatabaseName("UK_StockTransactions_Number");
-
                     b.HasIndex("TransactionType")
                         .HasDatabaseName("IX_StockTransactions_Type");
 
@@ -588,6 +588,10 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasDatabaseName("IX_StockTransactions_WarehouseId");
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("WarehouseId"), new[] { "TransactionDate", "ProductId", "Quantity" });
+
+                    b.HasIndex("TenantId", "TransactionNumber")
+                        .IsUnique()
+                        .HasDatabaseName("UK_StockTransactions_Tenant_TransactionNumber");
 
                     b.ToTable("StockTransactions", "Inventory", t =>
                         {
@@ -657,7 +661,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasColumnType("decimal(3,2)")
                         .HasDefaultValue(3.0m);
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -667,10 +671,6 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasDatabaseName("UK_Suppliers_Code");
-
                     b.HasIndex("IsActive")
                         .HasDatabaseName("IX_Suppliers_IsActive");
 
@@ -679,6 +679,10 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                     b.HasIndex("Rating")
                         .IsDescending()
                         .HasDatabaseName("IX_Suppliers_Rating");
+
+                    b.HasIndex("TenantId", "Code")
+                        .IsUnique()
+                        .HasDatabaseName("UK_Suppliers_Tenant_Code");
 
                     b.ToTable("Suppliers", "Purchasing", t =>
                         {
@@ -735,7 +739,7 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -748,10 +752,6 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasDatabaseName("UK_Warehouses_Code");
-
                     b.HasIndex("IsActive")
                         .HasDatabaseName("IX_Warehouses_IsActive");
 
@@ -759,6 +759,10 @@ namespace SmartInventory.Infrastructure.Migrations.Inventory
 
                     b.HasIndex("WarehouseType")
                         .HasDatabaseName("IX_Warehouses_Type");
+
+                    b.HasIndex("TenantId", "Code")
+                        .IsUnique()
+                        .HasDatabaseName("UK_Warehouses_Tenant_Code");
 
                     b.ToTable("Warehouses", "Inventory", t =>
                         {

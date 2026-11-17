@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using Xunit;
@@ -13,14 +11,9 @@ namespace SmartInventory.IntegrationTests.Products
     {
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
 
             var product = ProductData.Products.First();
-
             await context.Products.AddAsync(product);
             await context.SaveChangesAsync();
         }

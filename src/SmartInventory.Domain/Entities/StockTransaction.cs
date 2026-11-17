@@ -48,6 +48,6 @@ namespace SmartInventory.Domain.Entities
         public string CreatedBy { get; init; } = string.Empty;
         public bool IsReversed { get; init; } = false;
         public Guid? ReversedByTransactionId { get; init; }
-        public Guid? TenantId { get; set; }
+        public Guid TenantId { get; set; }
     }
 }

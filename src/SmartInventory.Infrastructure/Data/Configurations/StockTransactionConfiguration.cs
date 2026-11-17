@@ -20,16 +20,16 @@ namespace SmartInventory.Infrastructure.Data.Configurations
 
             // ── TenantId ───────────────────────────────────────────────────────────
             builder.Property(p => p.TenantId)
-                .IsRequired(false);
+                .IsRequired();
 
             // ── Transaction Number ────────────────────────────────────────────
             builder.Property(t => t.TransactionNumber)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.HasIndex(t => t.TransactionNumber)
+            builder.HasIndex(t => new { t.TenantId, t.TransactionNumber })
                 .IsUnique()
-                .HasDatabaseName("UK_StockTransactions_Number");
+                .HasDatabaseName("UK_StockTransactions_Tenant_TransactionNumber");
 
             // ── Enum ──────────────────────────────────────────────────────────
             builder.Property(t => t.TransactionType)

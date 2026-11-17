@@ -20,7 +20,7 @@ namespace SmartInventory.Infrastructure.Data.Configurations
 
             // ── TenantId ───────────────────────────────────────────────────────────
             builder.Property(p => p.TenantId)
-                .IsRequired(false);
+                .IsRequired();
 
             // ── Quantities ────────────────────────────────────────────────────
             builder.Property(s => s.QuantityOnHand)
@@ -51,9 +51,9 @@ namespace SmartInventory.Infrastructure.Data.Configurations
             builder.Property(s => s.LastTransactionId); // nullable Guid, no extra config needed
 
             // ── Unique Constraint: one Stock row per Product+Warehouse ─────────
-            builder.HasIndex(s => new { s.ProductId, s.WarehouseId })
+            builder.HasIndex(s => new { s.TenantId, s.ProductId, s.WarehouseId })
                 .IsUnique()
-                .HasDatabaseName("UK_Stock_Product_Warehouse");
+                .HasDatabaseName("UK_Stock_Tenant_Product_Warehouse");
 
             // ── Relationships ─────────────────────────────────────────────────
             builder.HasOne<Product>()

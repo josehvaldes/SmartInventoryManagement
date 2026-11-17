@@ -21,7 +21,7 @@ namespace SmartInventory.IntegrationTests.Products
                 .UseSqlServer(ConnectionString)
                 .Options;
 
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
             await context.Products.AddAsync(ProductData.Products.First());
             await context.SaveChangesAsync();
         }

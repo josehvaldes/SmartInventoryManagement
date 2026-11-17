@@ -23,16 +23,16 @@ namespace SmartInventory.Infrastructure.Data.Configurations
 
             // ── TenantId ───────────────────────────────────────────────────────────
             builder.Property(p => p.TenantId)
-                .IsRequired(false);
+                .IsRequired();
 
             // ── Order Number ──────────────────────────────────────────────────
             builder.Property(po => po.OrderNumber)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.HasIndex(po => po.OrderNumber)
+            builder.HasIndex(po => new { po.TenantId, po.OrderNumber })
                 .IsUnique()
-                .HasDatabaseName("UK_PurchaseOrders_Number");
+                .HasDatabaseName("UK_PurchaseOrders_Tenant_OrderNumber");
 
             // ── Dates ─────────────────────────────────────────────────────────
             builder.Property(po => po.OrderDate)

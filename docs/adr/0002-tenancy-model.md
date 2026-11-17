@@ -125,7 +125,7 @@ The remaining milestones are scoped here only as **pointers**, so each future AD
 
 | Milestone | Planned ADR | Scope of that ADR |
 |---|---|---|
-| M3 — Domain migration (`ITenantEntity`, `TenantId` column, indexes, relationships) | ADR 0004 (planned) | Concrete migration: which entities get `TenantId`, the `ITenantEntity` marker interface, the index changes listed in §2.5, data backfill strategy for the existing single-tenant rows. |
+| M3 — Domain migration (`ITenantEntity`, `TenantId` column, indexes, relationships) | ADR 0004 (planned) | Concrete migration: which entities get `TenantId`, the `ITenantEntity` marker interface, the index changes listed in §2.5, data "expand, backfill, contract" strategy for the existing single-tenant rows. |
 | M4 — Tenant resolution (auth, membership validation, middleware) | ADR 0003 (planned) | JWT claim shape (`tenant_id` hint + DB validation vs. DB-only), middleware order, `ITenantContext` populator, tenant switching endpoint, `Suspended` tenant handling. |
 | M5 — Data isolation (EF filters + write enforcement) | ADR 0004 (planned, shared with M3) | Global query filter on `ITenantEntity`, `SaveChangesAsync` interceptor that stamps `TenantId` on new entities and rejects cross-tenant writes, admin/system bypass path. |
 | M6 — Infrastructure isolation (cache, S3, background jobs) | ADR 0005 (planned) | `CacheKeys<T>` tenant segment, S3 key prefix `tenants/{tenantId}/products/{guid}-{file}`, Quartz job scoping (iterate tenants as the outer loop). |

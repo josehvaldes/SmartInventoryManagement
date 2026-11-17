@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
@@ -22,11 +20,6 @@ namespace SmartInventory.IntegrationTests.Stocks
 
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
-            
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-
             var products = ProductData.LoadProductsFromFile();
             var warehouses = WarehouseData.LoadWarehousesFromFile();
             var stocks = StocksData.LoadStocksFromFile();
@@ -34,8 +27,12 @@ namespace SmartInventory.IntegrationTests.Stocks
             _stock = stocks.First();
             _product = products.First(p => p.Id == _stock.ProductId);
             _warehouse = warehouses.First(w => w.Id == _stock.WarehouseId);
+            _stock.TenantId = SystemTenants.LegacyTenantId;
+            _product.TenantId = SystemTenants.LegacyTenantId;
+            _warehouse.TenantId = SystemTenants.LegacyTenantId;
 
-            await using var context = new SmartInventoryDbContext(options);
+
+            await using var context = CreateSmartInventoryDbContext();
             await context.Products.AddAsync(_product);
             await context.Warehouses.AddAsync(_warehouse);
             await context.Stocks.AddAsync(_stock);
@@ -51,10 +48,7 @@ namespace SmartInventory.IntegrationTests.Stocks
             var response = await Client.PostAsJsonAsync("/api/v1/stocks/reduction", stockReductionRequest, CancellationToken.None);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
 
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
             context.Stocks.Should().ContainSingle(s => s.ProductId == _product.Id && s.WarehouseId == _warehouse.Id);
             var updatedStock = context.Stocks.Single(s => s.ProductId == _product.Id && s.WarehouseId == _warehouse.Id);
             updatedStock.QuantityOnHand.Should().Be(initialStockOnHand - 5);
@@ -72,10 +66,7 @@ namespace SmartInventory.IntegrationTests.Stocks
 
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
             var updatedStock = context.Stocks.Single(s => s.ProductId == _product.Id && s.WarehouseId == _warehouse.Id);
             updatedStock.QuantityAvailable.Should().Be(0);
         }
@@ -92,10 +83,7 @@ namespace SmartInventory.IntegrationTests.Stocks
             response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
 
             // Stock should remain unchanged since the operation failed
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
             var updatedStock = context.Stocks.Single(s => s.ProductId == _product.Id && s.WarehouseId == _warehouse.Id);
             updatedStock.QuantityOnHand.Should().Be(initialStockOnHand);
             updatedStock.QuantityAvailable.Should().Be(initialAvailableStock);

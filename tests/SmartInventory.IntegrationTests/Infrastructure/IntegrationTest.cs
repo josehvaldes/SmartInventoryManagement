@@ -1,8 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
+using SmartInventory.API.Services;
+using SmartInventory.Infrastructure.Data.Context;
 using Xunit;
 
 namespace SmartInventory.IntegrationTests.Infrastructure
@@ -16,6 +15,14 @@ namespace SmartInventory.IntegrationTests.Infrastructure
         protected string ConnectionString => fixture.ConnectionString;
         protected string RedisConnectionString => fixture.RedisConnectionString;
 
+        protected SmartInventoryDbContext CreateSmartInventoryDbContext()
+        {
+            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
+                .UseSqlServer(ConnectionString)
+                .Options;
+            return new SmartInventoryDbContext(options, new TenantContext());
+        }
+
         public async ValueTask InitializeAsync()
         {
             
@@ -26,7 +33,7 @@ namespace SmartInventory.IntegrationTests.Infrastructure
             command.Transaction = transaction;
 
             command.CommandText = @"
-                 SET QUOTED_IDENTIFIER ON;
+    SET QUOTED_IDENTIFIER ON;
 
     DECLARE @sql NVARCHAR(MAX);
 
@@ -35,10 +42,11 @@ namespace SmartInventory.IntegrationTests.Infrastructure
 
     SELECT @disableSql +=
         N'ALTER TABLE ' +
-        QUOTENAME(SCHEMA_NAME(schema_id)) + N'.' +
-        QUOTENAME(name) +
+        QUOTENAME(SCHEMA_NAME(t.schema_id)) + N'.' +
+        QUOTENAME(t.name) +
         N' NOCHECK CONSTRAINT ALL;'
-    FROM sys.tables;
+    from sys.tables t join sys.schemas s on t.schema_id = s.schema_id
+        where s.name <> 'Auth' AND t.name <> '__EFMigrationsHistory';
 
     EXEC sp_executesql @disableSql;
 
@@ -48,9 +56,11 @@ namespace SmartInventory.IntegrationTests.Infrastructure
 
     SELECT @deleteSql +=
         N'DELETE FROM ' +
-        QUOTENAME(SCHEMA_NAME(schema_id)) + N'.' +
-        QUOTENAME(name) + N';'
-    FROM sys.tables;
+        QUOTENAME(SCHEMA_NAME(t.schema_id)) + N'.' +
+        QUOTENAME(t.name) + N';'
+    from sys.tables t join sys.schemas s on t.schema_id = s.schema_id
+        where s.name <> 'Auth' AND t.name <> '__EFMigrationsHistory';
+
 
     EXEC sp_executesql @deleteSql;
 
@@ -60,10 +70,11 @@ namespace SmartInventory.IntegrationTests.Infrastructure
 
     SELECT @enableSql +=
         N'ALTER TABLE ' +
-        QUOTENAME(SCHEMA_NAME(schema_id)) + N'.' +
-        QUOTENAME(name) +
+        QUOTENAME(SCHEMA_NAME(t.schema_id)) + N'.' +
+        QUOTENAME(t.name) +
         N' WITH CHECK CHECK CONSTRAINT ALL;'
-    FROM sys.tables;
+    from sys.tables t join sys.schemas s on t.schema_id = s.schema_id
+        where s.name <> 'Auth' AND t.name <> '__EFMigrationsHistory';
 
     EXEC sp_executesql @enableSql;
             ";

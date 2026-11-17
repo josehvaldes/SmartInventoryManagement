@@ -1,14 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using SmartInventory.Contracts.Responses;
-using SmartInventory.Contracts.Responses.Products;
 using SmartInventory.Domain.Entities;
-using SmartInventory.Domain.Enums;
 using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
-using System.Net.Http.Json;
 using Xunit;
 
 namespace SmartInventory.IntegrationTests.Warehouses
@@ -23,12 +19,15 @@ namespace SmartInventory.IntegrationTests.Warehouses
                 .UseSqlServer(ConnectionString)
                 .Options;
 
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
 
             _warehouses = WarehouseData.LoadWarehousesFromFile();
             var first = _warehouses.First();
+            // Set the TenantId for the warehouse to ensure it is associated with the correct tenant
+            first.TenantId = SystemTenants.LegacyTenantId;
             await context.Warehouses.AddAsync(first);
             await context.SaveChangesAsync();
+            var warehousesInDb = await context.Warehouses.ToListAsync();
         }
 
         [Fact]
@@ -40,7 +39,7 @@ namespace SmartInventory.IntegrationTests.Warehouses
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
                 .UseSqlServer(ConnectionString)
                 .Options;
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
             context.Warehouses.Should().NotContain(w => w.Id == warehouseToDelete.Id);
         }
 

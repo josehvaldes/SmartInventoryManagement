@@ -1,16 +1,12 @@
 ﻿using FluentAssertions;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using SmartInventory.Contracts.Responses;
-using SmartInventory.Contracts.Responses.Products;
 using SmartInventory.Contracts.Responses.Warehouses;
 using SmartInventory.Domain.Entities;
-using SmartInventory.Domain.Enums;
-using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
+using Xunit.Internal;
 
 namespace SmartInventory.IntegrationTests.Warehouses
 {
@@ -21,14 +17,12 @@ namespace SmartInventory.IntegrationTests.Warehouses
 
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
 
             _warehouses = WarehouseData.LoadWarehousesFromFile();
-            var first = _warehouses.First();
+            _warehouses.ForEach(w => w.TenantId = SystemTenants.LegacyTenantId); // Set the TenantId for all warehouses to ensure they are associated with the correct tenant
+
+            var first = _warehouses.First();            
             await context.Warehouses.AddAsync(first);
             await context.SaveChangesAsync();
         }

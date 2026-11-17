@@ -1,11 +1,7 @@
 ﻿using Amazon.Runtime;
 using Amazon.S3;
-using Docker.DotNet.Models;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.Infrastructure.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Testcontainers.LocalStack;
 using Testcontainers.MsSql;
 using Testcontainers.Redis;
@@ -75,10 +71,6 @@ namespace SmartInventory.IntegrationTests.Infrastructure
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
                 .UseSqlServer(ConnectionString)
                 .Options;
-            using (var context = new SmartInventoryDbContext(options))
-            {
-                await context.Database.MigrateAsync();
-            }
 
             var authOptions = new DbContextOptionsBuilder<AuthDbContext>()
                 .UseSqlServer(ConnectionString)
@@ -87,6 +79,11 @@ namespace SmartInventory.IntegrationTests.Infrastructure
             {
                 await context.Database.MigrateAsync();
             }
+
+            using (var context = new SmartInventoryDbContext(options))
+            {
+                await context.Database.MigrateAsync();
+            }            
         }
     }
 }

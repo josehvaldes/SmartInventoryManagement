@@ -41,6 +41,6 @@ namespace SmartInventory.Domain.Entities
         public DateTime? ResolvedAt { get; set; }
         public string ResolvedBy { get; set; } = string.Empty;
         public string ResolutionNotes { get; set; } = string.Empty;
-        public Guid? TenantId { get; set; }
+        public Guid TenantId { get; set; }
     }
 }

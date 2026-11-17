@@ -1,11 +1,9 @@
 ﻿using FluentAssertions;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SmartInventory.API.Services;
 using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Enums;
 using SmartInventory.Infrastructure.Data.Context;
-using SmartInventory.IntegrationTests.Infrastructure;
-using SmartInventory.Seeds;
 using Testcontainers.MsSql;
 using Xunit;
 
@@ -61,11 +59,21 @@ namespace SmartInventory.IntegrationTests.TenantMigration
                 .Build();
             var cancellationToken = TestContext.Current.CancellationToken;
             await database.StartAsync(cancellationToken);
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
+
+            var optionsAuth = new DbContextOptionsBuilder<AuthDbContext>()
                 .UseSqlServer(database.GetConnectionString())
                 .Options;
 
-            await using (var context = new SmartInventoryDbContext(options)) 
+            await using (var context = new AuthDbContext(optionsAuth)) 
+            {
+                await context.Database.MigrateAsync(cancellationToken);
+            }
+
+            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
+            .UseSqlServer(database.GetConnectionString())
+            .Options;
+
+            await using (var context = new SmartInventoryDbContext(options, new TenantContext())) 
             {
                 await context.Database.MigrateAsync(cancellationToken);
 
