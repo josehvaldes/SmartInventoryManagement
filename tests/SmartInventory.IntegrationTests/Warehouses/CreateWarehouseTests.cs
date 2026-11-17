@@ -6,9 +6,7 @@ using SmartInventory.Domain.Entities;
 using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using Xunit;
 
@@ -68,7 +66,7 @@ namespace SmartInventory.IntegrationTests.Warehouses
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
                 .UseSqlServer(ConnectionString)
                 .Options;
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
             var createdWarehouse = await context.Warehouses.FirstOrDefaultAsync(w => w.Name == warehouse.Name && w.Capacity == warehouse.Capacity, CancellationToken.None);
             createdWarehouse.Should().NotBeNull();
         }

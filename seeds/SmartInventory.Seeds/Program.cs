@@ -56,13 +56,7 @@ if (args.Length == 0)
 else
 {
     var command = args[0];
-    if (command == "tenant-migration-expand")
-    {
-        var tenantMigration = new TenantMigrationSeeder(authContext);
-        var legacyFilePath = Path.Combine(dataDir, "legacy_tenant.json");
-        await tenantMigration.MigrateLegacyTenant(legacyFilePath);
-    }
-    else if (seeders.TryGetValue(command, out var seed))
+    if (seeders.TryGetValue(command, out var seed))
     {
         await seed();
     }

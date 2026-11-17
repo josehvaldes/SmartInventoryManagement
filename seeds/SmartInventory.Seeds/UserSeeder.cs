@@ -27,25 +27,20 @@ namespace SmartInventory.Seeds
                 return;
             }
 
-            if (_authContext.Users.Any())
-            {
-                return; // Exit if there are already users in the database
-            }
-
             using (var reader = new StreamReader(filePath))
             {
                 var json = await reader.ReadToEndAsync();
                 var users = JsonConvert.DeserializeObject<List<CustomUser>>(json) ?? new List<CustomUser>();
 
-                if (_authContext.Users.Any())
-                {
-                    return; // Exit if there are already users in the database
-                }
 
                 foreach (var user in users)
                 {
-                    user.PasswordHash = HashPassword(user, user.Password);
-                    _authContext.Users.Add(user);
+                    var exists = await _authContext.Users.AnyAsync(u => u.Id == user.Id);
+                    if (!exists)
+                    {
+                        user.PasswordHash = HashPassword(user, user.Password);
+                        _authContext.Users.Add(user);
+                    }
                 }
                 await _authContext.SaveChangesAsync();
                 

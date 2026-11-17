@@ -31,7 +31,7 @@ namespace SmartInventory.Domain.Entities
         public DateTime? LastStockTakeDate { get; set; } = null!;
         public DateTime LastUpdatedAt { get; set; }
         public Guid LastTransactionId { get; set; }
-        public Guid? TenantId { get; set; }
+        public Guid TenantId { get; set; }
 
         public void RemoveStock(decimal quantity, Guid transactionId) 
         {

@@ -28,6 +28,6 @@ namespace SmartInventory.Domain.Entities
         public decimal ReceivedQuantity { get; set; } = 0;
         public string Notes { get; set; } = string.Empty;
         
-        public Guid? TenantId { get; set; }
+        public Guid TenantId { get; set; }
     }
 }

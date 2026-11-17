@@ -110,3 +110,6 @@ This ADR covers only the Expand phase. The code for it is already implemented.
 
 - [0001-testing-and-engineering-readiness.md](./0001-testing-and-engineering-readiness.md): the Testcontainers fixture used by the integration test.
 - [0002-tenancy-model.md](./0002-tenancy-model.md): the pool isolation model, the `Tenant` and `TenantMembership` entities, and the per-tenant uniqueness plan. This ADR implements the data-structure part of its M3 milestone. ADR 0002 reserved the numbers 0003 and 0004 for tenant resolution and domain migration, so its roadmap table and the "ADR 0003 (planned)" references need updating to match.
+
+## Implementation Notes
+the TenantMigrationSeeder and the legacy_tenant.json were removed to simplify the migration process

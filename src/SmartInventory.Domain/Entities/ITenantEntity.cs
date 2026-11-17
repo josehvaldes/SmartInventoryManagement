@@ -6,6 +6,6 @@ namespace SmartInventory.Domain.Entities
 {
     public interface ITenantEntity
     {
-        Guid? TenantId { get; set; }
+        Guid TenantId { get; set; }
     }
 }

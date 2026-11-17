@@ -39,7 +39,7 @@ namespace SmartInventory.Domain.Entities
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public Guid? TenantId { get; set; }
+        public Guid TenantId { get; set; }
 
         public bool CanFulfillOrder(decimal orderValue)
         {

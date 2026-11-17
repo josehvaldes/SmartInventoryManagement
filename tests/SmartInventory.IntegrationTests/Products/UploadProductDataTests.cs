@@ -21,7 +21,7 @@ namespace SmartInventory.IntegrationTests.Products
                 .UseSqlServer(ConnectionString)
                 .Options;
 
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
             await context.Products.AddAsync(ProductData.Products.First());
             await context.SaveChangesAsync();
         }
@@ -57,7 +57,7 @@ namespace SmartInventory.IntegrationTests.Products
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
                 .UseSqlServer(ConnectionString)
                 .Options;
-            await using var context = new SmartInventoryDbContext(options);
+            await using var context = CreateSmartInventoryDbContext();
             var updatedProduct = await context.Products.SingleAsync(product => product.SKU == productSKU, CancellationToken.None);
             updatedProduct.ImageUrl.Should().Be(fileUrl);
         }

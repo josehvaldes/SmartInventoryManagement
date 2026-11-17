@@ -23,13 +23,13 @@ namespace SmartInventory.Infrastructure.Data.Configurations
 
             // ── TenantId ───────────────────────────────────────────────────────────
             builder.Property(p => p.TenantId)
-                .IsRequired(false);
+                .IsRequired();
 
             // ── Composite Unique Constraint ───────────────────────────────────
             // A product can only appear once per purchase order
-            builder.HasIndex(i => new { i.PurchaseOrderId, i.ProductId })
+            builder.HasIndex(i => new { i.TenantId, i.PurchaseOrderId, i.ProductId })
                 .IsUnique()
-                .HasDatabaseName("UK_PurchaseOrderItems_PO_Product");
+                .HasDatabaseName("UK_PurchaseOrderItems_Tenant_PO_Product");
 
             // ── Quantities & Costs — all (18,4) matching inventory precision ──
             builder.Property(i => i.Quantity)

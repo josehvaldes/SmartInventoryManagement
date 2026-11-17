@@ -20,16 +20,16 @@ namespace SmartInventory.Infrastructure.Data.Configurations
 
             // ── TenantId ───────────────────────────────────────────────────────────
             builder.Property(p => p.TenantId)
-                .IsRequired(false);
+                .IsRequired();
 
             // ── Code ──────────────────────────────────────────────────────────
             builder.Property(s => s.Code)
                 .IsRequired()
                 .HasMaxLength(20);
 
-            builder.HasIndex(s => s.Code)
+            builder.HasIndex(s => new { s.TenantId, s.Code })
                 .IsUnique()
-                .HasDatabaseName("UK_Suppliers_Code");
+                .HasDatabaseName("UK_Suppliers_Tenant_Code");
 
             // ── Basic String Properties ───────────────────────────────────────
             builder.Property(s => s.Name)

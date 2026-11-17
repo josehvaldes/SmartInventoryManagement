@@ -24,7 +24,7 @@ namespace SmartInventory.Infrastructure.Data.Configurations
 
             // ── TenantId ───────────────────────────────────────────────────────────
             builder.Property(p => p.TenantId)
-                .IsRequired(false);
+                .IsRequired();
 
             // ── Enums ─────────────────────────────────────────────────────────
             builder.Property(a => a.AlertType)
@@ -89,12 +89,12 @@ namespace SmartInventory.Infrastructure.Data.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ── Indexes ───────────────────────────────────────────────────────
-            builder.HasIndex(a => a.ProductId)
-                .HasDatabaseName("IX_StockAlerts_ProductId")
+            builder.HasIndex(a => new { a.TenantId, a.ProductId })
+                .HasDatabaseName("IX_StockAlerts_Tenant_ProductId")
                 .IncludeProperties(a => new { a.Status, a.Severity, a.CreatedAt });
 
-            builder.HasIndex(a => a.WarehouseId)
-                .HasDatabaseName("IX_StockAlerts_WarehouseId")
+            builder.HasIndex(a => new { a.TenantId, a.WarehouseId })
+                .HasDatabaseName("IX_StockAlerts_Tenant_WarehouseId")
                 .IncludeProperties(a => new { a.Status, a.Severity, a.CreatedAt });
 
             builder.HasIndex(a => a.Status)

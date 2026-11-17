@@ -23,11 +23,17 @@ namespace SmartInventory.IntegrationTests.Sessions
                 .Options;
             await using var context = new AuthDbContext(options);
             var users = UserData.LoadUsersFromFile();
-
-            await context.Users.AddRangeAsync(users);
-            defaultUser = users.First(user => user.Username == "admin");
+            var contextUsers = await context.Users.ToListAsync();
+            foreach (var user in users)
+            {
+                if (!await context.Users.AnyAsync(u => u.Username == user.Username))
+                {
+                    await context.Users.AddAsync(user);
+                }
+            }
 
             await context.SaveChangesAsync();
+            defaultUser = await context.Users.FirstAsync(user => user.Username == "admin");
         }
 
         [Fact]
