@@ -88,7 +88,8 @@ namespace SmartInventory.IntegrationTests.Infrastructure
                     options.DefaultChallengeScheme = TestAuthHandler.SchemeName;
                 })
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
-                    TestAuthHandler.SchemeName, _ => { });
+                    TestAuthHandler.SchemeName, _ => { })
+                ;
             });
         }
     }

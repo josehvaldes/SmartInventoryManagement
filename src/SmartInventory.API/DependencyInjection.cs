@@ -40,7 +40,11 @@ namespace SmartInventory.API
             services.AddScoped<ILinkService, LinkService>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<ITenantContext, TenantContext>();
+
+            services.Configure<TenantResolutionSettings>(config.GetSection(TenantResolutionSettings.SectionName));
+            
+            services.AddScoped<TenantContext>();
+            services.AddScoped<ITenantContext>(provider => provider.GetRequiredService<TenantContext>());            
 
             return services;
         }
@@ -103,6 +107,9 @@ namespace SmartInventory.API
                 });
 
             services.AddAuthorizationBuilder()
+                .SetFallbackPolicy(new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build())
                 .AddPolicy("AdminOnly", p => p.RequireRole("Admin"))
                 .AddPolicy("ManagerOnly", p => p.RequireRole("Admin", "Manager"));
             return services;
@@ -203,9 +210,10 @@ namespace SmartInventory.API
         public static IServiceCollection AddCors(this IServiceCollection services, IConfiguration config)
         {
             {
-                var corsSettings = config.GetSection("Cors")
+                var corsSettings = config.GetSection(CorsSettings.SectionName)
                                      .Get<CorsSettings>() ?? new CorsSettings();
-
+                var tenantSettings = config.GetSection(TenantResolutionSettings.SectionName)
+                                     .Get<TenantResolutionSettings>() ?? new TenantResolutionSettings();
                 services.AddCors(options =>
                 {
                     options.AddPolicy("DefaultCors", policy =>
@@ -222,8 +230,8 @@ namespace SmartInventory.API
                     {
                         policy
                             .WithOrigins(corsSettings.AllowedOrigins)
-                            .WithHeaders("Content-Type", "Authorization")
-                            .WithMethods("GET", "POST", "PUT", "DELETE");
+                            .WithHeaders("Content-Type", "Authorization", tenantSettings.SlugHeaderName)
+                            .WithMethods("GET", "POST", "PUT", "DELETE", "PATCH");
                     });
                 });
                 return services;

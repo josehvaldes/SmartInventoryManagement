@@ -25,7 +25,7 @@ namespace SmartInventory.Seeds
             using (var reader = new StreamReader(filePath))
             {
                 var json = await reader.ReadToEndAsync();
-                var tenantsMemberships = JsonConvert.DeserializeObject<List<TenantMembership>>(json) ?? new List<TenantMembership>();
+                var tenantsMemberships = JsonConvert.DeserializeObject<List<TenantMembership>>(json, SeederSettings.DeserializationSettings) ?? new List<TenantMembership>();
 
                 foreach (var tenantMembership in tenantsMemberships)
                 {

@@ -10,15 +10,6 @@ using System.Text;
 namespace SmartInventory.Seeds
 {
 
-    public static class SeederSettings
-    {
-        internal static readonly JsonSerializerSettings DeserializationSettings = new()
-        {
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            ContractResolver    = new PrivateSetterContractResolver()
-        };
-    }
-
     public abstract class BaseSeeder<T>
     {
         protected SmartInventoryDbContext _context { get; set; }

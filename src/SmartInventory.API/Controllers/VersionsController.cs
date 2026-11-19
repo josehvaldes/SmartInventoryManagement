@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SmartInventory.API.Controllers
@@ -10,6 +11,7 @@ namespace SmartInventory.API.Controllers
     public class VersionsController(IApiVersionDescriptionProvider provider) : ControllerBase
     {
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             var versions = provider.ApiVersionDescriptions

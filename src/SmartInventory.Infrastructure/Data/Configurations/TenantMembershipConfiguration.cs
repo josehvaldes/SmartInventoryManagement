@@ -37,7 +37,7 @@ namespace SmartInventory.Infrastructure.Data.Configurations
                 .IsRequired()
                 .HasDefaultValue(true);
 
-            builder.HasOne<Tenant>()
+            builder.HasOne( a => a.Tenant)
                 .WithMany()
                 .HasForeignKey(m => m.TenantId)
                 .HasConstraintName("FK_TenantMemberships_Tenants")

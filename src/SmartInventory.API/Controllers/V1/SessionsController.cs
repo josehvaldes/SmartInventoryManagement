@@ -66,7 +66,7 @@ namespace SmartInventory.API.Controllers.V1
         /// Clears the HttpOnly cookie on the client.
         /// </summary>
         [HttpPost("revoke")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> Revoke()
         {
             var refreshToken = Request.Cookies[RefreshTokenCookieName];

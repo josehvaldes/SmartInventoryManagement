@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartInventory.Domain.Enums
+﻿namespace SmartInventory.Domain.Enums
 {
     /// <summary>
     /// Specifies the type of inventory alert for a stock item.
