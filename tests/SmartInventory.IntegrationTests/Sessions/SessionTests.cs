@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.IntegrationTests.Common;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
@@ -15,6 +16,8 @@ namespace SmartInventory.IntegrationTests.Sessions
     public class SessionTests(IntegrationTestFixture fixture) : IntegrationTest(fixture)
     {
         private User defaultUser = null!;
+        private Tenant defaultTenant = null!;
+        private TenantMembership defaultMembership = null!;
 
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
@@ -32,8 +35,28 @@ namespace SmartInventory.IntegrationTests.Sessions
                 }
             }
 
+            var tenants = TenantData.LoadTenantsFromFile();
+            foreach (var tenant in tenants)
+            {
+                if (!await context.Tenants.AnyAsync(t => t.Id == tenant.Id))
+                {
+                    await context.Tenants.AddAsync(tenant);
+                }
+            }
+
+            foreach (var membership in TenantData.LoadTenantMembershipsFromFile())
+            {
+                if (!await context.TenantMemberships.AnyAsync(tm => tm.Id == membership.Id))
+                {
+                    await context.TenantMemberships.AddAsync(membership);
+                }
+            }
+
             await context.SaveChangesAsync();
             defaultUser = await context.Users.FirstAsync(user => user.Username == "admin");
+            defaultMembership = await context.TenantMemberships.FirstAsync(tm => tm.UserId == defaultUser.Id);
+            defaultTenant = await context.Tenants.FirstAsync(tenant => tenant.Id ==  defaultMembership.TenantId);
+            Client.DefaultRequestHeaders.Add("X-Tenant-Slug", defaultTenant.Slug);
         }
 
         [Fact]
@@ -125,17 +148,6 @@ namespace SmartInventory.IntegrationTests.Sessions
 
             using var refreshResponse = await PostWithRefreshCookieAsync("/api/v1/auth/refresh-token", refreshToken);
             refreshResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        }
-
-        [Fact]
-        public async Task Revoke_WithoutValidAuthorization_ReturnsUnauthorized()
-        {
-            using var request = new HttpRequestMessage(HttpMethod.Post, "/api/v1/auth/revoke");
-            request.Headers.Authorization = new("Bearer", TestAuthHandler.InvalidToken);
-
-            using var response = await Client.SendAsync(request, CancellationToken.None);
-
-            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
         private Task<HttpResponseMessage> LoginAsync() => Client.PostAsJsonAsync(

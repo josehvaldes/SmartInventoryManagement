@@ -1,13 +1,19 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Interfaces;
+using SmartInventory.Application.Common.Tenants;
 using SmartInventory.Contracts.Responses.Auth;
+using SmartInventory.Domain.Enums;
+using SmartInventory.Domain.Identity;
 
 namespace SmartInventory.Application.Features.Auth.Commands
 {
     public class RefreshTokenCommandHandler(
         IAuthDbContext db,
         IJwtTokenService jwt,
+        ITenantContext tenantContext,
         ILogger<RefreshTokenCommandHandler> logger)
         : ICommandHandler<RefreshTokenCommand, LoginResponse>
     {
@@ -40,13 +46,23 @@ namespace SmartInventory.Application.Features.Auth.Commands
             // Rotate: revoke the old token and issue a new one (refresh token rotation)
             existing.IsRevoked = true;
 
+            var tenantMembership = db.TenantMemberships.AsNoTracking()
+                .Where(tm => tm.UserId == existing.User.Id && tenantContext.ResolvedTenantId == tm.TenantId)
+                .Include(tm => tm.Tenant).FirstOrDefault();
+
+            if (tenantMembership == null || !tenantMembership.IsActive || tenantMembership.Tenant.Status != TenantStatus.Active)
+            {
+                throw new TenantException(TenantErrorCodes.ContextRequired, $"User {existing.User.Id} has no active membership in tenant {tenantContext.ResolvedTenantId}.", StatusCodes.Status403Forbidden);
+            }
+
+
             var roles = existing.User.UserRoles.Select(ur => ur.Role.Name);
-            var newAccessToken = jwt.GenerateAccessToken(existing.User, roles);
+            var newAccessToken = jwt.GenerateAccessToken(existing.User, tenantMembership, roles);
             var (newRefreshTokenValue, newRefreshTokenExpiry) = jwt.GenerateRefreshToken();
 
             existing.ReplacedByToken = newRefreshTokenValue;
 
-            db.RefreshTokens.Add(new Domain.Identity.RefreshToken
+            db.RefreshTokens.Add(new RefreshToken
             {
                 Token = newRefreshTokenValue,
                 UserId = existing.UserId,

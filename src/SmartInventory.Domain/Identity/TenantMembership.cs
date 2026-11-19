@@ -12,5 +12,8 @@ namespace SmartInventory.Domain.Identity
         public TenantRole Role { get; private set; }  // Admin | Manager | Member
         public DateTime JoinedAt { get; private set; }
         public bool IsActive { get; private set; }
+
+        // Navigation properties
+        public Tenant Tenant { get; private set; } = null!;
     }
 }

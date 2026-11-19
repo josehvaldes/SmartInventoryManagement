@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.API.Services;
+using SmartInventory.Domain.Entities;
 using SmartInventory.Infrastructure.Data.Context;
 using Xunit;
 
@@ -20,7 +21,9 @@ namespace SmartInventory.IntegrationTests.Infrastructure
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
                 .UseSqlServer(ConnectionString)
                 .Options;
-            return new SmartInventoryDbContext(options, new TenantContext());
+            var tenantContext = new TenantContext();
+            tenantContext.Initialize(SystemTenants.LegacyTenantId, "Admin", true);
+            return new SmartInventoryDbContext(options, tenantContext);
         }
 
         public async ValueTask InitializeAsync()
@@ -81,6 +84,7 @@ namespace SmartInventory.IntegrationTests.Infrastructure
             await command.ExecuteNonQueryAsync();
             await transaction.CommitAsync();
 
+            Client.DefaultRequestHeaders.Clear();
             await SeedDataAsync(connection);
         }
 

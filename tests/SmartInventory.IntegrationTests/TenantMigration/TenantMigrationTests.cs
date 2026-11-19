@@ -72,8 +72,9 @@ namespace SmartInventory.IntegrationTests.TenantMigration
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
             .UseSqlServer(database.GetConnectionString())
             .Options;
-
-            await using (var context = new SmartInventoryDbContext(options, new TenantContext())) 
+            var tenantContext = new TenantContext();
+            tenantContext.Initialize(SystemTenants.LegacyTenantId, "Admin", true);
+            await using (var context = new SmartInventoryDbContext(options, tenantContext)) 
             {
                 await context.Database.MigrateAsync(cancellationToken);
 

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SmartInventory.Domain.Entities;
+using SmartInventory.Domain.Enums;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
@@ -14,18 +16,24 @@ namespace SmartInventory.IntegrationTests.Infrastructure
     {
         public const string SchemeName = "TestScheme";
         public const string InvalidToken = "invalid";
-
+        public const string NoMembershipToken = "no-membership";
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (Request.Headers.Authorization.ToString().Contains(InvalidToken, StringComparison.OrdinalIgnoreCase))
+            var authorization = Request.Headers.Authorization.ToString();
+            if (authorization.Contains(InvalidToken, StringComparison.OrdinalIgnoreCase))
             {
                 return Task.FromResult(AuthenticateResult.Fail("Invalid test token."));
             }
+            var userId = authorization.Contains(NoMembershipToken, StringComparison.OrdinalIgnoreCase)
+                        ? Guid.NewGuid()
+                        : SystemTenants.LegacyUserId;
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, "test-user"),
-                new Claim(ClaimTypes.Name, "test-user"),
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Name, "legacyuser"),
+                new Claim("tenantid", SystemTenants.LegacyTenantId.ToString()),
+                new Claim("tenantrole", TenantRole.Admin.ToString()),
                 new Claim("scope", "fleet:read"),
                 new Claim(ClaimTypes.Role, "Admin")
             };

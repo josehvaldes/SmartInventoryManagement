@@ -109,6 +109,8 @@ The legacy import reads `seeds/SmartInventory.Seeds/Data/legacy_tenant.json`. It
 - Health: `/health`, `/health/ready` (SQL Server, Redis, memory, disk), `/health/live`
 - Sample requests: [SmartInventory.API.http](src/SmartInventory.API/SmartInventory.API.http)
 
+Endpoints require an authenticated user by default; only endpoints explicitly marked `[AllowAnonymous]` or `.AllowAnonymous()` are public. Protected endpoints also require a valid tenant membership. Currently `/health` is public, while `/health/ready`, `/health/live`, `/metrics`, Scalar, and OpenAPI require authentication and tenant membership. Configure probes and monitoring accordingly, or explicitly mark an endpoint anonymous if public access is intended.
+
 ## Docker Image
 
 Build the API image from the repository root with [scripts/builds/build-images.ps1](scripts/builds/build-images.ps1):

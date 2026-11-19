@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartInventory.Domain.Enums
+﻿namespace SmartInventory.Domain.Enums
 {
     /// <summary>
     /// Allows specification of the current status of an alert.

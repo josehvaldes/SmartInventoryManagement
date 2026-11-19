@@ -15,7 +15,7 @@ namespace SmartInventory.Application.Features.Stocks.Queries
     {
         public async Task<StockDto> Handle(GetStockByProductIdQuery request, CancellationToken cancellationToken)
         {
-            var key = "GetStockByProductIdQueryHandler_" + request.productId;
+            var key = CacheKeys<StockDto>.ByProperty("ProductId", request.productId.ToString());
 
             var stockDto = await cache.GetAsync<StockDto>(key);
             if (stockDto != null)

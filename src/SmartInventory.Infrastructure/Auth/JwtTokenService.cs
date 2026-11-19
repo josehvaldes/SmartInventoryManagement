@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SmartInventory.Application.Common.Interfaces;
+using SmartInventory.Application.Common.Tenants;
 using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Settings;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -18,7 +17,7 @@ namespace SmartInventory.Infrastructure.Auth
 
         public int AccessTokenExpirySeconds => _s.ExpiryMinutes * 60;
 
-        public string GenerateAccessToken(User user, IEnumerable<string> roles)
+        public string GenerateAccessToken(User user, TenantMembership tenantMembership, IEnumerable<string> roles)
         {
             var claims = new List<Claim>
             {
@@ -32,7 +31,10 @@ namespace SmartInventory.Infrastructure.Auth
                 new(JwtRegisteredClaimNames.Iat,
                     DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
                     ClaimValueTypes.Integer64),
+                new Claim(TenantConstants.TenantIdClaimType, tenantMembership.TenantId.ToString()),
+                new Claim(TenantConstants.TenantRoleClaimType, tenantMembership.Role.ToString())
             };
+
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_s.Secret));

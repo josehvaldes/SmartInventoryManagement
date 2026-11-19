@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartInventory.Domain.Enums
+﻿namespace SmartInventory.Domain.Enums
 {
     /// <summary>
     /// Specifies the severity level of an alert.

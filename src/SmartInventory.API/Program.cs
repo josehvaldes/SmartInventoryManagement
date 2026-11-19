@@ -52,17 +52,19 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
-
-app.UseCors("DefaultCors");
+if (app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
 
 app.UseSerilogRequestLogging();     // Enable request logging
-
 app.MapCustomBehaviors(); // Extension method for any custom middleware or behaviors
-
 app.UseRateLimiter();
-if (app.Environment.IsDevelopment()) app.UseHttpsRedirection();
+app.UseCors("DefaultCors");
+
+
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<TenantResolutionMiddleware>(); // Custom middleware for tenant resolution
+app.UseMiddleware<TenantContextMiddleware>(); // Custom middleware for tenant context
 
 app.MapControllers();
 

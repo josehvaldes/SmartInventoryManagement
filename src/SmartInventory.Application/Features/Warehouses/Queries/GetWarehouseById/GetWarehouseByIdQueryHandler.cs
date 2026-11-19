@@ -20,7 +20,7 @@ namespace SmartInventory.Application.Features.Warehouses.Queries.GetWarehouseByI
             if (cachedWarehouse!=null)
                 return cachedWarehouse;
             
-            var warehouse = await db.Warehouses.FirstOrDefaultAsync(w => w.Id == request.Id, cancellationToken);
+            var warehouse = await db.Warehouses.AsNoTracking().FirstOrDefaultAsync(w => w.Id == request.Id, cancellationToken);
 
             if (warehouse == null)
                 throw EntityNotFoundException.For<Warehouse>(request.Id);

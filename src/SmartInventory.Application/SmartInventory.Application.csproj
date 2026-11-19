@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Tenants\Commands\" />
     <Folder Include="Features\Warehouses\Commands\UpdateWarehouse\" />
   </ItemGroup>
 

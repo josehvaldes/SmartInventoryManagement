@@ -1,12 +1,7 @@
 ﻿using Newtonsoft.Json;
-using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Identity;
-using SmartInventory.IntegrationTests.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SmartInventory.IntegrationTests.Sessions
+namespace SmartInventory.IntegrationTests.Common
 {
     public static class UserData
     {

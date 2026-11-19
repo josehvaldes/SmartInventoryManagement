@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Polly.CircuitBreaker;
 using SmartInventory.Application.Common.Exceptions;
+using SmartInventory.Application.Common.Tenants;
 using SmartInventory.Observability.AppMetrics;
 
 namespace SmartInventory.API.Middleware
@@ -20,9 +21,10 @@ namespace SmartInventory.API.Middleware
                 ValidationException => (StatusCodes.Status422UnprocessableEntity, "Validation Error"),
                 UnauthorizedAccessException=> (StatusCodes.Status401Unauthorized,        "Unauthorized"),
                 BrokenCircuitException=> (StatusCodes.Status503ServiceUnavailable, "Service temporarily Unavailable"),
+                TenantException tenantException => (tenantException.StatusCode, "Tenant Error"),
                 _                          => (StatusCodes.Status500InternalServerError, "Server Error")
             };
-            
+
             switch (statusCode)
             {
                 case StatusCodes.Status401Unauthorized:
@@ -34,13 +36,31 @@ namespace SmartInventory.API.Middleware
                 default:
                     break;
             }
+            // Tenant errors expose only a code and a client-safe message; the internal detail stays in the logs.
+            var tenantError = exception as TenantException;
+            var detail = tenantError is not null
+                ? TenantErrorCodes.GetPublicMessage(tenantError.ErrorCode)
+                : exception.Message;
 
-            logger.LogError(
+            if (statusCode >= 500)
+            {
+                logger.LogError(
                 exception,
                 "Exception: {Type} | Status: {StatusCode} | Message: {Message}",
                 exception.GetType().Name,
                 statusCode,
                 exception.Message);
+            }
+            else 
+            {
+                logger.LogWarning(
+                exception,
+                "Exception: {Type} | Status: {StatusCode} | ErrorCode: {ErrorCode} | Message: {Message}",
+                exception.GetType().Name,
+                statusCode,
+                tenantError?.ErrorCode,
+                exception.Message);
+            }            
 
             ProblemDetails problemDetails = exception switch
             {
@@ -48,17 +68,22 @@ namespace SmartInventory.API.Middleware
                 {
                     Status = statusCode,
                     Title = title,
-                    Detail = exception.Message,
+                    Detail = detail,
                     Instance = httpContext.Request.Path
                 },
                 _ => new ProblemDetails
                 {
                     Status = statusCode,
                     Title = title,
-                    Detail = exception.Message,
+                    Detail = detail,
                     Instance = httpContext.Request.Path
                 }
             };
+
+            if (tenantError is not null)
+            {
+                problemDetails.Extensions["errorCode"] = tenantError.ErrorCode;
+            }
 
             httpContext.Response.StatusCode = statusCode;
             
