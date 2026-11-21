@@ -96,6 +96,8 @@ namespace SmartInventory.Infrastructure.Data.Context
                             throw new TenantException(TenantErrorCodes.Forbidden, "tenant overwrite detected.", 403);
                         }
                         break;
+                    default: // No action needed for Unchanged or Detached states
+                        break;
                 }
             }
         }
