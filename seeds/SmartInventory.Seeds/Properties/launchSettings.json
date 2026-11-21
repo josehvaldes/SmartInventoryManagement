@@ -2,7 +2,6 @@
   "profiles": {
     "SmartInventory.Seeds": {
       "commandName": "Project",
-      "commandLineArgs": "TenantMembershipSeeder",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }

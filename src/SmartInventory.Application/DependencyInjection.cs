@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartInventory.Application.Common.Behaviors;
+using SmartInventory.Application.Common.Cache;
 
 namespace SmartInventory.Application
 {
@@ -22,6 +23,8 @@ namespace SmartInventory.Application
             });
 
             services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
+
+            services.AddScoped<ICacheKeyFactory, CacheKeyFactory>();
 
             return services;
         }

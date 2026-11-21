@@ -36,16 +36,16 @@ await dbContext.Database.MigrateAsync();
 
 var seeders = new Dictionary<string, Func<Task>>(StringComparer.OrdinalIgnoreCase)
 {
+    [nameof(UserSeeder)] = () => new UserSeeder(authContext).Seed(Path.Combine(dataDir, "users.json")),
+    [nameof(TenantSeeder)] = () => new TenantSeeder(authContext).Seed(Path.Combine(dataDir, "tenants.json")),
+    [nameof(TenantMembershipSeeder)] = () => new TenantMembershipSeeder(authContext).Seed(Path.Combine(dataDir, "tenant_memberships.json")),
     [nameof(ProductSeeder)]            = () => new ProductSeeder(dbContext).Seed(Path.Combine(dataDir, "products.json")),
     [nameof(WarehouseSeeder)]          = () => new WarehouseSeeder(dbContext).Seed(Path.Combine(dataDir, "warehouses.json")),
-    [nameof(StockSeeder)]              = () => new StockSeeder(dbContext).Seed(Path.Combine(dataDir, "stocks.json")),
-    [nameof(UserSeeder)]               = () => new UserSeeder(authContext).Seed(Path.Combine(dataDir, "users.json")),
+    [nameof(StockSeeder)]              = () => new StockSeeder(dbContext).Seed(Path.Combine(dataDir, "stocks.json")),    
     [nameof(StockTransactionSeeder)]   = () => new StockTransactionSeeder(dbContext).Seed(Path.Combine(dataDir, "stock_transactions.json")),
     [nameof(SupplierSeeder)]           = () => new SupplierSeeder(dbContext).Seed(Path.Combine(dataDir, "suppliers.json")),
     [nameof(PurchaseOrderSeeder)]      = () => new PurchaseOrderSeeder(dbContext).Seed(Path.Combine(dataDir, "purchase_orders.json")),
     [nameof(PurchaseOrderItemsSeeder)] = () => new PurchaseOrderItemsSeeder(dbContext).Seed(Path.Combine(dataDir, "purchase_order_items.json")),
-    [nameof(TenantSeeder)] = () => new TenantSeeder(authContext).Seed(Path.Combine(dataDir, "tenants.json")),
-    [nameof(TenantMembershipSeeder)] = () => new TenantMembershipSeeder(authContext).Seed(Path.Combine(dataDir, "tenant_memberships.json")),
 };
 
 if (args.Length == 0)

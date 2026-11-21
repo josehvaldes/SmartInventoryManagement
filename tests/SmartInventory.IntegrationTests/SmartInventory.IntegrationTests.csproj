@@ -62,7 +62,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="TenantMigration\" />
   </ItemGroup>
 

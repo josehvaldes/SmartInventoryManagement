@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Data.Context;
-using SmartInventory.IntegrationTests.Common;
+using SmartInventory.IntegrationTests.Data;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
@@ -21,10 +21,7 @@ namespace SmartInventory.IntegrationTests.Sessions
 
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
-            var options = new DbContextOptionsBuilder<AuthDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-            await using var context = new AuthDbContext(options);
+            await using var context = CreateAuthDbContext();
             var users = UserData.LoadUsersFromFile();
             var contextUsers = await context.Users.ToListAsync();
             foreach (var user in users)

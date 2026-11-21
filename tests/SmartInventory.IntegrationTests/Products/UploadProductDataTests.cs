@@ -1,8 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.Contracts.Requests.Products;
+using SmartInventory.Domain.Entities;
+using SmartInventory.Domain.Identity;
+using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.IntegrationTests.Data;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -15,22 +18,42 @@ namespace SmartInventory.IntegrationTests.Products
     [Collection("Integration")]
     public class UploadProductDataTests(IntegrationTestFixture fixture) : IntegrationTest(fixture)
     {
+        private readonly List<Tenant> _tenants = TenantData.LoadTenantsFromFile();
+        private readonly List<Product> _products = ProductData.LoadProductsFromFile();
+
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
+            await using var context = CreateSmartInventoryDbContext(false);
+            await using var authContext = CreateAuthDbContext();
 
-            await using var context = CreateSmartInventoryDbContext();
-            await context.Products.AddAsync(ProductData.Products.First());
+            foreach (var tenant in _tenants)
+            {
+                if (!await authContext.Tenants.AnyAsync(t => t.Id == tenant.Id))
+                {
+                    await authContext.Tenants.AddAsync(tenant);
+                }
+            }
+
+            await authContext.SaveChangesAsync();
+            foreach (var product in _products)
+            {
+                if (!await context.Products.AnyAsync(p => p.SKU == product.SKU))
+                {
+                    product.TenantId = SystemTenants.LegacyTenantId;
+                    await context.Products.AddAsync(product);
+                }
+                    
+            }
+
             await context.SaveChangesAsync();
+
         }
 
         [Fact]
         public async Task UploadProductData_ShouldReturnFileUrl()
         {
             // Arrange
-            var product = ProductData.Products.First();
+            var product = _products.First();
             var productSKU = product.SKU;
             var productName = product.Name;
             var fileContent = Encoding.UTF8.GetBytes("fake image content");
@@ -97,8 +120,8 @@ namespace SmartInventory.IntegrationTests.Products
         public async Task UploadProductData_WithUnsupportedFileExtension_ReturnsUnprocessableEntity()
         {
             using var form = new MultipartFormDataContent();
-            form.Add(new StringContent(ProductData.Products.First().SKU), nameof(UploadProductRequest.ProductSKU));
-            form.Add(new StringContent(ProductData.Products.First().Name), nameof(UploadProductRequest.ProductName));
+            form.Add(new StringContent(_products.First().SKU), nameof(UploadProductRequest.ProductSKU));
+            form.Add(new StringContent(_products.First().Name), nameof(UploadProductRequest.ProductName));
             var fileContent = new ByteArrayContent(Encoding.UTF8.GetBytes("fake image content"));
             fileContent.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
             form.Add(fileContent, "file", "testfile.txt");
@@ -131,8 +154,8 @@ namespace SmartInventory.IntegrationTests.Products
         public async Task UploadProductData_WithInvalidToken_ReturnsUnauthorized()
         {
             using var form = new MultipartFormDataContent();
-            form.Add(new StringContent(ProductData.Products.First().SKU), nameof(UploadProductRequest.ProductSKU));
-            form.Add(new StringContent(ProductData.Products.First().Name), nameof(UploadProductRequest.ProductName));
+            form.Add(new StringContent(_products.First().SKU), nameof(UploadProductRequest.ProductSKU));
+            form.Add(new StringContent(_products.First().Name), nameof(UploadProductRequest.ProductName));
             var fileContent = new ByteArrayContent(Encoding.UTF8.GetBytes("fake image content"));
             fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
             form.Add(fileContent, "file", "testfile.jpg");

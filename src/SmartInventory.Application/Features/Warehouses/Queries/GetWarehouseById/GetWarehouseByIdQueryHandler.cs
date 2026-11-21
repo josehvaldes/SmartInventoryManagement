@@ -8,13 +8,15 @@ using SmartInventory.Domain.Entities;
 
 namespace SmartInventory.Application.Features.Warehouses.Queries.GetWarehouseById
 {
-    public class GetWarehouseByIdQueryHandler(IApplicationDbContext db, ICacheService cache) : IQueryHandler<GetWarehouseByIdQuery, WarehouseDto>
+    public class GetWarehouseByIdQueryHandler(IApplicationDbContext db, 
+        ICacheKeyFactory cacheKeyFactory, 
+        ICacheService cache) : IQueryHandler<GetWarehouseByIdQuery, WarehouseDto>
     {
         public async Task<WarehouseDto> Handle(GetWarehouseByIdQuery request, CancellationToken cancellationToken)
         {
             // Keyed by WarehouseDto to match the cache key used when writing (GetAllWarehousesQueryHandler)
             // and invalidating (DeleteWarehouseCommandHandler) this cache entry.
-            var key = CacheKeys<WarehouseDto>.ById(request.Id);
+            var key = cacheKeyFactory.ById<WarehouseDto>(request.Id);
             var cachedWarehouse = await cache.GetAsync<WarehouseDto>(key);
 
             if (cachedWarehouse!=null)

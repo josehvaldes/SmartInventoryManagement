@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Data.SqlClient;
+using SmartInventory.IntegrationTests.Data;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using Xunit;

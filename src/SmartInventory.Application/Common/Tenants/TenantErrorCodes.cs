@@ -13,6 +13,8 @@ namespace SmartInventory.Application.Common.Tenants
         public const string AccessDenied = "tenant_access_denied";
         public const string Mismatch = "tenant_mismatch";
 
+        public const string Forbidden = "tenant_forbidden_operation";
+
         public static string GetPublicMessage(string errorCode) => errorCode switch
         {
             SlugInvalid => "The tenant identifier is not valid.",
@@ -21,6 +23,7 @@ namespace SmartInventory.Application.Common.Tenants
             ContextRequired => "A tenant context is required. Please sign in again.",
             AccessDenied => "You do not have access to this tenant.",
             Mismatch => "The requested tenant does not match your current session.",
+            Forbidden => "You are not allowed to perform this operation.",
             _ => "A tenant error occurred."
         };
     }

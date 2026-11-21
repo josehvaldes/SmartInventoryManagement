@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
+using SmartInventory.API.Services;
 using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Application.Features.Products.Commands.UploadProduct;
@@ -41,9 +42,11 @@ namespace SmartInventory.UnitTests.Products
                 new MockFormFile("test.jpg", "image/jpeg"),
                 "test_user");
 
-            _fileStorageService.UploadAsync(Arg.Any<Stream>(), Arg.Any<string>(), Arg.Any<string>())
+            _fileStorageService.UploadAsync( Arg.Any<ITenantContext>(), Arg.Any<Stream>(), Arg.Any<string>(), Arg.Any<string>())
                 .Returns("https://example.com/test.jpg");
-            var handler = new UploadProductCommandHandler(_fileStorageService, _db);
+            var tenantContext = new TenantContext();
+            tenantContext.Initialize(SystemTenants.LegacyTenantId, "test-tenant", true);
+            var handler = new UploadProductCommandHandler(_fileStorageService, tenantContext, _db);
             // Act
             var result = await handler.Handle(command, CancellationToken.None);
             // Assert

@@ -7,7 +7,9 @@ using SmartInventory.Application.Features.Warehouses.DTO;
 
 namespace SmartInventory.Application.Features.Warehouses.Queries.GetAllWarehouses
 {
-    public class GetAllWarehousesQueryHandler(IApplicationDbContext db, ICacheService cache)
+    public class GetAllWarehousesQueryHandler(IApplicationDbContext db,
+        ICacheKeyFactory cacheKeyFactory, 
+        ICacheService cache)
         : IQueryHandler<GetAllWarehousesQuery, PagedResult<WarehouseDto>>
     {
         public async Task<PagedResult<WarehouseDto>> Handle(GetAllWarehousesQuery request, CancellationToken cancellationToken)
@@ -21,7 +23,7 @@ namespace SmartInventory.Application.Features.Warehouses.Queries.GetAllWarehouse
                 .ToListAsync(cancellationToken);
 
             var warehouseDtos = warehouses.Adapt<List<WarehouseDto>>();
-            var tasks = warehouseDtos.Select(x => cache.SetAsync(CacheKeys<WarehouseDto>.ById(x.Id), x, TimeSpan.FromMinutes(5)));
+            var tasks = warehouseDtos.Select(x => cache.SetAsync(cacheKeyFactory.ById<WarehouseDto>(x.Id), x, TimeSpan.FromMinutes(5)));
             await Task.WhenAll(tasks);
 
             return new PagedResult<WarehouseDto>(warehouseDtos, totalCount, request.PageNumber, request.PageSize);

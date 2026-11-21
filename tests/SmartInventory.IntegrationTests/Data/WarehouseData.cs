@@ -2,7 +2,7 @@
 using SmartInventory.Domain.Entities;
 using SmartInventory.IntegrationTests.Common;
 
-namespace SmartInventory.IntegrationTests.Warehouses
+namespace SmartInventory.IntegrationTests.Data
 {
     public class WarehouseData
     {

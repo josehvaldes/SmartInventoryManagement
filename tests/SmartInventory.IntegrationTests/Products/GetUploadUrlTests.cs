@@ -2,7 +2,10 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.Contracts.Requests.Products;
+using SmartInventory.Domain.Entities;
+using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.IntegrationTests.Data;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
@@ -15,22 +18,32 @@ namespace SmartInventory.IntegrationTests.Products
     [Collection("Integration")]
     public class GetUploadUrlTests(IntegrationTestFixture fixture) : IntegrationTest(fixture)
     {
+        private readonly List<Tenant> _tenants = TenantData.LoadTenantsFromFile();
+        private readonly List<Product> _products = ProductData.LoadProductsFromFile();
+
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
+            await using var context = CreateSmartInventoryDbContext(false);
+            await using var authContext = CreateAuthDbContext();
 
-            await using var context = CreateSmartInventoryDbContext();
-            await context.Products.AddAsync(ProductData.Products.First());
+            foreach (var tenant in _tenants)
+            {
+                if (!await authContext.Tenants.AnyAsync(t => t.Id == tenant.Id))
+                {
+                    await authContext.Tenants.AddAsync(tenant);
+                }
+            }
+            
+            await authContext.SaveChangesAsync();
+          
+            await context.Products.AddRangeAsync(_products);
             await context.SaveChangesAsync();
         }
 
         [Fact]
         public async Task GetUploadUrl_ShouldReturnUploadUrl()
         {
-
-            var product = ProductData.Products.First();
+            var product = _products.First();
             var productSKU = product.SKU;
             var productName = product.Name;
             var getUploadUrlRequest = new GetUploadUrlRequest()
@@ -40,6 +53,7 @@ namespace SmartInventory.IntegrationTests.Products
                 ContentType = "image/jpeg"
             };
 
+            Client.DefaultRequestHeaders.Add("X-Tenant-Slug", "legacy-tenant");
             var response = await Client.PostAsJsonAsync($"/api/v1/products/upload-url", getUploadUrlRequest, CancellationToken.None);
 
             response.EnsureSuccessStatusCode();
@@ -70,7 +84,7 @@ namespace SmartInventory.IntegrationTests.Products
         {
             var request = new GetUploadUrlRequest
             {
-                ProductSku = ProductData.Products.First().SKU,
+                ProductSku = _products.First().SKU,
                 FileName = "testfile.txt",
                 ContentType = "text/plain"
             };
@@ -91,7 +105,7 @@ namespace SmartInventory.IntegrationTests.Products
             {
                 Content = JsonContent.Create(new GetUploadUrlRequest
                 {
-                    ProductSku = ProductData.Products.First().SKU,
+                    ProductSku = _products.First().SKU,
                     FileName = "testfile.jpg",
                     ContentType = "image/jpeg"
                 })

@@ -16,14 +16,22 @@ namespace SmartInventory.IntegrationTests.Infrastructure
         protected string ConnectionString => fixture.ConnectionString;
         protected string RedisConnectionString => fixture.RedisConnectionString;
 
-        protected SmartInventoryDbContext CreateSmartInventoryDbContext()
+        protected SmartInventoryDbContext CreateSmartInventoryDbContext(bool isTenantScoped = true)
         {
             var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
                 .UseSqlServer(ConnectionString)
                 .Options;
             var tenantContext = new TenantContext();
-            tenantContext.Initialize(SystemTenants.LegacyTenantId, "Admin", true);
+            tenantContext.Initialize(SystemTenants.LegacyTenantId, "Admin", isTenantScoped);
             return new SmartInventoryDbContext(options, tenantContext);
+        }
+
+        protected AuthDbContext CreateAuthDbContext()
+        {
+            var options = new DbContextOptionsBuilder<AuthDbContext>()
+                .UseSqlServer(ConnectionString)
+                .Options;
+            return new AuthDbContext(options);
         }
 
         public async ValueTask InitializeAsync()

@@ -10,6 +10,7 @@ namespace SmartInventory.Infrastructure.BackgroundJobs
     [DisallowConcurrentExecution]
     public sealed class LowStockCheckJob(
         //IApplicationDbContext db,
+        //ITenantContext tenantContext,
         ILogger<LowStockCheckJob> logger) : IJob
     {
         public static readonly JobKey Key = new("low-stock-check", "inventory");

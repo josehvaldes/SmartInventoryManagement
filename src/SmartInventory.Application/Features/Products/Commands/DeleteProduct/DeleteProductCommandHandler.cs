@@ -7,7 +7,8 @@ using SmartInventory.Domain.Entities;
 
 namespace SmartInventory.Application.Features.Products.Commands.DeleteProduct
 {
-    public class DeleteProductCommandHandler(IApplicationDbContext db, 
+    public class DeleteProductCommandHandler(IApplicationDbContext db,
+        ICacheKeyFactory cacheKeyFactory,
         ICacheService cache) : ICommandHandler<DeleteProductCommand, Guid>
     {
         public async Task<Guid> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
@@ -17,7 +18,7 @@ namespace SmartInventory.Application.Features.Products.Commands.DeleteProduct
                 throw EntityNotFoundException.For<Product>(request.guid);
 
             db.Products.Remove(entity);
-            var key = CacheKeys<ProductDto>.ById(request.guid);
+            var key = cacheKeyFactory.ById<ProductDto>(request.guid);
             await cache.RemoveAsync(key);
 
             return request.guid;

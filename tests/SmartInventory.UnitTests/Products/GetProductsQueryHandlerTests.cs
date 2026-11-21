@@ -16,7 +16,7 @@ namespace SmartInventory.UnitTests.Products
         private readonly GetAllProductsQueryHandler _handler;
         private readonly ICacheService _cache;
         private readonly List<Product> _products;
-
+        private readonly ICacheKeyFactory _cacheKeyFactory;
         public GetProductsQueryHandlerTests()
         {
             _products = ProductLoader.LoadProductsFromFile();
@@ -26,8 +26,10 @@ namespace SmartInventory.UnitTests.Products
 
             _cache = Substitute.For<ICacheService>();
             _cache.GetAsync<ProductDto>(Arg.Any<string>()).Returns((ProductDto?)null); // Simulate cache miss
+            _cacheKeyFactory = Substitute.For<ICacheKeyFactory>();
+            _cacheKeyFactory.ById<ProductDto>(Arg.Any<Guid>()).Returns(callInfo => $"ProductDto:{callInfo.Arg<Guid>()}");
 
-            _handler = new GetAllProductsQueryHandler(_db, _cache);
+            _handler = new GetAllProductsQueryHandler(_db, _cacheKeyFactory, _cache);
         }
 
         [Fact]

@@ -12,7 +12,7 @@ namespace SmartInventory.API.Services
 
         public bool IsAvailable { get; private set; } = false;
 
-        public bool IsTenantScoped { get; private set; } = false;
+        public bool IsTenantScoped { get; private set; } = true;
 
         public string Role { get; private set; } = string.Empty;
 

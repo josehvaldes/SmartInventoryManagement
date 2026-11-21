@@ -7,7 +7,9 @@ using SmartInventory.Application.Features.Products.DTO;
 
 namespace SmartInventory.Application.Features.Products.Queries.GetAllProducts
 {
-    public class GetAllProductsQueryHandler(IApplicationDbContext db, ICacheService cache)
+    public class GetAllProductsQueryHandler(IApplicationDbContext db,
+        ICacheKeyFactory cacheKeyFactory, 
+        ICacheService cache)
         : IQueryHandler<GetAllProductsQuery, PagedResult<ProductDto>>
     {
         public async Task<PagedResult<ProductDto>> Handle(GetAllProductsQuery query, CancellationToken cancellationToken)
@@ -21,7 +23,7 @@ namespace SmartInventory.Application.Features.Products.Queries.GetAllProducts
                 .ToListAsync(cancellationToken);
 
             var productDtos = products.Adapt<List<ProductDto>>();
-            var tasks = productDtos.Select(x => cache.SetAsync(CacheKeys<ProductDto>.ById(x.Id), x, TimeSpan.FromMinutes(5)));
+            var tasks = productDtos.Select(x => cache.SetAsync(cacheKeyFactory.ById<ProductDto>(x.Id), x, TimeSpan.FromMinutes(5)));
             await Task.WhenAll(tasks);
 
             return new PagedResult<ProductDto>(productDtos, totalCount, query.PageNumber, query.PageSize);

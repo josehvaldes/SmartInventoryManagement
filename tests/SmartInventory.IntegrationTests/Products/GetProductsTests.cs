@@ -5,6 +5,7 @@ using SmartInventory.Contracts.Responses;
 using SmartInventory.Contracts.Responses.Products;
 using SmartInventory.Domain.Enums;
 using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.IntegrationTests.Data;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
@@ -17,10 +18,6 @@ namespace SmartInventory.IntegrationTests.Products
     {
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
-            var options = new DbContextOptionsBuilder<SmartInventoryDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-
             await using var context = CreateSmartInventoryDbContext();
 
             var products = ProductData.Products;

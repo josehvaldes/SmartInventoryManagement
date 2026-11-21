@@ -8,11 +8,13 @@ using SmartInventory.Domain.Entities;
 
 namespace SmartInventory.Application.Features.Products.Queries.GetProductById
 {
-    public class GetProductByIdQueryHandler(IApplicationDbContext db, ICacheService cache) : IQueryHandler<GetProductByIdQuery, ProductDto>
+    public class GetProductByIdQueryHandler(IApplicationDbContext db,
+        ICacheKeyFactory cacheKeyFactory, 
+        ICacheService cache) : IQueryHandler<GetProductByIdQuery, ProductDto>
     {
         public async Task<ProductDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var key = CacheKeys<ProductDto>.ById(request.Id);
+            var key = cacheKeyFactory.ById<ProductDto>(request.Id);
 
             var product = await cache.GetAsync<ProductDto>(key);
 
