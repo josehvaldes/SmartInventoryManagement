@@ -1,7 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Interfaces;
+using SmartInventory.Application.Common.Tenants;
 using SmartInventory.Domain.Entities;
+using System.Reflection;
 
 namespace SmartInventory.Infrastructure.Data.Context
 {
@@ -11,6 +14,10 @@ namespace SmartInventory.Infrastructure.Data.Context
         private readonly ITenantContext? _tenantContext;
         public interface IInventoryConfiguration { }
 
+        public Guid CurrentTenantId => _tenantContext?.TenantId?? Guid.Empty;
+
+        public bool IsTenantAvailable => _tenantContext?.IsAvailable ?? false;
+        public bool IsTenantScoped => _tenantContext?.IsTenantScoped ?? false;
         public SmartInventoryDbContext(DbContextOptions<SmartInventoryDbContext> options) : base(options)
         {
         }
@@ -43,22 +50,59 @@ namespace SmartInventory.Infrastructure.Data.Context
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SmartInventoryDbContext).Assembly,
                 t => t.GetInterfaces().Contains(typeof(IInventoryConfiguration))
             );
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                // Only configure root entity types; derived types inherit the filter
+                if (entityType.BaseType is null &&
+                    typeof(ITenantEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    var method = typeof(SmartInventoryDbContext).GetMethod(nameof(ApplyTenantFilter),
+                                    BindingFlags.NonPublic | BindingFlags.Instance)!
+                                .MakeGenericMethod(entityType.ClrType);
+
+                    method.Invoke(this, new object[] { modelBuilder });
+                }
+            }
+
+        }
+
+        private void ApplyTenantFilter<TEntity>(ModelBuilder modelBuilder)
+            where TEntity : class, ITenantEntity
+        {
+            modelBuilder.Entity<TEntity>()
+                    .HasQueryFilter(x => IsTenantAvailable && IsTenantScoped && x.TenantId == CurrentTenantId);
+        }
+
+        private void EnforceTenantOwnership() 
+        {
+            foreach (var entry in ChangeTracker.Entries<ITenantEntity>())
+            {
+                var entity = entry.Entity;
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        if (!IsTenantAvailable)
+                            throw new TenantException(TenantErrorCodes.ContextRequired, "No tenant context is available for the entity write.", 401);
+
+                        if (IsTenantScoped)
+                            entity.TenantId = CurrentTenantId;
+                        
+                        break;
+                    case EntityState.Modified:
+                    case EntityState.Deleted:
+                        if (!IsTenantAvailable || (IsTenantScoped && entity.TenantId != CurrentTenantId))
+                        {
+                            throw new TenantException(TenantErrorCodes.Forbidden, "tenant overwrite detected.", 403);
+                        }
+                        break;
+                }
+            }
         }
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var needsTenant = ChangeTracker
-                .Entries<ITenantEntity>()
-                .Where(e => e.State == EntityState.Added && e.Entity.TenantId == Guid.Empty)
-                .ToList();
-
-            if (needsTenant.Count > 0)
-            {
-                if (_tenantContext is not { IsAvailable: true })
-                    throw new InvalidOperationException("A tenant is required to save tenant entities, but no tenant context is available.");
-
-                needsTenant.ForEach(e => e.Entity.TenantId = _tenantContext.TenantId);
-            }
+            EnforceTenantOwnership();
 
             var domainEventEntities = ChangeTracker
                 .Entries<BaseEntity>()

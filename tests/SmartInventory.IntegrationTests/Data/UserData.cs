@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using SmartInventory.Domain.Identity;
+using SmartInventory.IntegrationTests.Common;
 
-namespace SmartInventory.IntegrationTests.Common
+namespace SmartInventory.IntegrationTests.Data
 {
     public static class UserData
     {

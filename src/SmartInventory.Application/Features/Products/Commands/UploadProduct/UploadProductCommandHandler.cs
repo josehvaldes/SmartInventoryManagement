@@ -9,6 +9,7 @@ using System.Text;
 namespace SmartInventory.Application.Features.Products.Commands.UploadProduct
 {
     public class UploadProductCommandHandler(IFileStorageService fileStorageService,
+        ITenantContext tenantContext,
         IApplicationDbContext db) : ICommandHandler<UploadProductCommand, string>
     {
         public async Task<string> Handle(UploadProductCommand command, CancellationToken cancellationToken)
@@ -22,6 +23,7 @@ namespace SmartInventory.Application.Features.Products.Commands.UploadProduct
 
             using var stream = command.file.OpenReadStream();
             var fileUrl = await fileStorageService.UploadAsync(
+                tenantContext,
                 stream,
                 newFilename,
                 command.file.ContentType);

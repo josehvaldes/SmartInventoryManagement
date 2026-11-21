@@ -3,13 +3,13 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SmartInventory.Domain.Identity;
 using SmartInventory.Infrastructure.Data.Context;
-using SmartInventory.IntegrationTests.Common;
+using SmartInventory.IntegrationTests.Data;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 
-namespace SmartInventory.IntegrationTests.TenantResolution
+namespace SmartInventory.IntegrationTests.Tenants
 {
     [Collection("Integration")]
     public class TestResolutionTests(IntegrationTestFixture fixture) : IntegrationTest(fixture)
@@ -20,10 +20,8 @@ namespace SmartInventory.IntegrationTests.TenantResolution
 
         protected override async Task SeedDataAsync(SqlConnection connection)
         {
-            var options = new DbContextOptionsBuilder<AuthDbContext>()
-                .UseSqlServer(ConnectionString)
-                .Options;
-            await using var context = new AuthDbContext(options);
+
+            await using var context = CreateAuthDbContext();
             users = UserData.LoadUsersFromFile();
             foreach (var user in users)
             {

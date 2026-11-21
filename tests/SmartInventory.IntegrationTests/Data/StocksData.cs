@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartInventory.IntegrationTests.Stocks
+namespace SmartInventory.IntegrationTests.Data
 {
     public static class StocksData
     {

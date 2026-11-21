@@ -11,12 +11,13 @@ using System.Text;
 
 namespace SmartInventory.Application.Features.Stocks.Queries
 {
-    public class GetStockByProductIdQueryHandler(IApplicationDbContext db, ICacheService cache) : IQueryHandler<GetStockByProductIdQuery, StockDto>
+    public class GetStockByProductIdQueryHandler(IApplicationDbContext db,
+        ICacheKeyFactory cacheKeyFactory,
+        ICacheService cache) : IQueryHandler<GetStockByProductIdQuery, StockDto>
     {
         public async Task<StockDto> Handle(GetStockByProductIdQuery request, CancellationToken cancellationToken)
         {
-            var key = CacheKeys<StockDto>.ByProperty("ProductId", request.productId.ToString());
-
+            var key = cacheKeyFactory.ByProperty<StockDto>("ProductId", request.productId.ToString());
             var stockDto = await cache.GetAsync<StockDto>(key);
             if (stockDto != null)
             {

@@ -15,6 +15,7 @@ namespace SmartInventory.Infrastructure.BackgroundJobs
     [DisallowConcurrentExecution]
     public sealed class ExpiredRefreshTokenCleanupJob(
         IAuthDbContext db,
+        //ITenantContext tenantContext,
         ILogger<ExpiredRefreshTokenCleanupJob> logger,
         IOptions<JwtSettings> opts) : IJob
     {

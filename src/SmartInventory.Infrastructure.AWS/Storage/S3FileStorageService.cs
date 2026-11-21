@@ -23,10 +23,18 @@ namespace SmartInventory.Infrastructure.AWS.Storage
             _bucketName = _awsSettings.S3BucketName;
             _s3Client = s3Client;
         }
-
-        public async Task<string> GetUploadUrlAsync(string fileName, string contentType)
+        private string GetTenantScopedKey(string fileName, ITenantContext tenantContext)
         {
-            var key = $"products/{Guid.NewGuid()}-{fileName}";
+            if (!tenantContext.IsAvailable || tenantContext.TenantId == Guid.Empty)
+            {
+                throw new InvalidOperationException("Tenant context is unavailable. Cannot generate a tenant-scoped key.");
+            }
+            return $"tenants/{tenantContext.TenantId}/products/{fileName}";
+        }
+
+        public async Task<string> GetUploadUrlAsync(ITenantContext tenantContext, string fileName, string contentType)
+        {
+            var key = GetTenantScopedKey(fileName, tenantContext);
 
             var request = new GetPreSignedUrlRequest
             {
@@ -44,9 +52,9 @@ namespace SmartInventory.Infrastructure.AWS.Storage
             });
         }
 
-        public async Task<string> UploadAsync(Stream fileStream, string fileName, string contentType)
+        public async Task<string> UploadAsync(ITenantContext tenantContext, Stream fileStream, string fileName, string contentType)
         {
-            var key = $"products/{Guid.NewGuid()}-{fileName}";
+            var key = GetTenantScopedKey(fileName, tenantContext);
 
             var request = new PutObjectRequest
             {

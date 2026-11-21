@@ -4,10 +4,9 @@ using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
-using SmartInventory.IntegrationTests.Products;
-using SmartInventory.IntegrationTests.Warehouses;
 using SmartInventory.Contracts.Requests.Stocks;
 using SmartInventory.Domain.Entities;
+using SmartInventory.IntegrationTests.Data;
 
 namespace SmartInventory.IntegrationTests.Stocks
 {

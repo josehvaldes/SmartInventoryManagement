@@ -6,7 +6,7 @@ namespace SmartInventory.Application.Common.Interfaces
 {
     public interface IFileStorageService
     {
-        Task<string> GetUploadUrlAsync(string fileName, string contentType);
-        Task<string> UploadAsync(Stream fileStream, string fileName, string contentType);
+        Task<string> GetUploadUrlAsync(ITenantContext tenantContext, string fileName, string contentType);
+        Task<string> UploadAsync(ITenantContext tenantContext, Stream fileStream, string fileName, string contentType);
     }
 }

@@ -17,6 +17,7 @@ namespace SmartInventory.UnitTests.Warehouses
         private readonly GetWarehouseByIdQueryHandler _handler;
         private readonly ICacheService _cache;
         private readonly List<Warehouse> _warehouses;
+        private readonly ICacheKeyFactory _cacheKeyFactory;
 
         public GetWarehouseByIdQueryHandlerTests()
         {
@@ -27,8 +28,10 @@ namespace SmartInventory.UnitTests.Warehouses
 
             _cache = Substitute.For<ICacheService>();
             _cache.GetAsync<WarehouseDto>(Arg.Any<string>()).Returns((WarehouseDto?)null); // Simulate cache miss
+            _cacheKeyFactory = Substitute.For<ICacheKeyFactory>();
+            _cacheKeyFactory.ById<WarehouseDto>(Arg.Any<Guid>()).Returns(callInfo => $"WarehouseDto:{callInfo.Arg<Guid>()}");
 
-            _handler = new GetWarehouseByIdQueryHandler(_db, _cache);
+            _handler = new GetWarehouseByIdQueryHandler(_db, _cacheKeyFactory, _cache);
         }
 
         [Fact]

@@ -4,7 +4,7 @@ using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Enums;
 using SmartInventory.IntegrationTests.Common;
 
-namespace SmartInventory.IntegrationTests.Products
+namespace SmartInventory.IntegrationTests.Data
 {
     public static class ProductData
     { 

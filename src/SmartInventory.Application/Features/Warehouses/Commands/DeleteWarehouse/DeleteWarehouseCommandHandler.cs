@@ -8,6 +8,7 @@ using SmartInventory.Domain.Entities;
 namespace SmartInventory.Application.Features.Warehouses.Commands.DeleteWarehouse
 {
     public class DeleteWarehouseCommandHandler(IApplicationDbContext db,
+        ICacheKeyFactory cacheKeyFactory,
         ICacheService cache) : ICommandHandler<DeleteWarehouseCommand, Guid>
     {
         public async Task<Guid> Handle(DeleteWarehouseCommand request, CancellationToken cancellationToken)
@@ -21,7 +22,7 @@ namespace SmartInventory.Application.Features.Warehouses.Commands.DeleteWarehous
             }
 
             db.Warehouses.Remove(entity);
-            var key = CacheKeys<WarehouseDto>.ById(request.guid);
+            var key = cacheKeyFactory.ById<WarehouseDto>(request.guid);
             await cache.RemoveAsync(key);
 
             return request.guid;

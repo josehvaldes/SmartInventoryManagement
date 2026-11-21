@@ -6,11 +6,13 @@ using SmartInventory.Application.Features.Tenants.DTO;
 
 namespace SmartInventory.Application.Features.Tenants.Queries
 {
-    public class GetTenantBySlugQueryHandler(IAuthDbContext dbContext, ICacheService cache) : IQueryHandler<GetTenantBySlugQuery, TenantDto?>
+    public class GetTenantBySlugQueryHandler(IAuthDbContext dbContext,
+        ICacheKeyFactory cacheKeyFactory, 
+        ICacheService cache) : IQueryHandler<GetTenantBySlugQuery, TenantDto?>
     {
         public async Task<TenantDto?> Handle(GetTenantBySlugQuery request, CancellationToken cancellationToken)
         {
-            var key = CacheKeys<TenantDto>.ByProperty("Slug", request.Slug);
+            var key = cacheKeyFactory.ByProperty<TenantDto>("Slug", request.Slug);
             var tenantDto = await cache.GetAsync<TenantDto>(key);
 
             if (tenantDto != null)

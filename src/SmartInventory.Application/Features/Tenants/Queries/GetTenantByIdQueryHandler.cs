@@ -8,11 +8,13 @@ using System.Text;
 
 namespace SmartInventory.Application.Features.Tenants.Queries
 {
-    public class GetTenantByIdQueryHandler(IAuthDbContext dbContext, ICacheService cacheService) : IQueryHandler<GetTenantByIdQuery, TenantDto?>
+    public class GetTenantByIdQueryHandler(IAuthDbContext dbContext,
+        ICacheKeyFactory cacheKeyFactory, 
+        ICacheService cacheService) : IQueryHandler<GetTenantByIdQuery, TenantDto?>
     {
         public async Task<TenantDto?> Handle(GetTenantByIdQuery request, CancellationToken cancellationToken)
         {
-            var key = CacheKeys<TenantDto>.ById(request.TenantId);
+            var key = cacheKeyFactory.ById<TenantDto>(request.TenantId);
             var cachedTenant = await cacheService.GetAsync<TenantDto>(key);
             if (cachedTenant != null)
             {

@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using SmartInventory.Contracts.Requests.Products;
 using SmartInventory.Contracts.Responses.Products;
+using SmartInventory.IntegrationTests.Data;
 using SmartInventory.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
