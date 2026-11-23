@@ -12,17 +12,17 @@ EXPOSE 8081
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["src/SmartInventory.API/SmartInventory.API.csproj", "src/SmartInventory.API/"]
-COPY ["src/SmartInventory.Application/SmartInventory.Application.csproj", "src/SmartInventory.Application/"]
-COPY ["src/SmartInventory.Contracts/SmartInventory.Contracts.csproj", "src/SmartInventory.Contracts/"]
-COPY ["src/SmartInventory.Domain/SmartInventory.Domain.csproj", "src/SmartInventory.Domain/"]
-COPY ["src/SmartInventory.Infrastructure.AWS/SmartInventory.Infrastructure.AWS.csproj", "src/SmartInventory.Infrastructure.AWS/"]
-COPY ["src/SmartInventory.Infrastructure/SmartInventory.Infrastructure.csproj", "src/SmartInventory.Infrastructure/"]
-COPY ["src/SmartInventory.Observability/SmartInventory.Observability.csproj", "src/SmartInventory.Observability/"]
-RUN dotnet restore "./src/SmartInventory.API/SmartInventory.API.csproj"
+WORKDIR /
+COPY ["src/Inventory/SmartInventory.API/SmartInventory.API.csproj", "src/Inventory/SmartInventory.API/"]
+COPY ["src/Inventory/SmartInventory.Application/SmartInventory.Application.csproj", "src/Inventory/SmartInventory.Application/"]
+COPY ["src/Inventory/SmartInventory.Contracts/SmartInventory.Contracts.csproj", "src/Inventory/SmartInventory.Contracts/"]
+COPY ["src/Inventory/SmartInventory.Domain/SmartInventory.Domain.csproj", "src/Inventory/SmartInventory.Domain/"]
+COPY ["src/Inventory/SmartInventory.Infrastructure.AWS/SmartInventory.Infrastructure.AWS.csproj", "src/Inventory/SmartInventory.Infrastructure.AWS/"]
+COPY ["src/Inventory/SmartInventory.Infrastructure/SmartInventory.Infrastructure.csproj", "src/Inventory/SmartInventory.Infrastructure/"]
+COPY ["src/Inventory/SmartInventory.Observability/SmartInventory.Observability.csproj", "src/Inventory/SmartInventory.Observability/"]
+RUN dotnet restore "./src/Inventory/SmartInventory.API/SmartInventory.API.csproj"
 COPY . .
-WORKDIR "/src/src/SmartInventory.API"
+WORKDIR "/src/Inventory/SmartInventory.API"
 RUN dotnet build "./SmartInventory.API.csproj" -c $BUILD_CONFIGURATION --no-restore -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

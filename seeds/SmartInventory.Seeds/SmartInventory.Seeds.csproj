@@ -42,10 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SmartInventory.Application\SmartInventory.Application.csproj" />
-    <ProjectReference Include="..\..\src\SmartInventory.Contracts\SmartInventory.Contracts.csproj" />
-    <ProjectReference Include="..\..\src\SmartInventory.Domain\SmartInventory.Domain.csproj" />
-    <ProjectReference Include="..\..\src\SmartInventory.Infrastructure\SmartInventory.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Inventory\SmartInventory.Application\SmartInventory.Application.csproj" />
+    <ProjectReference Include="..\..\src\Inventory\SmartInventory.Contracts\SmartInventory.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Inventory\SmartInventory.Domain\SmartInventory.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Inventory\SmartInventory.Infrastructure\SmartInventory.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

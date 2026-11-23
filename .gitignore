@@ -416,9 +416,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
-src/SmartInventory.API/appsettings.Development.json
+
 
 
 #Ignore vscode AI rules
 .github/instructions
 .codacy
+
+.vscode

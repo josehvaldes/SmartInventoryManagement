@@ -20,7 +20,7 @@ Runs on `ubuntu-latest` with .NET `10.0.x` and the NuGet cache enabled.
 1. `dotnet restore` on `SmartInventoryManagement.slnx`
 2. `dotnet build -c Release --no-restore`
 3. `dotnet test -c Release --no-build`. This runs the unit tests and the Testcontainers integration tests, which use the Docker daemon that GitHub-hosted Ubuntu runners provide, so no service containers are configured in the workflow.
-4. **Publish (only on a push to `main`):** log in to GitHub Container Registry and build and push the image from [src/SmartInventory.API/Dockerfile](../src/SmartInventory.API/Dockerfile).
+4. **Publish (only on a push to `main`):** log in to GitHub Container Registry and build and push the image from [src/Inventory/SmartInventory.API/Dockerfile](../src/Inventory/SmartInventory.API/Dockerfile), using the repository root as the build context.
 
 Pull requests run steps 1-3 only. They never push images.
 
@@ -43,6 +43,11 @@ dotnet test SmartInventoryManagement.slnx -c Release --no-build   # Docker must 
 ```
 
 [build-images.ps1](../scripts/builds/build-images.ps1) builds the same Dockerfile and context as CI, but tags the image `smartinventory-api:<Version>` locally instead of the registry tags above.
+To build the image directly from the repository root:
+
+```powershell
+docker build -t smartinventory-api:local -f .\src\Inventory\SmartInventory.API\Dockerfile .
+```
 
 ## Troubleshooting
 

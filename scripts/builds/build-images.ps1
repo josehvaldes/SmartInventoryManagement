@@ -6,5 +6,5 @@ param(
 $ErrorActionPreference = "Stop"
 
 docker build -t "smartinventory-api:$Version" `
-    -f .\src\SmartInventory.API\Dockerfile `
+    -f .\src\Inventory\SmartInventory.API\Dockerfile `
     .\

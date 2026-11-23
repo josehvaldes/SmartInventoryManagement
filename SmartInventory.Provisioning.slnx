@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Inventory/SmartInventory.Domain/SmartInventory.Domain.csproj" />
+    <Project Path="src/Inventory/SmartInventory.Infrastructure/SmartInventory.Infrastructure.csproj" />
+    <Project Path="src/Provisioning/SmartInventory.Provisioning.API/SmartInventory.Provisioning.API.csproj" />
+    <Project Path="src/Provisioning/SmartInventory.Provisioning.Application/SmartInventory.Provisioning.Application.csproj" />
+    <Project Path="src/Provisioning/SmartInventory.Provisioning.Contracts/SmartInventory.Provisioning.Contracts.csproj" Id="54ced87a-f47c-4c9c-8b33-3d149c2c7fff" />
+    <Project Path="src/Provisioning/SmartInventory.Provisioning.Infrastructure/SmartInventory.Provisioning.Infrastructure.csproj" Id="36648483-1def-4ca6-a99c-01917d0b0683" />
+  </Folder>
+</Solution>

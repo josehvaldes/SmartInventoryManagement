@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "src/**"
+      - "src/Inventory/**"
       - "tests/**"
       - "seeds/**"
       - "SmartInventoryManagement.slnx"
@@ -15,7 +15,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "src/**"
+      - "src/Inventory/**"
       - "tests/**"
       - "seeds/**"
       - "SmartInventoryManagement.slnx"
@@ -41,7 +41,7 @@ jobs:
       image-name: smartinventory-api
       solution: SmartInventoryManagement.slnx
       context: ./
-      dockerfile: src/SmartInventory.API/Dockerfile
+      dockerfile: src/Inventory/SmartInventory.API/Dockerfile
       # Publish only on pushes to main, never on PRs
       publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     secrets: inherit
