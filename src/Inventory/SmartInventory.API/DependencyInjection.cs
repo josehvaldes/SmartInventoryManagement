@@ -15,7 +15,7 @@ using System.Threading.RateLimiting;
 using OpenTelemetry.Context.Propagation;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using SmartInventory.Observability.Traces;
+using SmartInventory.Observability;
 
 
 namespace SmartInventory.API
@@ -29,6 +29,7 @@ namespace SmartInventory.API
             services.AddCustomHealthChecks(config);
             services.AddRateLimiterConfig(config);
             services.AddAuthenticationServices(config);
+            services.AddOpenTelemetry(config);
 
             services.AddOpenApi("v1");
             services.AddCors(config);

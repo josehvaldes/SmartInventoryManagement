@@ -1,7 +1,5 @@
-﻿using SmartInventory.Infrastructure.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SmartInventory.Identity.Infrastructure.Data.Context;
+using SmartInventory.Infrastructure.Data.Context;
 
 namespace SmartInventory.Seeds
 {

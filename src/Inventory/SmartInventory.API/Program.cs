@@ -10,6 +10,8 @@ using SmartInventory.Infrastructure;
 using SmartInventory.Infrastructure.AWS;
 using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.Observability;
+using SmartInventory.Identity.Infrastructure.Data.Context;
+using SmartInventory.Identity.Infrastructure;
 
 MappingConfig.RegisterMappings();
 
@@ -41,7 +43,7 @@ builder.Services.AddProblemDetails();
 
 builder.Services.ConfigureHttpPipeline(); // Configure HTTP pipeline settings
 
-
+builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 

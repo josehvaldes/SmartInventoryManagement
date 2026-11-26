@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SmartInventory.Application.Common.Interfaces;
+using SmartInventory.Identity.Abstractions.Persistence;
 
 namespace SmartInventory.Application.Features.Auth.Commands
 {

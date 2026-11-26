@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Polly.CircuitBreaker;
 using SmartInventory.Application.Common.Exceptions;
 using SmartInventory.Application.Common.Tenants;
-using SmartInventory.Observability.AppMetrics;
+using SmartInventory.Observability;
 
 namespace SmartInventory.API.Middleware
 {
@@ -28,10 +28,10 @@ namespace SmartInventory.API.Middleware
             switch (statusCode)
             {
                 case StatusCodes.Status401Unauthorized:
-                    WebMetrics.AuthenticationErrors.Inc();
+                    AppMetrics.AuthenticationErrors.Inc();
                     break;
                 case StatusCodes.Status503ServiceUnavailable:
-                    WebMetrics.ServiceUnavailableErrors.Inc();
+                    AppMetrics.ServiceUnavailableErrors.Inc();
                     break;
                 default:
                     break;

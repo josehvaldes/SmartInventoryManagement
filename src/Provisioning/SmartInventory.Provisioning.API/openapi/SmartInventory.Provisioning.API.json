@@ -1,0 +1,90 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "SmartInventory.Provisioning.API | v1",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/tenants": {
+      "get": {
+        "tags": [
+          "SmartInventory.Provisioning.API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tenantrequests": {
+      "get": {
+        "tags": [
+          "SmartInventory.Provisioning.API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "SmartInventory.Provisioning.API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "SmartInventory.Provisioning.API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "SmartInventory.Provisioning.API"
+    }
+  ]
+}

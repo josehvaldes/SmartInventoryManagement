@@ -33,13 +33,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Repositories\" />
     <Folder Include="EventDispatchers\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SmartInventory.Application\SmartInventory.Application.csproj" />
     <ProjectReference Include="..\SmartInventory.Domain\SmartInventory.Domain.csproj" />
+    <ProjectReference Include="..\SmartInventory.Identity.Abstractions\SmartInventory.Identity.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

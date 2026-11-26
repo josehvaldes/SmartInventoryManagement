@@ -45,6 +45,7 @@
     <ProjectReference Include="..\..\src\Inventory\SmartInventory.Application\SmartInventory.Application.csproj" />
     <ProjectReference Include="..\..\src\Inventory\SmartInventory.Contracts\SmartInventory.Contracts.csproj" />
     <ProjectReference Include="..\..\src\Inventory\SmartInventory.Domain\SmartInventory.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Inventory\SmartInventory.Identity.Infrastructure\SmartInventory.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Inventory\SmartInventory.Infrastructure\SmartInventory.Infrastructure.csproj" />
   </ItemGroup>
 

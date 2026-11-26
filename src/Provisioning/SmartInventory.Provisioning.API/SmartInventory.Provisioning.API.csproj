@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -8,19 +8,42 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
-
+	<PropertyGroup>
+		<OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
+		<OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)/openapi</OpenApiDocumentsDirectory>
+	</PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" Version="10.2.3" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="10.2.1" />
+    <PackageReference Include="FluentValidation" Version="12.2.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="10.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Identity.Web" Version="4.18.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1" />
+    <PackageReference Include="OpenTelemetry" Version="1.21.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.21.0" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.21.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.21.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.21.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="11.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="11.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Inventory\SmartInventory.Domain\SmartInventory.Domain.csproj" />
-    <ProjectReference Include="..\..\Inventory\SmartInventory.Infrastructure\SmartInventory.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Inventory\SmartInventory.Identity.Abstractions\SmartInventory.Identity.Abstractions.csproj" />
     <ProjectReference Include="..\SmartInventory.Provisioning.Application\SmartInventory.Provisioning.Application.csproj" />
     <ProjectReference Include="..\SmartInventory.Provisioning.Contracts\SmartInventory.Provisioning.Contracts.csproj" />
     <ProjectReference Include="..\SmartInventory.Provisioning.Infrastructure\SmartInventory.Provisioning.Infrastructure.csproj" />
+    <ProjectReference Include="..\SmartInventory.Provisioning.Observability\SmartInventory.Provisioning.Observability.csproj" />
   </ItemGroup>
 
 </Project>

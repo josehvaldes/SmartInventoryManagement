@@ -2,9 +2,7 @@
 using SmartInventory.Application.Common.Cache;
 using SmartInventory.Application.Common.Interfaces;
 using SmartInventory.Application.Features.Tenants.DTO;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SmartInventory.Identity.Abstractions.Persistence;
 
 namespace SmartInventory.Application.Features.Tenants.Queries
 {

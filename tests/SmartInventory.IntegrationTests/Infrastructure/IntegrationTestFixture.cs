@@ -1,6 +1,7 @@
 ﻿using Amazon.Runtime;
 using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
+using SmartInventory.Identity.Infrastructure.Data.Context;
 using SmartInventory.Infrastructure.Data.Context;
 using Testcontainers.LocalStack;
 using Testcontainers.MsSql;

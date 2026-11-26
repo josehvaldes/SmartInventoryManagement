@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Quartz;
-using SmartInventory.Application.Common.Interfaces;
+using SmartInventory.Identity.Abstractions.Persistence;
 using SmartInventory.Infrastructure.Settings;
 
 namespace SmartInventory.Infrastructure.BackgroundJobs

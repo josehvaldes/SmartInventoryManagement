@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SmartInventory.API.Services;
 using SmartInventory.Domain.Entities;
 using SmartInventory.Domain.Enums;
+using SmartInventory.Identity.Infrastructure.Data.Context;
 using SmartInventory.Infrastructure.Data.Context;
 using Testcontainers.MsSql;
 using Xunit;

@@ -1,10 +1,16 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Inventory/SmartInventory.Domain/SmartInventory.Domain.csproj" />
-    <Project Path="src/Inventory/SmartInventory.Infrastructure/SmartInventory.Infrastructure.csproj" />
+    <Project Path="src/Inventory/SmartInventory.Identity.Abstractions/SmartInventory.Identity.Abstractions.csproj" />
+    <Project Path="src/Inventory/SmartInventory.Identity.Infrastructure/SmartInventory.Identity.Infrastructure.csproj" />
     <Project Path="src/Provisioning/SmartInventory.Provisioning.API/SmartInventory.Provisioning.API.csproj" />
     <Project Path="src/Provisioning/SmartInventory.Provisioning.Application/SmartInventory.Provisioning.Application.csproj" />
     <Project Path="src/Provisioning/SmartInventory.Provisioning.Contracts/SmartInventory.Provisioning.Contracts.csproj" Id="54ced87a-f47c-4c9c-8b33-3d149c2c7fff" />
     <Project Path="src/Provisioning/SmartInventory.Provisioning.Infrastructure/SmartInventory.Provisioning.Infrastructure.csproj" Id="36648483-1def-4ca6-a99c-01917d0b0683" />
+    <Project Path="src/Provisioning/SmartInventory.Provisioning.Observability/SmartInventory.Provisioning.Observability.csproj" Id="dc08bed9-d4fb-464b-b4f8-0fea4f5b7ac0" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SmartInventory.Provisioning.IntegrationTests/SmartInventory.Provisioning.IntegrationTests.csproj" Id="fe6b6bd0-4045-4009-b652-fbff87080e8d" />
+    <Project Path="tests/SmartInventory.Provisioning.UnitTests/SmartInventory.Provisioning.UnitTests.csproj" Id="e3f1d083-f5ba-4982-b312-128291e33a4f" />
   </Folder>
 </Solution>

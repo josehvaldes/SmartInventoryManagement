@@ -57,6 +57,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Inventory\SmartInventory.API\SmartInventory.API.csproj" />
+    <ProjectReference Include="..\..\src\Inventory\SmartInventory.Identity.Abstractions\SmartInventory.Identity.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Inventory\SmartInventory.Identity.Infrastructure\SmartInventory.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Inventory\SmartInventory.Infrastructure\SmartInventory.Infrastructure.csproj" />
     <ProjectReference Include="..\..\seeds\SmartInventory.Seeds\SmartInventory.Seeds.csproj" />
   </ItemGroup>

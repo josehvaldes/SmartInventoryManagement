@@ -3,9 +3,6 @@ using Serilog.Formatting;
 using Serilog.Formatting.Display;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace SmartInventory.API.Logging
 {

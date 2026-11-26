@@ -8,6 +8,7 @@ using SmartInventory.Application.Common.Tenants;
 using SmartInventory.Contracts.Responses.Auth;
 using SmartInventory.Domain.Enums;
 using SmartInventory.Domain.Identity;
+using SmartInventory.Identity.Abstractions.Persistence;
 
 namespace SmartInventory.Application.Features.Auth.Commands
 {

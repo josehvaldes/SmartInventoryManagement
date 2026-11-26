@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SmartInventory.Contracts\SmartInventory.Contracts.csproj" />
     <ProjectReference Include="..\SmartInventory.Domain\SmartInventory.Domain.csproj" />
+    <ProjectReference Include="..\SmartInventory.Identity.Abstractions\SmartInventory.Identity.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

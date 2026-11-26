@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SmartInventory.Identity.Infrastructure.Data.Context;
 using SmartInventory.Infrastructure.Data.Context;
 
 namespace SmartInventory.IntegrationTests.Infrastructure

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SmartInventory.Domain.Identity;
-using SmartInventory.Infrastructure.Data.Context;
+using SmartInventory.Identity.Infrastructure.Data.Context;
 
 namespace SmartInventory.Seeds
 {

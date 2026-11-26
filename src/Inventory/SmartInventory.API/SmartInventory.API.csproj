@@ -52,6 +52,7 @@
     <ProjectReference Include="..\SmartInventory.Application\SmartInventory.Application.csproj" />
     <ProjectReference Include="..\SmartInventory.Contracts\SmartInventory.Contracts.csproj" />
     <ProjectReference Include="..\SmartInventory.Domain\SmartInventory.Domain.csproj" />
+    <ProjectReference Include="..\SmartInventory.Identity.Infrastructure\SmartInventory.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\SmartInventory.Infrastructure.AWS\SmartInventory.Infrastructure.AWS.csproj" />
     <ProjectReference Include="..\SmartInventory.Infrastructure\SmartInventory.Infrastructure.csproj" />
     <ProjectReference Include="..\SmartInventory.Observability\SmartInventory.Observability.csproj" />
