@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SmartInventory.API
+namespace SmartInventory.API.Configurations
 {
     public static class HttpConfiguration
     {

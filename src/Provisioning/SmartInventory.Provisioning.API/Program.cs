@@ -44,6 +44,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 app.UseRateLimiter();
+app.UseCors("DefaultCors");
 
 app.UseAuthentication(); //  Add authentication middleware
 app.UseAuthorization();

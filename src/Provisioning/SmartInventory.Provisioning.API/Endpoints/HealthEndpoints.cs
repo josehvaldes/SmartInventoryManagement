@@ -9,6 +9,7 @@
             app.MapHealthChecks("/healthz");
             app.MapGet("/health", () => "Healthy").RequireAuthorization();
 
+            app.MapOpenApi();// add openapi/v1.json route
         }
     }
 }

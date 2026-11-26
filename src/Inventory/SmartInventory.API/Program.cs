@@ -12,6 +12,7 @@ using SmartInventory.Infrastructure.Data.Context;
 using SmartInventory.Observability;
 using SmartInventory.Identity.Infrastructure.Data.Context;
 using SmartInventory.Identity.Infrastructure;
+using SmartInventory.API.Configurations;
 
 MappingConfig.RegisterMappings();
 

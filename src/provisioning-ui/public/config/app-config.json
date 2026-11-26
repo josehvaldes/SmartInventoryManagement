@@ -1,0 +1,13 @@
+{
+  "api":{
+    "baseUrl": "http://localhost:5174/api",
+    "version": "v1"
+  },
+  "azure": {
+    "clientId": "9e3b04d6-cee3-43fe-b284-e74a449d351f",
+    "tenantId": "5bdb18df-67db-40e0-a1df-145af0bbef1d",
+    "apiclientid": "6c8e47e6-54ce-4ead-9184-7348afbb1d36"
+  },
+  "redirectUri": "http://localhost:5173/redirect.html",
+  "postLogoutRedirectUri": "http://localhost:5173/redirect.html"
+}

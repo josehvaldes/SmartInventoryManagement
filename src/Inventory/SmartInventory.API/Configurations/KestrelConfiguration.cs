@@ -1,4 +1,6 @@
-﻿namespace SmartInventory.API
+﻿using SmartInventory.API.Configurations;
+
+namespace SmartInventory.API.Configurations
 {
     public static class KestrelConfiguration
     {
